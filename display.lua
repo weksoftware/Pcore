@@ -75,19 +75,21 @@ function display.all(settings, planet, message)
             end
             if texture ~= nil then
 
-                love.graphics.setShader(shaders.light)
-                shaders.light:send("light", light)
+                if settings.shader == "light" then
+                    love.graphics.setShader(shaders.light)
+                    shaders.light:send("light", light)
 
-                shaders.light:send("light_top", planet.map[x][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                shaders.light:send("light_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][y].light / 256)
-                shaders.light:send("light_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][y].light / 256)
-                shaders.light:send("light_bottom", planet.map[x][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_top", planet.map[x][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][y].light / 256)
+                    shaders.light:send("light_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][y].light / 256)
+                    shaders.light:send("light_bottom", planet.map[x][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
 
-                shaders.light:send("light_top_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                shaders.light:send("light_top_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                shaders.light:send("light_bottom_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
-                shaders.light:send("light_bottom_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
-
+                    shaders.light:send("light_top_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_top_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_bottom_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_bottom_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
+                end
+                
                 texture = texture[funcs.select_block_img(planet.map, x, y, planet.h, planet.w)]
 
                 --love.graphics.setColor(light, light, light)
