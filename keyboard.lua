@@ -1,7 +1,8 @@
 local funcs = require("funcs")
 local multiplayer = require("multiplayer")
-local utf8 = require("utf8")
 local data = require("data")
+local player = require("player")
+local planets = require("planets")
 
 local keyboard = {}
 
@@ -9,20 +10,22 @@ local zoom_timer = os.clock()
 local backspace_timer = os.clock()
 local chat_scroll_timer = os.clock()
 
+local utf8 = require("utf8")
+
 function love.textinput(text)
-    if data.player.chat_status == 'open' then
+    if player.chat_status == 'open' and love.system.getOS() ~= "Linux" then
         data.message = data.message .. text
     end
 end
 
-function keyboard.update(player, planet, message)
+function keyboard.update()
 
     if player.chat_status == 'close' and love.keyboard.isDown('q') then
         os.exit()
     end
 
     if love.keyboard.isDown('d') then
-        if player.x + 10 < planet.w * 96 then
+        if player.x + 10 < planets[data.planet].w * 96 then
             player.x = player.x + math.floor(10 / player.camera.zoom)
         else
             player.x = 0
@@ -33,7 +36,7 @@ function keyboard.update(player, planet, message)
         if player.x - 10 > 0 then
             player.x = player.x - math.floor(10 / player.camera.zoom)
         else
-            player.x = planet.w * 96 - 10
+            player.x = planets[data.planet].w * 96 - 10
         end
     end
     if love.keyboard.isDown('s') then
@@ -97,29 +100,26 @@ function keyboard.update(player, planet, message)
     local mouse_x, mouse_y = love.mouse.getPosition()
 
     if love.mouse.isDown(1) then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].block = "steel"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "steel"
     end
     if love.mouse.isDown(2) then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].background = "steel"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "steel"
     end
     if love.mouse.isDown(3) then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].block = "air"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "air"
     end
     if love.keyboard.isDown('f') then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].block = "cypress_cone"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "cypress_cone"
     end
     if love.keyboard.isDown('g') then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].block = "cypress_leaves"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "cypress_leaves"
     end
     if love.keyboard.isDown('o') then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].background = "cypress_leaves"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "cypress_leaves"
     end
     if love.keyboard.isDown('h') then
-        planet.map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planet.w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planet.h + 1].background = "cypress_wood"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "cypress_wood"
     end
-    
-
-    return player, planet, data.message
 
 end
 

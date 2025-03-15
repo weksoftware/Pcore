@@ -3,6 +3,7 @@ local funcs = require("funcs")
 local player = require("player")
 local shaders = require("shaders")
 local data = require("data")
+local planets = require("planets")
 
 local display = {}
 
@@ -69,7 +70,7 @@ function display.chat()
 end
 
 
-function display.all(settings, planet)
+function display.all()
 
     love.graphics.draw(sky1, 0, 0, nil, 3)
 
@@ -77,13 +78,13 @@ function display.all(settings, planet)
 
     for xi = 0, math.ceil(20 / player.camera.zoom) do
         for yi = 0, math.ceil(12 / player.camera.zoom) do
-            local x = math.floor(xi + player.x / 96) % planet.w + 1
-            local y = math.floor(yi + player.y / 96) % planet.h + 1
-            texture = blocks[planet.map[x][y].block].texture
-            texture1 = blocks[planet.map[x][y].background].texture
-            light = planet.map[x][y].light / 256
+            local x = math.floor(xi + player.x / 96) % planets[data.planet].w + 1
+            local y = math.floor(yi + player.y / 96) % planets[data.planet].h + 1
+            texture = blocks[planets[data.planet].map[x][y].block].texture
+            texture1 = blocks[planets[data.planet].map[x][y].background].texture
+            light = planets[data.planet].map[x][y].light / 256
             if texture1 ~= nil then
-                texture1 = texture1[funcs.select_background_img(planet.map, x, y, planet.h, planet.w)]
+                texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
 
                 love.graphics.setColor(0.85, 0.85, 0.85)
                 love.graphics.draw(texture1, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
@@ -91,22 +92,22 @@ function display.all(settings, planet)
             end
             if texture ~= nil then
 
-                if settings.shader == "light" then
+                if data.settings.shader == "light" then
                     love.graphics.setShader(shaders.light)
                     shaders.light:send("light", light)
 
-                    shaders.light:send("light_top", planet.map[x][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                    shaders.light:send("light_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][y].light / 256)
-                    shaders.light:send("light_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][y].light / 256)
-                    shaders.light:send("light_bottom", planet.map[x][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_top", planets[data.planet].map[x][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
+                    shaders.light:send("light_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][y].light / 256)
+                    shaders.light:send("light_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][y].light / 256)
+                    shaders.light:send("light_bottom", planets[data.planet].map[x][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
 
-                    shaders.light:send("light_top_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                    shaders.light:send("light_top_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y - 1, planet.h, planet.w)].light / 256)
-                    shaders.light:send("light_bottom_left", planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
-                    shaders.light:send("light_bottom_right", planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].light / 256)
+                    shaders.light:send("light_top_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
+                    shaders.light:send("light_top_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
+                    shaders.light:send("light_bottom_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
+                    shaders.light:send("light_bottom_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
                 end
                 
-                texture = texture[funcs.select_block_img(planet.map, x, y, planet.h, planet.w)]
+                texture = texture[funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
 
                 --love.graphics.setColor(light, light, light)
                 love.graphics.draw(texture, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
@@ -114,7 +115,7 @@ function display.all(settings, planet)
 
                 love.graphics.setShader()
 
-                --love.graphics.print(planet.map[x][y].pressure, font1, (xi) * 96 - player.x % 96, (yi) * 96 - player.y % 96)
+                --love.graphics.print(planets[data.planet].map[x][y].pressure, font1, (xi) * 96 - player.x % 96, (yi) * 96 - player.y % 96)
             end
         end
     end
@@ -123,7 +124,7 @@ function display.all(settings, planet)
     display.fps()
 
     love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)
-    love.graphics.print(planet.ticks .. ' ticks', font1, 40, 120)
+    love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
     love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
 
     local mx, my = love.mouse.getPosition()

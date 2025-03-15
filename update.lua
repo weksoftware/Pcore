@@ -1,6 +1,8 @@
 local funcs = require("funcs")
 local blocks = require("blocks")
 local data = require("data")
+local planets = require("planets")
+local keyboard = require("keyboard")
 
 local update_planet_timer = os.clock()
 
@@ -108,67 +110,70 @@ function update.light(planet)
 end
             
 
-function update.planet(planet)
+function update.planet()
 
-    --planet = update.liquid(planet)
+    --planets[data.planet] = update.liquid(planets[data.planet])
 
     if update_planet_timer + 0.05 < os.clock() then
-        local h = planet.h
-        local w = planet.w
+        local h = planets[data.planet].h
+        local w = planets[data.planet].w
 
         for x = 1, w do
             for y = 1, h do
 
-                if planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'powder' and (blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' or blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid') then
-                    local block1 = planet.map[x][y].block
-                    local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
-                    planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
-                    planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
-                    planet.map[x][y].block = block2
+                if planets[data.planet].map[x][y].tick < planets[data.planet].ticks and blocks[planets[data.planet].map[x][y].block].physics_type == 'powder' and (blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' or blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid') then
+                    local block1 = planets[data.planet].map[x][y].block
+                    local block2 = planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block
+                    planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block = block1
+                    planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].tick = planets[data.planet].ticks
+                    planets[data.planet].map[x][y].block = block2
 
-                elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' then
-                    local block1 = planet.map[x][y].block
-                    local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
-                    planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
-                    planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
-                    planet.map[x][y].block = block2
+                elseif planets[data.planet].map[x][y].tick < planets[data.planet].ticks and blocks[planets[data.planet].map[x][y].block].physics_type == 'liquid' and blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' then
+                    local block1 = planets[data.planet].map[x][y].block
+                    local block2 = planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block
+                    planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block = block1
+                    planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].tick = planets[data.planet].ticks
+                    planets[data.planet].map[x][y].block = block2
                 
-                elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and planet.map[x][y].pressure >= 0 then
+                elseif planets[data.planet].map[x][y].tick < planets[data.planet].ticks and blocks[planets[data.planet].map[x][y].block].physics_type == 'liquid' and planets[data.planet].map[x][y].pressure >= 0 then
                     local voids = {}
                     local voids_len = 0
-                    if planet.map[funcs.coordx(x - 1, h, w)][y].block == 'air' then
+                    if planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].block == 'air' then
                         table.insert(voids, {['x']=funcs.coordx(x - 1, h, w), ['y']=y})
                         voids_len = voids_len + 1
                     end
-                    if planet.map[funcs.coordx(x + 1, h, w)][y].block == 'air' then
+                    if planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].block == 'air' then
                         table.insert(voids, {['x']=funcs.coordx(x + 1, h, w), ['y']=y})
                         voids_len = voids_len + 1
                     end
-                    if planet.map[x][funcs.coordy(y - 1, h, w)].block == 'air' and planet.map[x][funcs.coordy(y + 1, h, w)].block ~= 'air' and planet.map[x][y].pressure >= 300 then
+                    if planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].block == 'air' and planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block ~= 'air' and planets[data.planet].map[x][y].pressure >= 300 then
                         table.insert(voids, {['x']=x, ['y']=funcs.coordy(y - 1, h, w)})
                         voids_len = voids_len + 1
                     end
 
                     if voids_len > 0 then
                         local coords = voids[math.random(1, voids_len)]
-                        local block1 = planet.map[x][y]
-                        local block2 = planet.map[coords.x][coords.y]
-                        planet.map[x][y] = block2
-                        planet.map[coords.x][coords.y] = block1
-                        planet.map[coords.x][coords.y].tick = planet.ticks
+                        local block1 = planets[data.planet].map[x][y]
+                        local block2 = planets[data.planet].map[coords.x][coords.y]
+                        planets[data.planet].map[x][y] = block2
+                        planets[data.planet].map[coords.x][coords.y] = block1
+                        planets[data.planet].map[coords.x][coords.y].tick = planets[data.planet].ticks
                     end
                 end
 
             end
         end
 
-        planet = update.light(planet)
+        planets[data.planet] = update.light(planets[data.planet])
 
-        planet.ticks = planet.ticks + 1
+        planets[data.planet].ticks = planets[data.planet].ticks + 1
         update_planet_timer = os.clock()
     end
+end
 
-    return planet
+function update.all()
+    keyboard.update()
+    update.planet()
 end
 
 return update
