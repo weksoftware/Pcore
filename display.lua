@@ -2,6 +2,7 @@ local blocks = require("blocks")
 local funcs = require("funcs")
 local player = require("player")
 local shaders = require("shaders")
+local data = require("data")
 
 local display = {}
 
@@ -25,7 +26,7 @@ function display.fps()
     love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
 end
 
-function display.chat(message)
+function display.chat()
     local start_y = 870 - player.chat_size * 48 - player.chat_scroll * 48
     for i = 1, player.chat_size do
         if player.chat[i].time + 5 >= os.clock() or player.chat_status == 'open' then
@@ -45,20 +46,20 @@ function display.chat(message)
 
         local w = font1:getWidth(' Введите сообщение... ')
 
-        if message ~= '' then
-            w = font1:getWidth(message .. '  ')
+        if data.message ~= '' then
+            w = font1:getWidth(data.message .. '  ')
         end
 
         love.graphics.setColor(0, 0, 0, 0.5)
         love.graphics.rectangle("fill", 0, 950, w, 48)
         love.graphics.setColor(1, 1, 1)
 
-        if message ~= '' then
+        if data.message ~= '' then
             local cursor = ''
             if os.time() % 2 == 1 then
                 cursor = '|'
             end
-            love.graphics.print(' ' .. message .. cursor, font1, 0, 950)
+            love.graphics.print(' ' .. data.message .. cursor, font1, 0, 950)
         else
             love.graphics.setColor(0.7, 0.7, 0.7)
             love.graphics.print(' Введите сообщение...', font1, 0, 950)
@@ -68,7 +69,7 @@ function display.chat(message)
 end
 
 
-function display.all(settings, planet, message)
+function display.all(settings, planet)
 
     love.graphics.draw(sky1, 0, 0, nil, 3)
 
@@ -118,7 +119,7 @@ function display.all(settings, planet, message)
         end
     end
 
-    display.chat(message)
+    display.chat()
     display.fps()
 
     love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)

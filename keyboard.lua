@@ -1,11 +1,19 @@
-local keyboard = {}
 local funcs = require("funcs")
 local multiplayer = require("multiplayer")
 local utf8 = require("utf8")
+local data = require("data")
+
+local keyboard = {}
 
 local zoom_timer = os.clock()
 local backspace_timer = os.clock()
 local chat_scroll_timer = os.clock()
+
+function love.textinput(text)
+    if data.player.chat_status == 'open' then
+        data.message = data.message .. text
+    end
+end
 
 function keyboard.update(player, planet, message)
 
@@ -50,7 +58,7 @@ function keyboard.update(player, planet, message)
     end
 
     if love.keyboard.isDown('return') and player.chat_status == 'open' then
-        if message ~= '' then
+        if data.message ~= '' then
 
             if settings.multiplayer == 'client' then
                 --local server_message = multiplayer.client(message)
@@ -59,19 +67,19 @@ function keyboard.update(player, planet, message)
                 multiplayer.client(message)
 
             else
-                message = ' ' .. settings.name .. ': ' .. message .. ' '
-                player = funcs.create_message(player, message, os.clock(), 255, 255, 255)
+                data.message = ' ' .. settings.name .. ': ' .. data.message .. ' '
+                player = funcs.create_message(player, data.message, os.clock(), 255, 255, 255)
             end
 
-            message = ''
+            data.message = ''
         end
         player.chat_status = 'close'
     end
 
     if love.keyboard.isDown('backspace') and player.chat_status == 'open' and backspace_timer + 0.2 < os.clock() then
-        local byteoffset = utf8.offset(message, -1)
+        local byteoffset = utf8.offset(data.message, -1)
         if byteoffset then
-            message = string.sub(message, 1, byteoffset - 1)
+            data.message = string.sub(data.message, 1, byteoffset - 1)
             backspace_timer = os.clock()
         end
     end
@@ -111,7 +119,7 @@ function keyboard.update(player, planet, message)
     end
     
 
-    return player, planet, message
+    return player, planet, data.message
 
 end
 

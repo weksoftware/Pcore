@@ -1,5 +1,6 @@
 local funcs = require("funcs")
 local blocks = require("blocks")
+local data = require("data")
 
 local update_planet_timer = os.clock()
 

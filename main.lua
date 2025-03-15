@@ -6,11 +6,10 @@ local update = require("update")
 local start = require("start")
 local keyboard = require("keyboard")
 local json = require("json")
+local data = require("data")
 
 settings = {shader = nil, name = 'mrwek', multiplayer = false}
 
-local message = ""
-local update_planet_timer = os.clock()
 local earth = map.generation('start')
 local update_chat_timer = os.clock()
 
@@ -29,17 +28,12 @@ function love.load(arg)
 
 end
 
-function love.textinput(text)
-    if player.chat_status == 'open' then
-        message = message .. text
-    end
-end
-
 function love.update(dt)
-    player, earth, message = keyboard.update(player, earth, message)
+    player, earth, data.message = keyboard.update(player, earth)
+    data.player = player
     earth = update.planet(earth)
 end
 
 function love.draw()
-    display.all(settings, earth, message)
+    display.all(settings, earth)
 end
