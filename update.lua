@@ -1,6 +1,8 @@
 local funcs = require("funcs")
 local blocks = require("blocks")
 
+local update_planet_timer = os.clock()
+
 local update = {}
 
 function update.liquid(planet)
@@ -109,58 +111,61 @@ function update.planet(planet)
 
     --planet = update.liquid(planet)
 
-    local h = planet.h
-    local w = planet.w
+    if update_planet_timer + 0.05 < os.clock() then
+        local h = planet.h
+        local w = planet.w
 
-    for x = 1, w do
-        for y = 1, h do
+        for x = 1, w do
+            for y = 1, h do
 
-            if planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'powder' and (blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' or blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid') then
-                local block1 = planet.map[x][y].block
-                local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
-                planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
-                planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
-                planet.map[x][y].block = block2
+                if planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'powder' and (blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' or blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid') then
+                    local block1 = planet.map[x][y].block
+                    local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
+                    planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
+                    planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
+                    planet.map[x][y].block = block2
 
-            elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' then
-                local block1 = planet.map[x][y].block
-                local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
-                planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
-                planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
-                planet.map[x][y].block = block2
-            
-            elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and planet.map[x][y].pressure >= 0 then
-                local voids = {}
-                local voids_len = 0
-                if planet.map[funcs.coordx(x - 1, h, w)][y].block == 'air' then
-                    table.insert(voids, {['x']=funcs.coordx(x - 1, h, w), ['y']=y})
-                    voids_len = voids_len + 1
-                end
-                if planet.map[funcs.coordx(x + 1, h, w)][y].block == 'air' then
-                    table.insert(voids, {['x']=funcs.coordx(x + 1, h, w), ['y']=y})
-                    voids_len = voids_len + 1
-                end
-                if planet.map[x][funcs.coordy(y - 1, h, w)].block == 'air' and planet.map[x][funcs.coordy(y + 1, h, w)].block ~= 'air' and planet.map[x][y].pressure >= 300 then
-                    table.insert(voids, {['x']=x, ['y']=funcs.coordy(y - 1, h, w)})
-                    voids_len = voids_len + 1
+                elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'air' then
+                    local block1 = planet.map[x][y].block
+                    local block2 = planet.map[x][funcs.coordy(y + 1, h, w)].block
+                    planet.map[x][funcs.coordy(y + 1, h, w)].block = block1
+                    planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
+                    planet.map[x][y].block = block2
+                
+                elseif planet.map[x][y].tick < planet.ticks and blocks[planet.map[x][y].block].physics_type == 'liquid' and planet.map[x][y].pressure >= 0 then
+                    local voids = {}
+                    local voids_len = 0
+                    if planet.map[funcs.coordx(x - 1, h, w)][y].block == 'air' then
+                        table.insert(voids, {['x']=funcs.coordx(x - 1, h, w), ['y']=y})
+                        voids_len = voids_len + 1
+                    end
+                    if planet.map[funcs.coordx(x + 1, h, w)][y].block == 'air' then
+                        table.insert(voids, {['x']=funcs.coordx(x + 1, h, w), ['y']=y})
+                        voids_len = voids_len + 1
+                    end
+                    if planet.map[x][funcs.coordy(y - 1, h, w)].block == 'air' and planet.map[x][funcs.coordy(y + 1, h, w)].block ~= 'air' and planet.map[x][y].pressure >= 300 then
+                        table.insert(voids, {['x']=x, ['y']=funcs.coordy(y - 1, h, w)})
+                        voids_len = voids_len + 1
+                    end
+
+                    if voids_len > 0 then
+                        local coords = voids[math.random(1, voids_len)]
+                        local block1 = planet.map[x][y]
+                        local block2 = planet.map[coords.x][coords.y]
+                        planet.map[x][y] = block2
+                        planet.map[coords.x][coords.y] = block1
+                        planet.map[coords.x][coords.y].tick = planet.ticks
+                    end
                 end
 
-                if voids_len > 0 then
-                    local coords = voids[math.random(1, voids_len)]
-                    local block1 = planet.map[x][y]
-                    local block2 = planet.map[coords.x][coords.y]
-                    planet.map[x][y] = block2
-                    planet.map[coords.x][coords.y] = block1
-                    planet.map[coords.x][coords.y].tick = planet.ticks
-                end
             end
-
         end
+
+        planet = update.light(planet)
+
+        planet.ticks = planet.ticks + 1
+        update_planet_timer = os.clock()
     end
-
-    planet = update.light(planet)
-
-    planet.ticks = planet.ticks + 1
 
     return planet
 end

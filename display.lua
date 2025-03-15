@@ -10,6 +10,21 @@ local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 local cursor = funcs.img_load("textures/cursor.png")
 
+local fps = 0
+local fps_display = 0
+local fps_timer = os.time()
+
+function display.fps()
+    if os.time() > fps_timer then
+        fps_display = fps
+        fps = 0
+        fps_timer = os.time()
+    else
+        fps = fps + 1
+    end
+    love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
+end
+
 function display.chat(message)
     local start_y = 870 - player.chat_size * 48 - player.chat_scroll * 48
     for i = 1, player.chat_size do
@@ -104,8 +119,8 @@ function display.all(settings, planet, message)
     end
 
     display.chat(message)
+    display.fps()
 
-    love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
     love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)
     love.graphics.print(planet.ticks .. ' ticks', font1, 40, 120)
     love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
