@@ -51,7 +51,7 @@ function map.generation(type)
                 noise3 = love.math.noise(x / 8 + 0.0001, seed)
                 noise = planet.h - (noise1 * 70 + noise2 * 8 + noise3 * 2 + 24)
                 if noise < y then
-                    if y - noise <= 2 and y > water_h and noise > water_h then 
+                    if y - noise <= 8 and y > water_h - 5 and noise > water_h - 5 then 
                         planet.map[x][y].block = 'sand'
                     else
                         planet.map[x][y].block = 'clay'

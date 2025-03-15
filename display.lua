@@ -69,12 +69,19 @@ function display.chat()
     end
 end
 
+function display.gui()
+    love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)
+    love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
+    love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
+
+    local mx, my = love.mouse.getPosition()
+    love.graphics.draw(cursor, mx - 14, my - 14, nil, 2)
+end 
+
 
 function display.all()
 
     love.graphics.draw(sky1, 0, 0, nil, 3)
-
-    love.graphics.draw(sputnik1, 200, 100, nil, 3)
 
     for xi = 0, math.ceil(20 / player.camera.zoom) do
         for yi = 0, math.ceil(12 / player.camera.zoom) do
@@ -85,50 +92,20 @@ function display.all()
             light = planets[data.planet].map[x][y].light / 256
             if texture1 ~= nil then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
-
                 love.graphics.setColor(0.85, 0.85, 0.85)
                 love.graphics.draw(texture1, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if texture ~= nil then
-
-                if data.settings.shader == "light" then
-                    love.graphics.setShader(shaders.light)
-                    shaders.light:send("light", light)
-
-                    shaders.light:send("light_top", planets[data.planet].map[x][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-                    shaders.light:send("light_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][y].light / 256)
-                    shaders.light:send("light_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][y].light / 256)
-                    shaders.light:send("light_bottom", planets[data.planet].map[x][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-
-                    shaders.light:send("light_top_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-                    shaders.light:send("light_top_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y - 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-                    shaders.light:send("light_bottom_left", planets[data.planet].map[funcs.coordx(x - 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-                    shaders.light:send("light_bottom_right", planets[data.planet].map[funcs.coordx(x + 1, planets[data.planet].h, planets[data.planet].w)][funcs.coordy(y + 1, planets[data.planet].h, planets[data.planet].w)].light / 256)
-                end
-                
                 texture = texture[funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
-
-                --love.graphics.setColor(light, light, light)
                 love.graphics.draw(texture, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
-                love.graphics.setColor(1, 1, 1)
-
-                love.graphics.setShader()
-
-                --love.graphics.print(planets[data.planet].map[x][y].pressure, font1, (xi) * 96 - player.x % 96, (yi) * 96 - player.y % 96)
             end
         end
     end
 
     display.chat()
     display.fps()
-
-    love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)
-    love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
-    love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
-
-    local mx, my = love.mouse.getPosition()
-    love.graphics.draw(cursor, mx - 14, my - 14, nil, 2)
+    display.gui()
 end
 
 return display
