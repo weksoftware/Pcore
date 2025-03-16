@@ -1,9 +1,12 @@
 local blocks = require("level_three/blocks")
 local funcs = require("level_two/funcs")
+local data = require("level_three/data")
+local planets = require("level_three/planets")
 
 local light = {}
 
-function light.update(planet)
+function light.update()
+    local planet = planets[data.planet]
     local h = planet.h
     local w = planet.w
 
@@ -49,7 +52,7 @@ function light.update(planet)
         end
     end
 
-    return planet
+    planets[data.planet] = planet
 end
 
 return light

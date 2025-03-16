@@ -1,4 +1,5 @@
 local player = require("level_three/player")
+local data = require("level_three/data")
 local chat = {}
 
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)

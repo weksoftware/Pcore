@@ -1,5 +1,6 @@
 local funcs = {}
 local blocks = require("level_three/blocks")
+local tilesets = require("level_three/tilesets")
 
 local combinations = { -- комбинации постановки блоков
     oooo = 9,
@@ -108,7 +109,7 @@ function funcs.select_block_img(planet, x, y, h, w)
 
     local air_combination = ''
 
-    if blocks[block].tileset_type == blocks.tileset1 then
+    if blocks[block].tileset_type == tilesets[1] then
 
         if planet[x][funcs.coordy(y-1, h, w)].block == 'air' then
             air_combination = air_combination .. 'a'
