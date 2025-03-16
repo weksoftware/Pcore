@@ -6,11 +6,11 @@ local planets = require("level_three/planets")
 
 local keyboard = {}
 
-local zoom_timer = os.clock()
-local backspace_timer = os.clock()
-local chat_scroll_timer = os.clock()
-local select_block_timer = os.clock()
-local debug_hide_timer = os.clock()
+local zoom_timer = love.timer.getTime()
+local backspace_timer = love.timer.getTime()
+local chat_scroll_timer = love.timer.getTime()
+local select_block_timer = love.timer.getTime()
+local debug_hide_timer = love.timer.getTime()
 
 local utf8 = require("utf8")
 
@@ -49,13 +49,13 @@ function keyboard.update()
     end
 
 
-    if love.keyboard.isDown('l') and zoom_timer + 0.1 <= os.clock() then
+    if love.keyboard.isDown('l') and zoom_timer + 0.1 <= love.timer.getTime() then
         player.camera.zoom = player.camera.zoom + 0.05
-        zoom_timer = os.clock()
+        zoom_timer = love.timer.getTime()
     end
-    if love.keyboard.isDown('k') and zoom_timer + 0.1 <= os.clock() and player.camera.zoom - 0.05 >= 0 then
+    if love.keyboard.isDown('k') and zoom_timer + 0.1 <= love.timer.getTime() and player.camera.zoom - 0.05 >= 0 then
         player.camera.zoom = player.camera.zoom - 0.05
-        zoom_timer = os.clock()
+        zoom_timer = love.timer.getTime()
     end
 
     if love.keyboard.isDown('c') and player.chat_status == 'close' then
@@ -81,22 +81,22 @@ function keyboard.update()
         player.chat_status = 'close'
     end
 
-    if love.keyboard.isDown('backspace') and player.chat_status == 'open' and backspace_timer + 0.2 < os.clock() then
+    if love.keyboard.isDown('backspace') and player.chat_status == 'open' and backspace_timer + 0.2 < love.timer.getTime() then
         local byteoffset = utf8.offset(data.message, -1)
         if byteoffset then
             data.message = string.sub(data.message, 1, byteoffset - 1)
-            backspace_timer = os.clock()
+            backspace_timer = love.timer.getTime()
         end
     end
 
-    if chat_scroll_timer + 0.1 < os.clock() and player.chat_status == 'open' and love.keyboard.isDown('up') then
+    if chat_scroll_timer + 0.2 < love.timer.getTime() and player.chat_status == 'open' and love.keyboard.isDown('up') then
         player.chat_scroll = player.chat_scroll - 1
-        chat_scroll_timer = os.clock()
+        chat_scroll_timer = love.timer.getTime()
     end
 
-    if chat_scroll_timer + 0.1 < os.clock() and player.chat_status == 'open' and love.keyboard.isDown('down') then
+    if chat_scroll_timer + 0.2 < love.timer.getTime() and player.chat_status == 'open' and love.keyboard.isDown('down') then
         player.chat_scroll = player.chat_scroll + 1
-        chat_scroll_timer = os.clock()
+        chat_scroll_timer = love.timer.getTime()
     end
 
     local mouse_x, mouse_y = love.mouse.getPosition()
@@ -128,7 +128,7 @@ function keyboard.update()
         planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "steel"
     end
     
-    if select_block_timer + 0.25 < love.timer.getTime() then
+    if select_block_timer + 0.2 < love.timer.getTime() then
         if love.keyboard.isDown('f') then
             if data.block > 1 then 
                 data.block = data.block - 1 
@@ -143,12 +143,12 @@ function keyboard.update()
                 data.block = 1
             end
         end
-        select_block_timer = os.clock()
+        select_block_timer = love.timer.getTime()
     end
 
-    if debug_hide_timer + 0.1 < os.clock() and love.keyboard.isDown('h') then
+    if debug_hide_timer + 0.2 < love.timer.getTime() and love.keyboard.isDown('h') then
         data.display_debug = not (data.display_debug == true)
-        debug_hide_timer = os.clock()
+        debug_hide_timer = love.timer.getTime()
     end
 
 end

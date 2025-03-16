@@ -12,7 +12,8 @@ function gui.display()
         love.graphics.print('x: ' .. math.floor(player.x / 96) .. ' / y: ' .. math.floor(player.y / 96), font1, 40, 80)
         love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
         love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
-        love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, 220)
+        love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, 200)
+        love.graphics.print('version ' .. data.version, font1, 40, 240)
     end
 
     local mx, my = love.mouse.getPosition()
