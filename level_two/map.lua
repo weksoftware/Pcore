@@ -11,30 +11,7 @@ function map.generation(type)
     planet.h = 128
     planet.ticks = 0
 
-    if type == "debug" then
-
-        for x = 1, planet.w do
-            planet.map[x] = {}
-            for y = 1, planet.h do
-                planet.map[x][y] = {}
-                if y < 40 then
-                    planet.map[x][y].block = "air"
-                elseif y < 55 then
-                    planet.map[x][y].block = "water"
-                elseif y < 57 then
-                    planet.map[x][y].block = "sand"
-                else
-                    planet.map[x][y].block = "clay"
-                end
-                if x == 1 then
-                    planet.map[x][y].block = "glass"
-                end
-                planet.map[x][y].tick = 0
-                planet.map[x][y].pressure = 0
-            end
-        end
-
-    elseif type == "debug1" then
+    if type == "debug1" then
         local water_h = 64
         local seed = 4.0
         for x = 1, planet.w do
