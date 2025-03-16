@@ -9,6 +9,7 @@ local keyboard = {}
 local zoom_timer = os.clock()
 local backspace_timer = os.clock()
 local chat_scroll_timer = os.clock()
+local select_block_timer = love.timer.getTime()
 
 local utf8 = require("utf8")
 
@@ -100,25 +101,48 @@ function keyboard.update()
     local mouse_x, mouse_y = love.mouse.getPosition()
 
     if love.mouse.isDown(1) then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "steel"
+        if data.coord_for_rect ~= nil then
+            local mouse_xf = math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1
+            local mouse_yf = math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1
+            local x = math.min(mouse_xf, data.coord_for_rect.x)
+            local y = math.min(mouse_yf, data.coord_for_rect.y)
+            local w = math.max(mouse_xf, data.coord_for_rect.x) - x
+            local h = math.max(mouse_yf, data.coord_for_rect.y) - y
+            for xi = 0, w do
+                for yi = 0, h do
+                    planets[data.planet].map[xi + x][yi + y].block = data.blocks_for_building[data.block]
+                end
+            end
+            data.coord_for_rect = nil
+        end
+                    
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = data.blocks_for_building[data.block]
     end
     if love.mouse.isDown(2) then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "steel"
+        local mouse_xf = math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1
+        local mouse_yf = math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1
+        data.coord_for_rect = {x = mouse_xf, y = mouse_yf}
     end
     if love.mouse.isDown(3) then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "air"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "steel"
     end
-    if love.keyboard.isDown('f') then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "cypress_cone"
-    end
-    if love.keyboard.isDown('g') then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = "glass"
-    end
-    if love.keyboard.isDown('o') then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "cypress_leaves"
-    end
-    if love.keyboard.isDown('h') then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "cypress_wood"
+    
+    if select_block_timer + 0.25 < love.timer.getTime() then
+        if love.keyboard.isDown('f') then
+            if data.block > 1 then 
+                data.block = data.block - 1 
+            else 
+                data.block = #data.blocks_for_building
+            end
+        end
+        if love.keyboard.isDown('g') then
+            if data.block < #data.blocks_for_building then 
+                data.block = data.block + 1 
+            else 
+                data.block = 1
+            end
+        end
+        select_block_timer = love.timer.getTime()
     end
 
 end
