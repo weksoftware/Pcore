@@ -1,5 +1,5 @@
-local blocks = require("blocks")
-local funcs = require("funcs")
+local blocks = require("level_three/blocks")
+local funcs = require("level_two/funcs")
 
 local light = {}
 

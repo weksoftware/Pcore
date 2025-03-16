@@ -1,8 +1,8 @@
-local funcs = require("funcs")
+local funcs = require("level_two/funcs")
 local multiplayer = require("multiplayer")
-local data = require("data")
-local player = require("player")
-local planets = require("planets")
+local data = require("level_three/data")
+local player = require("level_three/player")
+local planets = require("level_three/planets")
 
 local keyboard = {}
 

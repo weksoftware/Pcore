@@ -1,4 +1,4 @@
-local blocks = require("blocks")
+local blocks = require("level_three/blocks")
 
 local map = {}
 

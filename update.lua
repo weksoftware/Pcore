@@ -1,10 +1,10 @@
-local funcs = require("funcs")
-local blocks = require("blocks")
-local data = require("data")
-local planets = require("planets")
-local keyboard = require("keyboard")
-local light = require("light")
-local liquid = require("liquid")
+local funcs = require("level_two/funcs")
+local blocks = require("level_three/blocks")
+local data = require("level_three/data")
+local planets = require("level_three/planets")
+local keyboard = require("level_two/keyboard")
+local light = require("level_two/light")
+local liquid = require("level_two/liquid")
 
 local update_planet_timer = os.clock()
 

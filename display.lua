@@ -1,9 +1,9 @@
-local blocks = require("blocks")
-local funcs = require("funcs")
-local player = require("player")
-local shaders = require("shaders")
-local data = require("data")
-local planets = require("planets")
+local blocks = require("level_three/blocks")
+local funcs = require("level_two/funcs")
+local player = require("level_three/player")
+local shaders = require("level_three/shaders")
+local data = require("level_three/data")
+local planets = require("level_three/planets")
 
 local display = {}
 

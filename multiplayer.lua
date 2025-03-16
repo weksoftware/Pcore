@@ -1,7 +1,7 @@
 local multiplayer = {}
-local funcs = require("funcs")
-local player = require("player")
-local json = require("json")
+local funcs = require("level_two/funcs")
+local player = require("level_three/player")
+local json = require("level_three/json")
 
 local enet = require "enet"
 local host = nil
