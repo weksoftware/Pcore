@@ -6,7 +6,7 @@ local keyboard = require("level_two/keyboard")
 local light = require("level_two/light")
 local liquid = require("level_two/liquid")
 
-local update_planet_timer = os.clock()
+local update_planet_timer = love.timer.getTime()
 
 local update = {}
 
@@ -62,12 +62,12 @@ function update.blocks()
 end
       
 function update.planet()
-    if update_planet_timer + 0.05 < os.clock() then
+    if update_planet_timer + 0.05 < love.timer.getTime() then
         liquid.update()
         update.blocks()
         light.update()
         planets[data.planet].ticks = planets[data.planet].ticks + 1
-        update_planet_timer = os.clock()
+        update_planet_timer = love.timer.getTime()
     end
 end
 
