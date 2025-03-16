@@ -45,9 +45,9 @@ blocks.clay.shadow = 0.7
 blocks.clay.transparency = 0.95
 
 blocks.debug = {}
-blocks.debug.texture = "textures/blocks/debug2.png"
-blocks.debug.tileset_type = tilesets[3]
-blocks.debug.physics_type = "solid"
+blocks.debug.texture = "textures/blocks/debug1.png"
+blocks.debug.tileset_type = tilesets[1]
+blocks.debug.physics_type = "liquid"
 blocks.debug.shadow = 1
 blocks.debug.transparency = 1
 

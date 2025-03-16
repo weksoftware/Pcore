@@ -37,8 +37,8 @@ function funcs.block_img_load(path, tileset)
     local tiles = love.image.newImageData(path)
 
     for i = 1, 20 do
-        local cropped = love.image.newImageData(32, 32)
-        cropped:paste(tiles, 0, 0, tileset[i].x * 32, tileset[i].y * 32, 32, 32)
+        local cropped = love.image.newImageData(8, 8)
+        cropped:paste(tiles, 0, 0, tileset[i].x * 8, tileset[i].y * 8, 8, 8)
         local img = love.graphics.newImage(cropped)
         img:setFilter("nearest", "nearest")
         textures[i] = img

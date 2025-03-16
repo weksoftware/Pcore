@@ -39,12 +39,12 @@ function display.blocks()
             if texture1 ~= nil then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(0.85, 0.85, 0.85)
-                love.graphics.draw(texture1, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(texture1, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 12 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if texture ~= nil then
                 texture = texture[funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
-                love.graphics.draw(texture, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(texture, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 12 * player.camera.zoom)
             end
         end
     end
