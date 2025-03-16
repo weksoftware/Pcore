@@ -9,7 +9,8 @@ local keyboard = {}
 local zoom_timer = os.clock()
 local backspace_timer = os.clock()
 local chat_scroll_timer = os.clock()
-local select_block_timer = love.timer.getTime()
+local select_block_timer = os.clock()
+local debug_hide_timer = os.clock()
 
 local utf8 = require("utf8")
 
@@ -142,7 +143,12 @@ function keyboard.update()
                 data.block = 1
             end
         end
-        select_block_timer = love.timer.getTime()
+        select_block_timer = os.clock()
+    end
+
+    if debug_hide_timer + 0.1 < os.clock() and love.keyboard.isDown('h') then
+        data.display_debug = not (data.display_debug == true)
+        debug_hide_timer = os.clock()
     end
 
 end
