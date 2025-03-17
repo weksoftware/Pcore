@@ -40,7 +40,7 @@ blocks.oxygen.transparency = 1
 blocks.clay = {}
 blocks.clay.texture = "textures/blocks/clay1.png"
 blocks.clay.tileset_type = tilesets[3]
-blocks.clay.physics_type = "solid"
+blocks.clay.physics_type = "powder"
 blocks.clay.shadow = 0.7
 blocks.clay.transparency = 0.95
 
@@ -94,14 +94,14 @@ blocks.cypress_cone.transparency = 0.99
 blocks.dirt = {}
 blocks.dirt.texture = "textures/blocks/dirt1.png"
 blocks.dirt.tileset_type = tilesets[3]
-blocks.dirt.physics_type = "solid"
+blocks.dirt.physics_type = "powder"
 blocks.dirt.shadow = 0.5
 blocks.dirt.transparency = 0.95
 
 blocks.grass = {}
 blocks.grass.texture = "textures/blocks/grass1.png"
 blocks.grass.tileset_type = tilesets[1]
-blocks.grass.physics_type = "solid"
+blocks.grass.physics_type = "powder"
 blocks.grass.shadow = 0.7
 blocks.grass.transparency = 0.999
 
