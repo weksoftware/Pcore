@@ -54,7 +54,8 @@ function display.blocks()
 end
 
 function display.all()
-    love.graphics.draw(sky1, 0, 0, nil, 3)
+    local width, height = love.graphics.getDimensions()
+    love.graphics.draw(sky1, 0, 0, nil, width / 640, height / 360)
     display.blocks()
     chat.display()
     display.fps()
