@@ -71,6 +71,8 @@ blocks.cypress_wood.tileset_type = tilesets[1]
 blocks.cypress_wood.physics_type = "solid"
 blocks.cypress_wood.shadow = 1
 blocks.cypress_wood.transparency = 1
+blocks.cypress_wood.flammability = 0.95
+blocks.cypress_wood.combustion_product = 'water'
 
 blocks.cypress_leaves = {}
 blocks.cypress_leaves.texture = "textures/blocks/cypress_leaves1.png"
@@ -78,6 +80,7 @@ blocks.cypress_leaves.tileset_type = tilesets[1]
 blocks.cypress_leaves.physics_type = "solid"
 blocks.cypress_leaves.shadow = 0.8
 blocks.cypress_leaves.transparency = 0.99
+blocks.cypress_leaves.flammability = 0.9
 
 blocks.cypress_cone = {}
 blocks.cypress_cone.texture = "textures/blocks/cypress_cone1.png"

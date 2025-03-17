@@ -57,6 +57,29 @@ function update.blocks()
                 end
             end
 
+            if planets[data.planet].map[x][y].fire ~= nil then
+                if love.math.random() >= blocks[planets[data.planet].map[x][y].block].flammability then
+                    planets[data.planet].map[x][y].fire = nil
+                    if blocks[planets[data.planet].map[x][y].block].combustion_product ~= nil then
+                        planets[data.planet].map[x][y].block = blocks[planets[data.planet].map[x][y].block].combustion_product
+                    else
+                        planets[data.planet].map[x][y].block = 'air'
+                    end
+                end
+                if love.math.random() >= 0.4 then
+                    local orientation = love.math.random(4)
+                    if orientation == 1 and blocks[planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].block].flammability ~= nil then
+                        planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].fire = true
+                    elseif orientation == 2 and blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].flammability ~= nil then
+                        planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].fire = true
+                    elseif orientation == 3 and blocks[planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].block].flammability ~= nil then
+                        planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].fire = true
+                    elseif orientation == 4 and blocks[planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].block].flammability ~= nil then
+                        planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].fire = true
+                    end
+                end
+            end
+
         end
     end
 end
