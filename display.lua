@@ -29,23 +29,24 @@ function display.fps()
 end
 
 function display.blocks()
-    for xi = 0, math.ceil(20 / player.camera.zoom) do
-        for yi = 0, math.ceil(12 / player.camera.zoom) do
-            local x = math.floor(xi + player.x / 96) % planets[data.planet].w + 1
-            local y = math.floor(yi + player.y / 96) % planets[data.planet].h + 1
+    local width, height = love.graphics.getDimensions()
+    for xi = 0, math.ceil(width / 24 / player.camera.zoom) do
+        for yi = 0, math.ceil(height / 24 / player.camera.zoom) do
+            local x = math.floor(xi + player.x / 24) % planets[data.planet].w + 1
+            local y = math.floor(yi + player.y / 24) % planets[data.planet].h + 1
             texture = blocks[planets[data.planet].map[x][y].block].texture
             texture1 = blocks[planets[data.planet].map[x][y].background].texture
             light = planets[data.planet].map[x][y].light / 256
             if texture1 ~= nil then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(0.85 * light, 0.85 * light, 0.85 * light)
-                love.graphics.draw(texture1, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 12 * player.camera.zoom)
+                love.graphics.draw(texture1, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if texture ~= nil then
                 texture = texture[funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(light, light, light)
-                love.graphics.draw(texture, ((xi) * 96 - player.x % 96) * player.camera.zoom, ((yi) * 96 - player.y % 96) * player.camera.zoom, nil, 12 * player.camera.zoom)
+                love.graphics.draw(texture, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
         end

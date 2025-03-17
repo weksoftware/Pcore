@@ -27,7 +27,7 @@ function keyboard.update()
     end
 
     if love.keyboard.isDown('d') then
-        if player.x + 10 < planets[data.planet].w * 96 then
+        if player.x + 10 < planets[data.planet].w * 24 then
             player.x = player.x + math.floor(10 / player.camera.zoom)
         else
             player.x = 0
@@ -38,7 +38,7 @@ function keyboard.update()
         if player.x - 10 > 0 then
             player.x = player.x - math.floor(10 / player.camera.zoom)
         else
-            player.x = planets[data.planet].w * 96 - 10
+            player.x = planets[data.planet].w * 24 - 10
         end
     end
     if love.keyboard.isDown('s') then
@@ -103,8 +103,8 @@ function keyboard.update()
 
     if love.mouse.isDown(1) then
         if data.coord_for_rect ~= nil then
-            local mouse_xf = math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1
-            local mouse_yf = math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1
+            local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
+            local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
             local x = math.min(mouse_xf, data.coord_for_rect.x)
             local y = math.min(mouse_yf, data.coord_for_rect.y)
             local w = math.max(mouse_xf, data.coord_for_rect.x) - x
@@ -117,15 +117,15 @@ function keyboard.update()
             data.coord_for_rect = nil
         end
                     
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].block = data.blocks_for_building[data.block]
+        planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block = data.blocks_for_building[data.block]
     end
     if love.mouse.isDown(2) then
-        local mouse_xf = math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1
-        local mouse_yf = math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1
+        local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
+        local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
         data.coord_for_rect = {x = mouse_xf, y = mouse_yf}
     end
     if love.mouse.isDown(3) then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
+        planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
     end
     
     if select_block_timer + 0.2 < love.timer.getTime() then
