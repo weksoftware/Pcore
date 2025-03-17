@@ -30,8 +30,16 @@ function map.generation(type)
                 if noise < y then
                     if y - noise <= 8 and y > water_h - 5 and noise > water_h - 5 then 
                         planet.map[x][y].block = 'sand'
-                    else
+                    elseif y - noise <= 30 then
                         planet.map[x][y].block = 'clay'
+                        if y - noise <= 15 then
+                            planet.map[x][y].block = 'dirt'
+                        end
+                        if y - noise <= 5 then
+                            planet.map[x][y].block = 'grass'
+                        end
+                    else
+                        planet.map[x][y].block = 'stone'
                     end
                 else
                     if y <= water_h then

@@ -86,4 +86,25 @@ blocks.cypress_cone.physics_type = "powder"
 blocks.cypress_cone.shadow = 1
 blocks.cypress_cone.transparency = 0.99
 
+blocks.dirt = {}
+blocks.dirt.texture = "textures/blocks/dirt1.png"
+blocks.dirt.tileset_type = tilesets[3]
+blocks.dirt.physics_type = "solid"
+blocks.dirt.shadow = 0.5
+blocks.dirt.transparency = 0.95
+
+blocks.grass = {}
+blocks.grass.texture = "textures/blocks/grass1.png"
+blocks.grass.tileset_type = tilesets[1]
+blocks.grass.physics_type = "solid"
+blocks.grass.shadow = 0.7
+blocks.grass.transparency = 0.999
+
+blocks.stone = {}
+blocks.stone.texture = "textures/blocks/stone1.png"
+blocks.stone.tileset_type = tilesets[1]
+blocks.stone.physics_type = "solid"
+blocks.stone.shadow = 0.2
+blocks.stone.transparency = 0.92
+
 return blocks
