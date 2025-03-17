@@ -107,4 +107,11 @@ blocks.stone.physics_type = "solid"
 blocks.stone.shadow = 0.2
 blocks.stone.transparency = 0.92
 
+blocks.cable = {}
+blocks.cable.texture = "textures/blocks/cable1.png"
+blocks.cable.tileset_type = tilesets[1]
+blocks.cable.physics_type = "solid"
+blocks.cable.shadow = 0.8
+blocks.cable.transparency = 1
+
 return blocks

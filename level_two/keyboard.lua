@@ -125,7 +125,7 @@ function keyboard.update()
         data.coord_for_rect = {x = mouse_xf, y = mouse_yf}
     end
     if love.mouse.isDown(3) then
-        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = "steel"
+        planets[data.planet].map[math.floor((mouse_x / (96 * player.camera.zoom)) + (player.x / 96)) % planets[data.planet].w + 1][math.floor((mouse_y / (96 * player.camera.zoom)) + (player.y / 96)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
     end
     
     if select_block_timer + 0.2 < love.timer.getTime() then
