@@ -1,0 +1,12 @@
+- name: Build Windows packages
+  id: build-packages
+  uses: love-action/love-actions-windows@v1
+  with:
+    love-package: ./game.love
+    icon-path: ./icon.ico
+    rc-path:
+    product-name: love_app
+    app-id: ${{ secrets.APP_ID }}
+    product-website: 
+    installer-languages: 
+    output-folder: "./dist"
