@@ -62,7 +62,7 @@ function update.blocks()
 end
       
 function update.planet()
-    if update_planet_timer + 0.05 < love.timer.getTime() then
+    if update_planet_timer + 0.1 < love.timer.getTime() then
         liquid.update()
         update.blocks()
         light.update()

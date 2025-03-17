@@ -7,7 +7,7 @@ function map.generation(type)
 
     planet.map = {}
 
-    planet.w = 1024
+    planet.w = 2048
     planet.h = 128
     planet.ticks = 0
 
