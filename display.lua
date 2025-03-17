@@ -12,6 +12,7 @@ local display = {}
 local sky1 = love.graphics.newImage("textures/sky1.png")
 local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
+local fire1 = funcs.fire_img_load("textures/fire1.png")
 
 local fps = 0
 local fps_display = 0
@@ -34,9 +35,10 @@ function display.blocks()
         for yi = 0, math.ceil(height / 24 / player.camera.zoom) do
             local x = math.floor(xi + player.x / 24) % planets[data.planet].w + 1
             local y = math.floor(yi + player.y / 24) % planets[data.planet].h + 1
-            texture = blocks[planets[data.planet].map[x][y].block].texture
-            texture1 = blocks[planets[data.planet].map[x][y].background].texture
-            light = planets[data.planet].map[x][y].light / 256
+            local texture = blocks[planets[data.planet].map[x][y].block].texture
+            local fire = planets[data.planet].map[x][y].fire
+            local texture1 = blocks[planets[data.planet].map[x][y].background].texture
+            local light = planets[data.planet].map[x][y].light / 256
             if texture1 ~= nil then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(0.85 * light, 0.85 * light, 0.85 * light)
@@ -49,6 +51,10 @@ function display.blocks()
                 love.graphics.draw(texture, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
+            if fire ~= nil then
+                love.graphics.draw(fire1[math.floor((planets[data.planet].ticks/1)%4)], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+            end
+                
         end
     end
 end

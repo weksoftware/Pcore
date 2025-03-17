@@ -127,6 +127,9 @@ function keyboard.update()
     if love.mouse.isDown(3) then
         planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
     end
+    if love.keyboard.isDown('r') then
+        planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].fire = true
+    end
     
     if select_block_timer + 0.2 < love.timer.getTime() then
         if love.keyboard.isDown('f') then

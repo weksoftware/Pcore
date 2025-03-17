@@ -47,6 +47,21 @@ function funcs.block_img_load(path, tileset)
     return textures
 end
 
+function funcs.fire_img_load(path)
+    local textures = {}
+    local tiles = love.image.newImageData(path)
+
+    for i = 0, 3 do
+        local cropped = love.image.newImageData(8, 8)
+        cropped:paste(tiles, 0, 0, i * 8, 0, 8, 8)
+        local img = love.graphics.newImage(cropped)
+        img:setFilter("nearest", "nearest")
+        textures[i] = img
+    end
+
+    return textures
+end
+
 function funcs.blocks_imgs_load()
     for block, value in pairs(blocks) do
         if blocks[block].texture ~= nil then
