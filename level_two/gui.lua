@@ -14,6 +14,8 @@ function gui.display()
         love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
         love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, 200)
         love.graphics.print('version ' .. data.version, font1, 40, 240)
+        love.graphics.print('Спасибо Денису за поддержку очередной моей игры', font1, 40, 280)
+        love.graphics.print('и с днём рождения!', font1, 40, 320)
     end
 
     local mx, my = love.mouse.getPosition()

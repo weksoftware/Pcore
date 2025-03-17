@@ -26,7 +26,9 @@ function display.fps()
     else
         fps = fps + 1
     end
-    love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
+    if data.display_debug == true then
+        love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
+    end
 end
 
 function display.blocks()
