@@ -7,7 +7,7 @@ local planets = require("level_three/planets")
 
 function start.game()
 
-    love.window.setMode(800, 600, {vsync=0, resizable=true})
+    love.window.setMode(800, 600, {vsync=1, resizable=true})
     love.mouse.setVisible(false)
     love.window.setTitle("P core")
     love.window.setIcon(love.image.newImageData("textures/icon.png"))
