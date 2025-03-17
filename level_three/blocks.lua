@@ -50,6 +50,8 @@ blocks.debug.tileset_type = tilesets[1]
 blocks.debug.physics_type = "liquid"
 blocks.debug.shadow = 1
 blocks.debug.transparency = 1
+blocks.debug.flammability = 0.95
+blocks.debug.combustion_product = 'stone'
 
 blocks.glass = {}
 blocks.glass.texture = "textures/blocks/glass1.png"
