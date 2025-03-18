@@ -113,6 +113,7 @@ function keyboard.update()
             for xi = 0, w do
                 for yi = 0, h do
                     planets[data.planet].map[xi + x][yi + y].block = data.blocks_for_building[data.block]
+                    planets[data.planet].map[xi + x][yi + y].fire = nil
                 end
             end
             data.coord_for_rect = nil

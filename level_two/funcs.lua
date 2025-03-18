@@ -161,6 +161,14 @@ function funcs.select_block_img(planet, x, y, h, w)
 
 end
 
+function funcs.is_not_full_block(r)
+    if r ~= 20 and r ~= 19 and r ~= 18 and r ~= 17 then
+        return false
+    else
+        return true
+    end
+end
+
 function funcs.select_background_img(planet, x, y, h, w)
     local block = planet[x][y].background
     local combination = ''

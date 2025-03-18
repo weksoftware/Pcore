@@ -41,14 +41,14 @@ function display.blocks()
             local fire = planets[data.planet].map[x][y].fire
             local texture1 = blocks[planets[data.planet].map[x][y].background].texture
             local light = planets[data.planet].map[x][y].light / 256
-            if texture1 ~= nil then
+            if texture1 ~= nil and (blocks[planets[data.planet].map[x][y].block].background_display ~= nil or funcs.is_not_full_block(planets[data.planet].map[x][y].img_num) == true) then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(0.85 * light, 0.85 * light, 0.85 * light)
                 love.graphics.draw(texture1, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if texture ~= nil then
-                texture = texture[funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
+                texture = texture[planets[data.planet].map[x][y].img_num]
                 love.graphics.setColor(light, light, light)
                 love.graphics.draw(texture, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)

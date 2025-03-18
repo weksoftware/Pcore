@@ -17,7 +17,7 @@ function light.update()
         local light = 1
 
         for y = 1, h do
-            if planet.map[x][y].block ~= 'air' then
+            if true then
                 planet.map[x][y].light = light * 255 + 1
 
                 if blocks[planet.map[x][y].block].transparency <= 1 then

@@ -63,6 +63,7 @@ function map.generation(type)
                 planet.map[x][y].pressure = 0
                 planet.map[x][y].background = 'air'
                 planet.map[x][y].light = 256
+                planet.map[x][y].img_num = 1
 
                 if noise[x] < y then
                     if y - noise[x] <= 8 and y > water_h - 5 and noise[x] > water_h - 5 then 
@@ -77,6 +78,7 @@ function map.generation(type)
                         end
                     else
                         planet.map[x][y].block = 'stone'
+                        planet.map[x][y].background = 'stone'
                         if noise_methane > 0.65 and planet.h - y > 5 then
                             planet.map[x][y].block = 'methane'
                         end

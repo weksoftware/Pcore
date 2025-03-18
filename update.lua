@@ -16,6 +16,7 @@ function update.blocks()
 
     for x = 1, w do
         for y = 1, h do
+            planets[data.planet].map[x][y].img_num = funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)
             if planets[data.planet].map[x][y].fire ~= nil then
                 if love.math.random() >= 0.4 then
                     local orientation = love.math.random(4)
