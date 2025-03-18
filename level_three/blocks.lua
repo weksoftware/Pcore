@@ -143,4 +143,12 @@ blocks.methane.transparency = 1
 blocks.methane.flammability = 0.95
 blocks.methane.background_display = true
 
+blocks.solar_panel = {}
+blocks.solar_panel.texture = "textures/blocks/solar_panel1.png"
+blocks.solar_panel.tileset_type = tilesets[1]
+blocks.solar_panel.physics_type = "solid"
+blocks.solar_panel.shadow = 0.8
+blocks.solar_panel.transparency = 1
+blocks.solar_panel.multiblock = {w = 4, h = 1}
+
 return blocks
