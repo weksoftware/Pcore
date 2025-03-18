@@ -11,7 +11,7 @@ blocks.air.transparency = 1
 
 blocks.water = {}
 blocks.water.texture = "textures/blocks/water1.png"
-blocks.water.tileset_type = tilesets[3]
+blocks.water.tileset_type = tilesets[1]
 blocks.water.physics_type = "liquid"
 blocks.water.shadow = 0.8
 blocks.water.transparency = 0.95
@@ -32,14 +32,14 @@ blocks.steel.transparency = 0.99
 
 blocks.oxygen = {}
 blocks.oxygen.texture = "textures/blocks/oxygen1.png"
-blocks.oxygen.tileset_type = tilesets[3]
+blocks.oxygen.tileset_type = tilesets[1]
 blocks.oxygen.physics_type = "gas"
-blocks.oxygen.transparency = 1
+blocks.oxygen.shadow = 1
 blocks.oxygen.transparency = 1
 
 blocks.clay = {}
 blocks.clay.texture = "textures/blocks/clay1.png"
-blocks.clay.tileset_type = tilesets[3]
+blocks.clay.tileset_type = tilesets[1]
 blocks.clay.physics_type = "powder"
 blocks.clay.shadow = 0.7
 blocks.clay.transparency = 0.95
@@ -83,6 +83,7 @@ blocks.cypress_leaves.physics_type = "solid"
 blocks.cypress_leaves.shadow = 0.8
 blocks.cypress_leaves.transparency = 0.99
 blocks.cypress_leaves.flammability = 0.9
+blocks.cypress_leaves.combustion_product = 'carbon_dioxide'
 
 blocks.cypress_cone = {}
 blocks.cypress_cone.texture = "textures/blocks/cypress_cone1.png"
@@ -93,7 +94,7 @@ blocks.cypress_cone.transparency = 0.99
 
 blocks.dirt = {}
 blocks.dirt.texture = "textures/blocks/dirt1.png"
-blocks.dirt.tileset_type = tilesets[3]
+blocks.dirt.tileset_type = tilesets[1]
 blocks.dirt.physics_type = "powder"
 blocks.dirt.shadow = 0.5
 blocks.dirt.transparency = 0.95
@@ -118,5 +119,20 @@ blocks.cable.tileset_type = tilesets[1]
 blocks.cable.physics_type = "solid"
 blocks.cable.shadow = 0.8
 blocks.cable.transparency = 1
+
+blocks.carbon_dioxide = {}
+blocks.carbon_dioxide.texture = "textures/blocks/carbon_dioxide1.png"
+blocks.carbon_dioxide.tileset_type = tilesets[1]
+blocks.carbon_dioxide.physics_type = "liquid"
+blocks.carbon_dioxide.shadow = 0.95
+blocks.carbon_dioxide.transparency = 1
+
+blocks.methane = {}
+blocks.methane.texture = "textures/blocks/methane1.png"
+blocks.methane.tileset_type = tilesets[1]
+blocks.methane.physics_type = "gas"
+blocks.methane.shadow = 1
+blocks.methane.transparency = 1
+blocks.methane.flammability = 0.95
 
 return blocks
