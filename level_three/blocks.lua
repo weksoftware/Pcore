@@ -145,10 +145,16 @@ blocks.methane.background_display = true
 
 blocks.solar_panel = {}
 blocks.solar_panel.texture = "textures/blocks/solar_panel1.png"
-blocks.solar_panel.tileset_type = tilesets[1]
 blocks.solar_panel.physics_type = "solid"
 blocks.solar_panel.shadow = 0.8
 blocks.solar_panel.transparency = 1
 blocks.solar_panel.multiblock = {w = 4, h = 1}
+
+blocks.electric_furnance = {}
+blocks.electric_furnance.texture = "textures/blocks/electric_furnance1.png"
+blocks.electric_furnance.physics_type = "solid"
+blocks.electric_furnance.shadow = 0.8
+blocks.electric_furnance.transparency = 1
+blocks.electric_furnance.multiblock = {w = 3, h = 2}
 
 return blocks

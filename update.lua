@@ -10,13 +10,16 @@ local update_planet_timer = love.timer.getTime()
 
 local update = {}
 
-function update.multiblock(block, x, y)
+function update.multiblock(block, x, y, planet_w, planet_h)
     local exists = true
     local w = blocks[block].multiblock.w
     local h = blocks[block].multiblock.h
     for xi = 0, w - 1 do
         for yi = 0, h - 1 do
             if block ~= planets[data.planet].map[x + xi][y + yi].block then
+                exists = false
+            end
+            if yi == h - 1 and planets[data.planet].map[x + xi][funcs.coordy(y + yi + 1, planet_h, planet_w)].block == 'air' then
                 exists = false
             end
         end
@@ -39,11 +42,11 @@ function update.blocks()
             if blocks[planets[data.planet].map[x][y].block].multiblock == nil then
                 planets[data.planet].map[x][y].img_num = funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)
             else
-                planets[data.planet].map[x][y].img_num = planets[data.planet].map[x][y].multiblock.num
                 local multiblock = planets[data.planet].map[x][y].multiblock
+                planets[data.planet].map[x][y].img_num = multiblock.y_in_block * 8 + multiblock.x_in_block + 1
                 local block = planets[data.planet].map[x][y].block
-                if multiblock.num == 1 then
-                    update.multiblock(planets[data.planet].map[x][y].block, x, y)
+                if multiblock.x_in_block == 0 and multiblock.y_in_block == 0 then
+                    update.multiblock(planets[data.planet].map[x][y].block, x, y, w, h)
                 elseif planets[data.planet].map[multiblock.x][multiblock.y].block ~= planets[data.planet].map[x][y].block then
                     for xi = 0, blocks[block].multiblock.w - 1 do
                         for yi = 0, blocks[block].multiblock.h - 1 do

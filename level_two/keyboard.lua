@@ -128,7 +128,7 @@ function keyboard.update()
                 for xi = 0, w - 1 do
                     for yi = 0, h - 1 do
                         planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].block = data.blocks_for_building[data.block]
-                        planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].multiblock = {num = yi * w + xi + 1, x = mouse_xf, y = mouse_yf}
+                        planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].multiblock = {x_in_block = xi, y_in_block = yi, x = mouse_xf, y = mouse_yf}
                     end
                 end
             end
