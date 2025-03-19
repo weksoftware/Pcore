@@ -14,23 +14,6 @@ local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 local fire1 = funcs.fire_img_load("textures/fire1.png")
 
-local fps = 0
-local fps_display = 0
-local fps_timer = os.time()
-
-function display.fps()
-    if os.time() > fps_timer then
-        fps_display = fps
-        fps = 0
-        fps_timer = os.time()
-    else
-        fps = fps + 1
-    end
-    if data.display_debug == true then
-        love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
-    end
-end
-
 function display.blocks()
     local width, height = love.graphics.getDimensions()
     for xi = 0, math.ceil(width / 24 / player.camera.zoom) do
@@ -56,7 +39,6 @@ function display.blocks()
             if fire ~= nil then
                 love.graphics.draw(fire1[math.floor((planets[data.planet].ticks/1)%4)], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
             end
-                
         end
     end
 end
@@ -66,7 +48,6 @@ function display.all()
     love.graphics.draw(sky1, 0, 0, nil, width / 640, height / 360)
     display.blocks()
     chat.display()
-    display.fps()
     gui.display()
 end
 

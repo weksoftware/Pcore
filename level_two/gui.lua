@@ -7,8 +7,24 @@ local gui = {}
 local cursor = funcs.img_load("textures/cursor.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 
+local fps = 0
+local fps_display = 0
+local fps_timer = os.time()
+
+function gui.fps()
+    if os.time() > fps_timer then
+        fps_display = fps
+        fps = 0
+        fps_timer = os.time()
+    else
+        fps = fps + 1
+    end
+    love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
+end
+
 function gui.display()
     if data.display_debug == true then
+        gui.fps()
         love.graphics.print('x: ' .. math.floor(player.x / 24) .. ' / y: ' .. math.floor(player.y / 24), font1, 40, 80)
         love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
         love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
