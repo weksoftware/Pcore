@@ -21,34 +21,35 @@ function love.textinput(text)
     end
 end
 
+function love.keypressed(key)
+    if key == 'd' then
+        player.moving.right = true
+    elseif key == 'a' then
+        player.moving.left = true
+    elseif key == 'w' then
+        player.moving.up = true
+    elseif key == 's' then
+        player.moving.down = true
+    end
+end
+
+function love.keyreleased(key)
+    if key == 'd' then
+        player.moving.right = false
+    elseif key == 'a' then
+        player.moving.left = false
+    elseif key == 'w' then
+        player.moving.up = false
+    elseif key == 's' then
+        player.moving.down = false
+    end
+end
+
 function keyboard.update()
 
     if player.chat_status == 'close' and love.keyboard.isDown('q') then
         os.exit()
     end
-
-    if love.keyboard.isDown('d') then
-        if player.x + 10 < planets[data.planet].w * 24 then
-            player.x = player.x + math.floor(10 / player.camera.zoom)
-        else
-            player.x = 0
-        end
-    end
-
-    if love.keyboard.isDown('a') then
-        if player.x - 10 > 0 then
-            player.x = player.x - math.floor(10 / player.camera.zoom)
-        else
-            player.x = planets[data.planet].w * 24 - 10
-        end
-    end
-    if love.keyboard.isDown('s') then
-        player.y = player.y + math.floor(10 / player.camera.zoom)
-    end
-    if love.keyboard.isDown('w') then
-        player.y = player.y - math.floor(10 / player.camera.zoom)
-    end
-
 
     if love.keyboard.isDown('l') and zoom_timer + 0.1 <= love.timer.getTime() then
         player.camera.zoom = player.camera.zoom + 0.05
