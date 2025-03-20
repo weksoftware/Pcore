@@ -1,12 +1,14 @@
 local funcs = require("level_two/funcs")
 local blocks = require("level_three/blocks")
 local data = require("level_three/data")
+local player = require("level_three/player")
 local planets = require("level_three/planets")
 local keyboard = require("level_two/keyboard")
 local light = require("level_two/light")
 local physics = require("level_two/physics")
 
 local update_planet_timer = love.timer.getTime()
+local update_player_moving_timer = love.timer.getTime()
 
 local update = {}
 
@@ -92,7 +94,26 @@ function update.planet()
     end
 end
 
+function update.player()
+    if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then
+        if player.moving.right == true then
+            player.x = player.x + 15
+        end
+        if player.moving.left == true then
+            player.x = player.x - 15
+        end
+        if player.moving.up == true then
+            player.y = player.y - 15
+        end
+        if player.moving.down == true then
+            player.y = player.y + 15
+        end
+        update_player_moving_timer = love.timer.getTime()
+    end
+end
+
 function update.all()
+    update.player()
     keyboard.update()
     update.planet()
 end
