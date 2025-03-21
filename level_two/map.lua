@@ -55,6 +55,7 @@ function map.generation(type)
                 local noise1 = love.math.noise(x / 256 + 0.0001, seed)
                 local noise2 = love.math.noise(x / 32 + 0.0001, seed)
                 local noise3 = love.math.noise(x / 8 + 0.0001, seed)
+                local noise_methane = love.math.noise(x / 58 + 0.0001, y / 58 + 0.0001, seed)
                 noise[x] = planet.h - (noise1 * 70 + noise2 * 8 + noise3 * 2 + 24)
 
                 planet.map[x][y] = {}
@@ -62,6 +63,7 @@ function map.generation(type)
                 planet.map[x][y].pressure = 0
                 planet.map[x][y].background = 'air'
                 planet.map[x][y].light = 256
+                planet.map[x][y].img_num = 1
 
                 if noise[x] < y then
                     if y - noise[x] <= 8 and y > water_h - 5 and noise[x] > water_h - 5 then 
@@ -76,6 +78,10 @@ function map.generation(type)
                         end
                     else
                         planet.map[x][y].block = 'stone'
+                        planet.map[x][y].background = 'stone'
+                        if noise_methane > 0.65 and planet.h - y > 5 then
+                            planet.map[x][y].block = 'methane'
+                        end
                     end
                 else
                     if y <= water_h then

@@ -8,13 +8,15 @@ blocks.air.tileset_type = nil
 blocks.air.physics_type = "air"
 blocks.air.shadow = 1
 blocks.air.transparency = 1
+blocks.air.background_display = true
 
 blocks.water = {}
 blocks.water.texture = "textures/blocks/water1.png"
-blocks.water.tileset_type = tilesets[3]
+blocks.water.tileset_type = tilesets[1]
 blocks.water.physics_type = "liquid"
 blocks.water.shadow = 0.8
 blocks.water.transparency = 0.95
+blocks.water.background_display = true
 
 blocks.sand = {}
 blocks.sand.texture = "textures/blocks/sand1.png"
@@ -32,14 +34,15 @@ blocks.steel.transparency = 0.99
 
 blocks.oxygen = {}
 blocks.oxygen.texture = "textures/blocks/oxygen1.png"
-blocks.oxygen.tileset_type = tilesets[3]
+blocks.oxygen.tileset_type = tilesets[1]
 blocks.oxygen.physics_type = "gas"
+blocks.oxygen.shadow = 1
 blocks.oxygen.transparency = 1
-blocks.oxygen.transparency = 1
+blocks.oxygen.background_display = true
 
 blocks.clay = {}
 blocks.clay.texture = "textures/blocks/clay1.png"
-blocks.clay.tileset_type = tilesets[3]
+blocks.clay.tileset_type = tilesets[1]
 blocks.clay.physics_type = "powder"
 blocks.clay.shadow = 0.7
 blocks.clay.transparency = 0.95
@@ -59,6 +62,7 @@ blocks.glass.tileset_type = tilesets[1]
 blocks.glass.physics_type = "solid"
 blocks.glass.shadow = 0.85
 blocks.glass.transparency = 0.99
+blocks.glass.background_display = true
 
 blocks.lamp = {}
 blocks.lamp.texture = "textures/blocks/lamp1.png"
@@ -83,6 +87,7 @@ blocks.cypress_leaves.physics_type = "solid"
 blocks.cypress_leaves.shadow = 0.8
 blocks.cypress_leaves.transparency = 0.99
 blocks.cypress_leaves.flammability = 0.9
+blocks.cypress_leaves.combustion_product = 'carbon_dioxide'
 
 blocks.cypress_cone = {}
 blocks.cypress_cone.texture = "textures/blocks/cypress_cone1.png"
@@ -90,10 +95,11 @@ blocks.cypress_cone.tileset_type = tilesets[2]
 blocks.cypress_cone.physics_type = "powder"
 blocks.cypress_cone.shadow = 1
 blocks.cypress_cone.transparency = 0.99
+blocks.cypress_cone.background_display = true
 
 blocks.dirt = {}
 blocks.dirt.texture = "textures/blocks/dirt1.png"
-blocks.dirt.tileset_type = tilesets[3]
+blocks.dirt.tileset_type = tilesets[1]
 blocks.dirt.physics_type = "powder"
 blocks.dirt.shadow = 0.5
 blocks.dirt.transparency = 0.95
@@ -118,5 +124,37 @@ blocks.cable.tileset_type = tilesets[1]
 blocks.cable.physics_type = "solid"
 blocks.cable.shadow = 0.8
 blocks.cable.transparency = 1
+blocks.cable.background_display = true
+
+blocks.carbon_dioxide = {}
+blocks.carbon_dioxide.texture = "textures/blocks/carbon_dioxide1.png"
+blocks.carbon_dioxide.tileset_type = tilesets[1]
+blocks.carbon_dioxide.physics_type = "liquid"
+blocks.carbon_dioxide.shadow = 0.95
+blocks.carbon_dioxide.transparency = 1
+blocks.carbon_dioxide.background_display = true
+
+blocks.methane = {}
+blocks.methane.texture = "textures/blocks/methane1.png"
+blocks.methane.tileset_type = tilesets[1]
+blocks.methane.physics_type = "gas"
+blocks.methane.shadow = 1
+blocks.methane.transparency = 1
+blocks.methane.flammability = 0.95
+blocks.methane.background_display = true
+
+blocks.solar_panel = {}
+blocks.solar_panel.texture = "textures/blocks/solar_panel1.png"
+blocks.solar_panel.physics_type = "solid"
+blocks.solar_panel.shadow = 0.8
+blocks.solar_panel.transparency = 1
+blocks.solar_panel.multiblock = {w = 4, h = 1}
+
+blocks.electric_furnance = {}
+blocks.electric_furnance.texture = "textures/blocks/electric_furnance1.png"
+blocks.electric_furnance.physics_type = "solid"
+blocks.electric_furnance.shadow = 0.8
+blocks.electric_furnance.transparency = 1
+blocks.electric_furnance.multiblock = {w = 3, h = 2}
 
 return blocks

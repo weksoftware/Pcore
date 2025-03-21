@@ -47,6 +47,25 @@ function funcs.block_img_load(path, tileset)
     return textures
 end
 
+function funcs.multiblock_img_load(path, tileset)
+    local textures = {}
+    local tiles = love.image.newImageData(path)
+    local i = 1
+
+    for y = 0, 7 do
+        for x = 0,7 do
+            local cropped = love.image.newImageData(8, 8)
+            cropped:paste(tiles, 0, 0, x * 8, y * 8, 8, 8)
+            local img = love.graphics.newImage(cropped)
+            img:setFilter("nearest", "nearest")
+            textures[i] = img
+            i = i + 1
+        end
+    end
+
+    return textures
+end
+
 function funcs.fire_img_load(path)
     local textures = {}
     local tiles = love.image.newImageData(path)
@@ -65,7 +84,11 @@ end
 function funcs.blocks_imgs_load()
     for block, value in pairs(blocks) do
         if blocks[block].texture ~= nil then
-            blocks[block].texture = funcs.block_img_load(blocks[block].texture, blocks[block].tileset_type)
+            if blocks[block].multiblock == nil then
+                blocks[block].texture = funcs.block_img_load(blocks[block].texture, blocks[block].tileset_type)
+            else
+                blocks[block].texture = funcs.multiblock_img_load(blocks[block].texture, blocks[block].tileset_type)
+            end
         end
     end
 end
@@ -159,6 +182,14 @@ function funcs.select_block_img(planet, x, y, h, w)
         return combinations[combination]
     end
 
+end
+
+function funcs.is_not_full_block(r)
+    if r ~= 20 and r ~= 19 and r ~= 18 and r ~= 17 then
+        return false
+    else
+        return true
+    end
 end
 
 function funcs.select_background_img(planet, x, y, h, w)
