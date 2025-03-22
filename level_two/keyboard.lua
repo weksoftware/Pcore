@@ -42,14 +42,12 @@ function love.keyreleased(key)
         player.moving.up = false
     elseif key == 's' then
         player.moving.down = false
+    elseif key == 'q' then
+        data.scene = "menu"
     end
 end
 
 function keyboard.update()
-
-    if player.chat_status == 'close' and love.keyboard.isDown('q') then
-        os.exit()
-    end
 
     if love.keyboard.isDown('l') and zoom_timer + 0.1 <= love.timer.getTime() then
         player.camera.zoom = player.camera.zoom + 0.05
