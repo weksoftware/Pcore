@@ -1,0 +1,155 @@
+name: Pcore CI
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  VERSION_STRING: 0.0.0.3
+  BUNDLE_ID: com.weksoftware.pcore
+  PRODUCT_NAME: Pcore
+  PRODUCT_DESCRIPTION: Space sandbox game
+  BUILD_ASSETS_FOLDER: ./.github/build
+  GAME_ASSETS_FOLDER: ./textures
+  CORE_LOVE_PACKAGE_PATH: ./core.love
+  CORE_LOVE_ARTIFACT_NAME: core_love_package
+
+jobs:
+  build-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Build core love package
+        uses: love-actions/love-actions-core@v1
+        with:
+          package-path: ${{ env.CORE_LOVE_PACKAGE_PATH }}
+      - name: Upload core love package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.CORE_LOVE_ARTIFACT_NAME }}
+          path: ${{ env.CORE_LOVE_PACKAGE_PATH }}
+
+  build-windows:
+    runs-on: windows-latest
+    needs: [build-core]
+    env:
+      env:
+      OUTPUT_FOLDER: ./build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Download core love package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.CORE_LOVE_ARTIFACT_NAME }}
+      - name: Update Windows template
+        shell: python3 {0}
+        run: |
+          version_string = "${{ env.VERSION_STRING }}"
+          file_version = (f"{version_string.replace('.', ',')},0")
+          with open("${{ env.BUILD_ASSETS_FOLDER }}/windows/rc.rc", "r+", encoding="utf8") as file:
+            data = file.read()
+            data = data\
+              .replace("@Version", version_string)\
+              .replace("@FileVersion", file_version)
+            file.seek(0)
+            file.truncate()
+            file.write(data)
+      - name: Build Windows packages
+        id: build-packages
+        uses: love-actions/love-actions-windows@v1
+        with:
+          love-package: ${{ env.CORE_LOVE_PACKAGE_PATH }}
+          icon-path: ${{ env.GAME_ASSETS_FOLDER }}/icon.ico
+          rc-path: ${{ env.BUILD_ASSETS_FOLDER }}/windows/rc.rc
+          product-name: ${{ env.PRODUCT_NAME }}
+          app-id: ${{ secrets.APP_ID }}
+          project-website: https://weks.dev
+          installer-languages: English.isl Russian.isl Italian.isl Portuguese.isl German.isl Finnish.isl
+          output-folder: ${{ env.OUTPUT_FOLDER }}
+      - name: Rename artifacts
+        run: |
+          mv ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_x64.zip ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_x64.zip
+          mv ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_installer.exe ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_installer.exe
+      - name: Upload 64-bit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_x64
+          path: ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_x64.zip
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_installer
+          path: ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_installer.exe
+
+
+  build-linux:
+    runs-on: ubuntu-latest
+    needs: [build-core]
+    env:
+      OUTPUT_FOLDER: ./build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Download core love package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.CORE_LOVE_ARTIFACT_NAME }}
+      - name: Build Linux packages
+        id: build-packages
+        uses: love-actions/love-actions-linux@v2
+        with:
+          app-name: ${{ env.PRODUCT_NAME }}
+          bundle-id: ${{ env.BUNDLE_ID }}
+          description: ${{ env.PRODUCT_DESCRIPTION }}
+          version-string: ${{ env.VERSION_STRING }}
+          icon-path: ${{ env.GAME_ASSETS_FOLDER }}/icon.png
+          love-package: ${{ env.CORE_LOVE_PACKAGE_PATH }}
+          product-name: ${{ env.PRODUCT_NAME }}
+          output-folder: ${{ env.OUTPUT_FOLDER }}
+      - name: Rename artifacts
+        run: |
+          mv ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}.AppImage ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_appimage.AppImage
+          mv ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}.deb ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_debian.deb
+      - name: Upload AppImage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_appimage
+          path: ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_appimage.AppImage
+      - name: Upload Debian artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_debian
+          path: ${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_debian.deb
+  
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-linux]
+    env:
+      OUTPUT_FOLDER: ./build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.OUTPUT_FOLDER }}
+      - name: Display structure of downloaded files
+        run: ls -R ${{ env.OUTPUT_FOLDER }}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body_path: ${{ github.workspace }}/CHANGELOG.md
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          files: |
+            ${{ github.workspace }}/${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_x64/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_x64.zip
+            ${{ github.workspace }}/${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_installer/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_win_installer.exe
+            ${{ github.workspace }}/${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_appimage/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_appimage.AppImage
+            ${{ github.workspace }}/${{ env.OUTPUT_FOLDER }}/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_debian/${{ env.PRODUCT_NAME }}_${{ env.VERSION_STRING }}_linux_debian.deb
