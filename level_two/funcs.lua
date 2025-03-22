@@ -1,6 +1,9 @@
-local funcs = {}
 local blocks = require("level_three/blocks")
 local tilesets = require("level_three/tilesets")
+local data = require("level_three/data")
+local json = require("level_three/json")
+
+local funcs = {}
 
 local combinations = { -- комбинации постановки блоков
     oooo = 9,
@@ -237,6 +240,15 @@ function funcs.create_message(player, text, time, rc, gc, bc)
     player.chat_size = player.chat_size + 1
     player.chat[player.chat_size] = message
     return player
+end
+
+function funcs.update_settings()
+    love.window.setVSync(data.settings.vsync)
+    data.display_debug = data.settings.display_debug
+end
+
+function funcs.save_settings()
+    love.filesystem.write("settings.json", json.encode(data.settings))
 end
 
 return funcs

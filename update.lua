@@ -6,11 +6,24 @@ local planets = require("level_three/planets")
 local keyboard = require("level_two/keyboard")
 local light = require("level_two/light")
 local physics = require("level_two/physics")
+local fonts = require("level_three/fonts")
+local gui = require("level_two/gui")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
 
 local update = {}
+
+function love.resize(w, h)
+    fonts.load_fonts()
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        data.mouse.x = x
+        data.mouse.y = y
+    end
+end
 
 function update.multiblock(block, x, y, planet_w, planet_h)
     local exists = true
@@ -115,6 +128,7 @@ end
 function update.all()
     update.player()
     keyboard.update()
+    gui.update()
     update.planet()
 end
 
