@@ -328,7 +328,7 @@ scenes.new_world.windows = {
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
             {type="text", x="center", y="center", size=12, text="Назад", r=255, g=255, b=255, a=255}
         },
-        button=gui_funcs.new_world
+        button=gui_funcs.play
     }
 }
 
