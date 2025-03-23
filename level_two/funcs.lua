@@ -2,6 +2,7 @@ local blocks = require("level_three/blocks")
 local tilesets = require("level_three/tilesets")
 local data = require("level_three/data")
 local json = require("level_three/json")
+local planets = require("level_three/planets")
 
 local funcs = {}
 
@@ -249,6 +250,15 @@ end
 
 function funcs.save_settings()
     love.filesystem.write("settings.json", json.encode(data.settings))
+end
+
+function funcs.save_map(name)
+    love.filesystem.write("saves/" .. name, json.encode(planets))
+end
+
+function funcs.load_map(name)
+    local save = json.decode(love.filesystem.read("saves/" .. name))
+    planets.pcore = save.pcore
 end
 
 return funcs

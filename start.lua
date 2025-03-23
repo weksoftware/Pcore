@@ -16,6 +16,10 @@ function start.game()
         funcs.save_settings()
     end
 
+    if love.filesystem.getInfo("saves") == nil then
+        love.filesystem.createDirectory("saves")
+    end
+
     love.window.setMode(800, 600, {vsync=data.settings.vsync, resizable=true})
     fonts.load_fonts()
     love.mouse.setVisible(false)

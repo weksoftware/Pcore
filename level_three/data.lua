@@ -9,7 +9,11 @@ data.display_debug = true
 data.coord_for_rect = nil
 data.version = "0.0.0.3"
 data.scene = "menu"
+data.scene_scroll = {x=0, y=0}
 data.mouse = {x=nil, y=nil}
 data.settings = {vsync=false, display_debug=true}
+data.world_select = nil
+data.text_input = ""
+data.map_name = "1.json"
 
 return data
