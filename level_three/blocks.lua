@@ -80,6 +80,15 @@ blocks.cypress_wood.transparency = 1
 blocks.cypress_wood.flammability = 0.95
 blocks.cypress_wood.combustion_product = 'water'
 
+blocks.cypress_planks = {}
+blocks.cypress_planks.texture = "textures/blocks/cypress_planks1.png"
+blocks.cypress_planks.tileset_type = tilesets[1]
+blocks.cypress_planks.physics_type = "solid"
+blocks.cypress_planks.shadow = 0.85
+blocks.cypress_planks.transparency = 0.98
+blocks.cypress_planks.flammability = 0.95
+blocks.cypress_planks.combustion_product = 'carbon_dioxide'
+
 blocks.cypress_leaves = {}
 blocks.cypress_leaves.texture = "textures/blocks/cypress_leaves1.png"
 blocks.cypress_leaves.tileset_type = tilesets[1]

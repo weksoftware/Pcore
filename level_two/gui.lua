@@ -45,6 +45,11 @@ function gui.display()
         local window_y = window.y * h_percento
         local window_w = window.w * w_percento
         local window_h = window.h * h_percento
+
+        if window.scroll ~= nil then
+            window_y = window_y - data.scene_scroll.y * 30
+        end
+
         for key_obj, object in ipairs(window.objects) do
             local object_x, object_y = nil
 
@@ -80,11 +85,21 @@ function gui.update()
     local width, height = love.graphics.getDimensions()
     local w_percento = width / 100
     local h_percento = height / 100
+    
+    if scenes[data.scene].func ~= nil then
+        scenes[data.scene] = scenes[data.scene].func(scenes[data.scene])
+    end
+
     for key_win, window in ipairs(scenes[data.scene].windows) do
         local window_x = window.x * w_percento
         local window_y = window.y * h_percento
         local window_w = window.w * w_percento
         local window_h = window.h * h_percento
+
+        if window.scroll ~= nil then
+            window_y = window_y - data.scene_scroll.y * 20
+        end
+
         local mouse = false
         if data.mouse.x ~= nil and data.mouse.x > window_x and data.mouse.x < window_x + window_w and data.mouse.y > window_y and data.mouse.y < window_y + window_h then
             mouse = true

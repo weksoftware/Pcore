@@ -19,17 +19,32 @@ function love.textinput(text)
     if player.chat_status == 'open' and love.system.getOS() ~= "Linux" then
         data.message = data.message .. text
     end
+    data.text_input = data.text_input .. text
 end
 
 function love.keypressed(key)
-    if key == 'd' then
-        player.moving.right = true
-    elseif key == 'a' then
-        player.moving.left = true
-    elseif key == 'w' then
-        player.moving.up = true
-    elseif key == 's' then
-        player.moving.down = true
+    if data.scene == 'game' then
+        if key == 'd' then
+            player.moving.right = true
+        elseif key == 'a' then
+            player.moving.left = true
+        elseif key == 'w' then
+            player.moving.up = true
+        elseif key == 's' then
+            player.moving.down = true
+        elseif key == 'z' then
+            funcs.save_map(data.map_name)
+        elseif key == 'x' then
+            funcs.load_map()
+        elseif key == 'q' then
+            data.scene = "menu"
+        elseif key == 'l' and zoom_timer + 0.1 <= love.timer.getTime() then
+            player.camera.zoom = player.camera.zoom + 0.05
+            zoom_timer = love.timer.getTime()
+        elseif key == 'k' and zoom_timer + 0.1 <= love.timer.getTime() and player.camera.zoom - 0.05 >= 0 then
+            player.camera.zoom = player.camera.zoom - 0.05
+            zoom_timer = love.timer.getTime()
+        end
     end
 end
 
@@ -42,21 +57,17 @@ function love.keyreleased(key)
         player.moving.up = false
     elseif key == 's' then
         player.moving.down = false
-    elseif key == 'q' then
-        data.scene = "menu"
     end
 end
 
-function keyboard.update()
+function love.wheelmoved(x, y)
+    local width, height = love.graphics.getDimensions()
+    local scroll_factor_y = height / 1080
+    data.scene_scroll.y = data.scene_scroll.y + y * scroll_factor_y
+    data.scene_scroll.x = data.scene_scroll.x + x
+end
 
-    if love.keyboard.isDown('l') and zoom_timer + 0.1 <= love.timer.getTime() then
-        player.camera.zoom = player.camera.zoom + 0.05
-        zoom_timer = love.timer.getTime()
-    end
-    if love.keyboard.isDown('k') and zoom_timer + 0.1 <= love.timer.getTime() and player.camera.zoom - 0.05 >= 0 then
-        player.camera.zoom = player.camera.zoom - 0.05
-        zoom_timer = love.timer.getTime()
-    end
+function keyboard.update()
 
     if love.keyboard.isDown('c') and player.chat_status == 'close' then
         player.chat_status = 'open'
@@ -81,10 +92,10 @@ function keyboard.update()
         player.chat_status = 'close'
     end
 
-    if love.keyboard.isDown('backspace') and player.chat_status == 'open' and backspace_timer + 0.2 < love.timer.getTime() then
-        local byteoffset = utf8.offset(data.message, -1)
+    if love.keyboard.isDown('backspace') and backspace_timer + 0.2 < love.timer.getTime() then
+        local byteoffset = utf8.offset(data.text_input, -1)
         if byteoffset then
-            data.message = string.sub(data.message, 1, byteoffset - 1)
+            data.text_input = string.sub(data.text_input, 1, byteoffset - 1)
             backspace_timer = love.timer.getTime()
         end
     end
