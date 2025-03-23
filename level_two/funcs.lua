@@ -261,4 +261,8 @@ function funcs.load_map(name)
     planets.pcore = save.pcore
 end
 
+function funcs.reverse_sort(num1, num2)
+    return num1 > num2
+end
+
 return funcs

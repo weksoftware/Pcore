@@ -35,6 +35,8 @@ function gui_funcs.saves_update(scene)
             objects={{type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=255},{type="text", x="center", y="center", size=12, text="Сохранения", r=255, g=255, b=255, a=255}}
         }
 
+        local windows = {}
+
         for i, file in ipairs(files) do
             local file_info = love.filesystem.getInfo("saves/" .. file)
             local window = {
@@ -52,7 +54,18 @@ function gui_funcs.saves_update(scene)
                 id=file,
                 button=gui_funcs.world_select
             }
-            scene.windows[#scene.windows + 1] = window
+            windows[file_info.modtime] = window
+        end
+
+        local keys = {}
+
+        for i, window in pairs(windows) do keys[#keys+1] = i end
+
+        table.sort(keys, funcs.reverse_sort)
+
+        for i, key in pairs(keys) do
+            scene.windows[#scene.windows + 1] = windows[key] 
+            scene.windows[#scene.windows].y = 10 + (i - 1) * 15
         end
 
         scene.windows[#scene.windows + 1] = load_world
