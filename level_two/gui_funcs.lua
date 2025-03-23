@@ -54,7 +54,7 @@ function gui_funcs.saves_update(scene)
             }
             scene.windows[#scene.windows + 1] = window
         end
-        
+
         scene.windows[#scene.windows + 1] = load_world
         scene.windows[#scene.windows + 1] = delete_world
         scene.windows[#scene.windows + 1] = create_world
@@ -115,6 +115,7 @@ end
 function gui_funcs.world_select(window, mouse)
     if mouse == true then
         data.world_select = window.id
+        data.map_name = window.id
     end
     if data.world_select == window.id then
         window.objects[1].r = 20
