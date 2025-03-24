@@ -85,29 +85,42 @@ function gui.update()
     local width, height = love.graphics.getDimensions()
     local w_percento = width / 100
     local h_percento = height / 100
+
+    local scene = data.scene
     
     if scenes[data.scene].func ~= nil then
         scenes[data.scene] = scenes[data.scene].func(scenes[data.scene])
     end
 
-    for key_win, window in ipairs(scenes[data.scene].windows) do
-        local window_x = window.x * w_percento
-        local window_y = window.y * h_percento
-        local window_w = window.w * w_percento
-        local window_h = window.h * h_percento
+    local keys = {}
 
-        if window.scroll ~= nil then
-            window_y = window_y - data.scene_scroll.y * 20
-        end
+    for key, window in ipairs(scenes[data.scene].windows) do
+        keys[#keys + 1] = key
+    end
 
-        local mouse = false
-        if data.mouse.x ~= nil and data.mouse.x > window_x and data.mouse.x < window_x + window_w and data.mouse.y > window_y and data.mouse.y < window_y + window_h then
-            mouse = true
-            data.mouse.x = nil
-            data.mouse.y = nil
-        end
-        if window.button ~= nil then
-            window = window.button(window, mouse)
+    table.sort(keys, funcs.reverse_sort)
+
+    for i, key in ipairs(keys) do
+        if data.scene == scene then
+            local window = scenes[data.scene].windows[key]
+            local window_x = window.x * w_percento
+            local window_y = window.y * h_percento
+            local window_w = window.w * w_percento
+            local window_h = window.h * h_percento
+
+            if window.scroll ~= nil then
+                window_y = window_y - data.scene_scroll.y * 30
+            end
+
+            local mouse = false
+            if data.mouse.x ~= nil and data.mouse.x > window_x and data.mouse.x < window_x + window_w and data.mouse.y > window_y and data.mouse.y < window_y + window_h then
+                mouse = true
+                data.mouse.x = nil
+                data.mouse.y = nil
+            end
+            if window.button ~= nil then
+                window = window.button(window, mouse)
+            end
         end
     end
 end
