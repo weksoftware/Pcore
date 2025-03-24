@@ -34,7 +34,7 @@ function start.game()
 
     player.camera.y = 30
 
-    planets[data.planet] = map.generation("debug1")
+    planets[data.planet] = map.generation("pcore")
 
 end
 
