@@ -244,8 +244,8 @@ function funcs.create_message(player, text, time, rc, gc, bc)
 end
 
 function funcs.update_settings()
-    love.window.setVSync(data.settings.vsync)
-    data.display_debug = data.settings.display_debug
+    love.window.setVSync(data.settings_values.vsync[data.settings.vsync])
+    data.display_debug = data.settings_values.display_debug[data.settings.display_debug]
 end
 
 function funcs.save_settings()

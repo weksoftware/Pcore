@@ -66,7 +66,8 @@ scenes.menu.windows = {
         objects={
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
             {type="text", x=1, y=0, size=10, text="v0.0.0.3 by weksoftware | github.com/weksoftware/Pcore", r=255, g=255, b=255, a=255}
-        }
+        },
+        button=gui_funcs.update_version
     }
 }
 
@@ -149,6 +150,18 @@ scenes.settings.windows = {
             {type="text", x="center", y="center", size=8, text="display_debug", r=255, g=255, b=255, a=255}
         },
         id="display_debug",
+        button=gui_funcs.settings_update
+    },
+    {
+        x=0,
+        y=30,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
+            {type="text", x="center", y="center", size=8, text="language", r=255, g=255, b=255, a=255}
+        },
+        id="language",
         button=gui_funcs.settings_update
     },
     {
