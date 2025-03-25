@@ -9,7 +9,7 @@ local chat = require("level_two/chat")
 
 local display = {}
 
-local sky1 = love.graphics.newImage("textures/sky1.png")
+local sky1 = love.graphics.newImage("textures/mars.png")
 local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 local fire1 = funcs.fire_img_load("textures/fire1.png")

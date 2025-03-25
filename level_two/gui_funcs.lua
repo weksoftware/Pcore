@@ -116,11 +116,15 @@ end
 
 function gui_funcs.settings_update(window, mouse)
     if mouse == true then
-        data.settings[window.id] = not data.settings[window.id]
+        if data.settings[window.id] < #data.settings_values[window.id] then
+            data.settings[window.id] = data.settings[window.id] + 1
+        else
+            data.settings[window.id] = 1
+        end
         funcs.update_settings()
         funcs.save_settings()
     else
-        window.objects[2].text = window.id .. ': ' .. tostring(data.settings[window.id])
+        window.objects[2].text = window.id .. ': ' .. tostring(data.settings_values[window.id][data.settings[window.id]])
     end
     return window
 end
@@ -176,11 +180,16 @@ end
 
 function gui_funcs.world_create(window, mouse)
     if mouse == true then
-        planets[data.planet] = map.generation("debug1")
+        planets[data.planet] = map.generation("mars")
         funcs.save_map(data.text_input .. ".json")
         data.map_name = data.text_input .. ".json"
         gui_funcs.play(window, mouse)
     end
+    return window
+end
+
+function gui_funcs.update_version(window, mouse)
+    window.objects[2].text = "v" .. data.version .. " by weksoftware | github.com/weksoftware/Pcore"
     return window
 end
 

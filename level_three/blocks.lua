@@ -124,7 +124,7 @@ blocks.stone = {}
 blocks.stone.texture = "textures/blocks/stone1.png"
 blocks.stone.tileset_type = tilesets[1]
 blocks.stone.physics_type = "solid"
-blocks.stone.shadow = 0.2
+blocks.stone.shadow = 0.5
 blocks.stone.transparency = 0.92
 
 blocks.cable = {}
@@ -165,5 +165,40 @@ blocks.electric_furnance.physics_type = "solid"
 blocks.electric_furnance.shadow = 0.8
 blocks.electric_furnance.transparency = 1
 blocks.electric_furnance.multiblock = {w = 3, h = 2}
+
+blocks.martian_regolith = {}
+blocks.martian_regolith.texture = "textures/blocks/martian_regolith1.png"
+blocks.martian_regolith.tileset_type = tilesets[1]
+blocks.martian_regolith.physics_type = "powder"
+blocks.martian_regolith.shadow = 0.8
+blocks.martian_regolith.transparency = 0.98
+
+blocks.martian_dense_regolith = {}
+blocks.martian_dense_regolith.texture = "textures/blocks/martian_dense_regolith1.png"
+blocks.martian_dense_regolith.tileset_type = tilesets[1]
+blocks.martian_dense_regolith.physics_type = "powder"
+blocks.martian_dense_regolith.shadow = 0.7
+blocks.martian_dense_regolith.transparency = 0.97
+
+blocks.martian_stone = {}
+blocks.martian_stone.texture = "textures/blocks/martian_stone1.png"
+blocks.martian_stone.tileset_type = tilesets[1]
+blocks.martian_stone.physics_type = "solid"
+blocks.martian_stone.shadow = 0.7
+blocks.martian_stone.transparency = 0.95
+
+blocks.ice = {}
+blocks.ice.texture = "textures/blocks/ice1.png"
+blocks.ice.tileset_type = tilesets[1]
+blocks.ice.physics_type = "powder"
+blocks.ice.shadow = 0.8
+blocks.ice.transparency = 0.98
+
+blocks.meteorite = {}
+blocks.meteorite.texture = "textures/blocks/meteorite1.png"
+blocks.meteorite.tileset_type = tilesets[1]
+blocks.meteorite.physics_type = "solid"
+blocks.meteorite.shadow = 0.7
+blocks.meteorite.transparency = 0.95
 
 return blocks
