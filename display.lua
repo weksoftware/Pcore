@@ -9,7 +9,10 @@ local chat = require("level_two/chat")
 
 local display = {}
 
-local sky1 = love.graphics.newImage("textures/mars.png")
+local skies = {
+    pcore=funcs.img_load("textures/skies/pcore.png"), 
+    mars=funcs.img_load("textures/skies/mars.png")
+}
 local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 local fire1 = funcs.fire_img_load("textures/fire1.png")
@@ -45,7 +48,7 @@ end
 
 function display.all()
     local width, height = love.graphics.getDimensions()
-    love.graphics.draw(sky1, 0, 0, nil, width / 640, height / 360)
+    love.graphics.draw(skies[data.planet], 0, 0, nil, width / 640, height / 360)
     display.blocks()
     chat.display()
     gui.display()

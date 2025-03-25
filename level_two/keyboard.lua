@@ -38,12 +38,10 @@ function love.keypressed(key)
             funcs.load_map()
         elseif key == 'q' then
             data.scene = "menu"
-        elseif key == 'l' and zoom_timer + 0.1 <= love.timer.getTime() then
-            player.camera.zoom = player.camera.zoom + 0.05
-            zoom_timer = love.timer.getTime()
-        elseif key == 'k' and zoom_timer + 0.1 <= love.timer.getTime() and player.camera.zoom - 0.05 >= 0 then
-            player.camera.zoom = player.camera.zoom - 0.05
-            zoom_timer = love.timer.getTime()
+        elseif key == 'l' then
+            data.planet = 'mars'
+        elseif key == 'k' then
+            data.planet = 'pcore'
         end
     end
 end

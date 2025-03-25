@@ -261,6 +261,7 @@ end
 function funcs.load_map(name)
     local save = json.decode(love.filesystem.read("saves/" .. name))
     planets.pcore = save.pcore
+    planets.mars = save.mars
 end
 
 function funcs.reverse_sort(num1, num2)

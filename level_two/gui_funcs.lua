@@ -180,7 +180,8 @@ end
 
 function gui_funcs.world_create(window, mouse)
     if mouse == true then
-        planets[data.planet] = map.generation("mars")
+        planets["pcore"] = map.generation("pcore")
+        planets["mars"] = map.generation("mars")
         funcs.save_map(data.text_input .. ".json")
         data.map_name = data.text_input .. ".json"
         gui_funcs.play(window, mouse)

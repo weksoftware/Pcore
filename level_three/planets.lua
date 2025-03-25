@@ -1,5 +1,5 @@
 local planets = {}
 
-planets = {pcore={}}
+planets = {pcore={}, mars={}}
 
 return planets
