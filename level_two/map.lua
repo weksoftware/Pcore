@@ -38,7 +38,7 @@ function map.gen_crater(x, y, noise, planet)
 
     for xf = -20, 20 do
         if x + xf > 1 and x + xf < planet.w then
-            local f = 7 - (xf/8)^2
+            local f = 15 - (xf/6)^2
             for yf = 1, planet.h do
                 if yf < noise[x + xf] + f then
                     planet.map[x + xf][yf].block = 'air'
