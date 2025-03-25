@@ -3,6 +3,7 @@ local tilesets = require("level_three/tilesets")
 local data = require("level_three/data")
 local json = require("level_three/json")
 local planets = require("level_three/planets")
+local player = require("level_three/player")
 
 local funcs = {}
 
@@ -246,6 +247,7 @@ end
 function funcs.update_settings()
     love.window.setVSync(data.settings_values.vsync[data.settings.vsync])
     data.display_debug = data.settings_values.display_debug[data.settings.display_debug]
+    player.camera.zoom = data.settings_values.zoom[data.settings.zoom]
 end
 
 function funcs.save_settings()
