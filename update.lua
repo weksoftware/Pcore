@@ -11,6 +11,7 @@ local gui = require("level_two/gui")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
+local autosave_timer = love.timer.getTime()
 
 local update = {}
 
@@ -133,11 +134,31 @@ function update.player()
     end
 end
 
+function update.autosave()
+    local autosave_settings = data.settings_values.autosave[data.settings.autosave]
+    if data.scene == 'game' and autosave_settings ~= false and autosave_settings ~= 'exit' then
+        local time_autosave = 0
+        if autosave_settings == '5min' then
+            time_autosave = 300
+        elseif autosave_settings == '10min' then
+            time_autosave = 600
+        else
+            time_autosave = 1800
+        end
+        if autosave_timer + time_autosave < love.timer.getTime() then
+            funcs.save_map(data.map_name)
+            funcs.create_message(player, "Карта автоматически сохранена!", 4, 0, 255, 80)
+            autosave_timer = love.timer.getTime()
+        end
+    end
+end
+
 function update.all()
     update.player()
     keyboard.update()
     gui.update()
     update.planet()
+    update.autosave()
 end
 
 return update

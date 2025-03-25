@@ -178,6 +178,18 @@ scenes.settings.windows = {
     },
     {
         x=0,
+        y=50,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
+            {type="text", x="center", y="center", size=8, text="autosave", r=255, g=255, b=255, a=255}
+        },
+        id="autosave",
+        button=gui_funcs.settings_update
+    },
+    {
+        x=0,
         y=90,
         w=100,
         h=10,

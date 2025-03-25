@@ -37,6 +37,9 @@ function love.keypressed(key)
         elseif key == 'x' then
             funcs.load_map()
         elseif key == 'q' then
+            if data.settings_values.autosave[data.settings.autosave] ~= false then
+                funcs.save_map(data.map_name)
+            end 
             data.scene = "menu"
         elseif key == 'l' then
             data.planet = 'mars'
