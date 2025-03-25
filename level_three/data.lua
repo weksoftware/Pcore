@@ -11,8 +11,8 @@ data.version = "0.0.1.0"
 data.scene = "menu"
 data.scene_scroll = {x=0, y=0}
 data.mouse = {x=nil, y=nil}
-data.settings = {vsync=1, display_debug=1, language=1}
-data.settings_values = {vsync={true, false}, display_debug={true, false}, language={'ru', 'en'}}
+data.settings = {vsync=1, display_debug=1, language=1, zoom=4}
+data.settings_values = {vsync={true, false}, display_debug={true, false}, language={'ru', 'en'}, zoom={0.5, 0.75, 1, 1.5, 2, 3}}
 data.world_select = nil
 data.text_input = ""
 data.map_name = "1.json"

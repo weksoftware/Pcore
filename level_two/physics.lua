@@ -9,9 +9,11 @@ function physics.update()
     local planet = planets[data.planet]
     local h = planet.h
     local w = planet.w
+    local subtick_h = h / 10 --Высота, которую игра будет обрабатывать за один сабтик
+    local start_h = h - subtick_h * planet.subtick --Высота, с которой начинается обновление
 
     for x = 1, w do
-        for y = h, 1, -1 do
+        for y = start_h, start_h - subtick_h + 1, -1 do
             if planet.map[x][y].tick < planet.ticks then
                 if blocks[planet.map[x][y].block].physics_type == 'liquid' then
                     if planet.map[x][funcs.coordy(y + 1, h, w)].block == 'air' then

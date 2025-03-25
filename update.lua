@@ -49,11 +49,14 @@ function update.multiblock(block, x, y, planet_w, planet_h)
 end
 
 function update.blocks()
-    local h = planets[data.planet].h
-    local w = planets[data.planet].w
+    local planet = planets[data.planet]
+    local h = planet.h
+    local w = planet.w
+    local subtick_h = h / 10 --Высота, которую игра будет обрабатывать за один сабтик
+    local start_h = h - subtick_h * planet.subtick --Высота, с которой начинается обновление
 
     for x = 1, w do
-        for y = 1, h do
+        for y = start_h, start_h - subtick_h + 1, -1 do
             if blocks[planets[data.planet].map[x][y].block].multiblock == nil then
                 planets[data.planet].map[x][y].img_num = funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)
             else
@@ -92,18 +95,23 @@ function update.blocks()
                     end
                 end
             end
-
         end
     end
 end
       
 function update.planet()
-    if update_planet_timer + 0.1 < love.timer.getTime() then
+    if update_planet_timer + 0.01 < love.timer.getTime() then
         physics.update()
         update.blocks()
-        light.update()
-        planets[data.planet].ticks = planets[data.planet].ticks + 1
+
+        planets[data.planet].subtick = planets[data.planet].subtick + 1
         update_planet_timer = love.timer.getTime()
+
+        if planets[data.planet].subtick == 10 then
+            light.update()
+            planets[data.planet].subtick = 0
+            planets[data.planet].ticks = planets[data.planet].ticks + 1
+        end
     end
 end
 
