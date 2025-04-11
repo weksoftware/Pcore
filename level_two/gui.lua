@@ -4,6 +4,7 @@ local planets = require("level_three/planets")
 local scenes = require("level_two/scenes")
 local funcs = require("level_two/funcs")
 local fonts = require("level_three/fonts")
+local sprites = require("level_three/sprites")
 
 local gui = {}
 
@@ -15,6 +16,7 @@ local fps_display = 0
 local fps_timer = os.time()
 
 function gui.fps()
+    local width, height = love.graphics.getDimensions()
     if os.time() > fps_timer then
         fps_display = fps
         fps = 0
@@ -22,7 +24,7 @@ function gui.fps()
     else
         fps = fps + 1
     end
-    love.graphics.print('FPS ' .. fps_display, font1, 40, 40)
+    love.graphics.print('FPS ' .. fps_display, fonts.list[10], width - width / 8, 10)
 end
 
 function gui.display()
@@ -32,12 +34,12 @@ function gui.display()
 
     if data.display_debug == true then
         gui.fps()
-        love.graphics.print('x: ' .. math.floor(player.x / 24) .. ' / y: ' .. math.floor(player.y / 24), font1, 40, 80)
-        love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, 120)
-        love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, 160)
-        love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, 200)
-        love.graphics.print('version ' .. data.version, font1, 40, 240)
-        love.graphics.print('scene: ' .. data.scene, font1, 40, 280)
+        love.graphics.print('x: ' .. math.floor(player.x / 24) .. ' / y: ' .. math.floor(player.y / 24), font1, 40, height - 80)
+        love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, height - 120)
+        love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, height - 160)
+        love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, height - 200)
+        love.graphics.print('version ' .. data.version, font1, 40, height - 240)
+        love.graphics.print('scene: ' .. data.scene, font1, 40, height - 280)
     end
 
     for key_win, window in ipairs(scenes[data.scene].windows) do
@@ -53,26 +55,41 @@ function gui.display()
         for key_obj, object in ipairs(window.objects) do
             local object_x, object_y = nil
 
-            if object.type == "rect" then
-                object_x = window_x + window_w / 100 * object.x
-                object_y = window_y + window_h / 100 * object.y
-                love.graphics.setColor(object.r / 255, object.g / 255, object.b / 255, object.a / 255)
-                love.graphics.rectangle("fill", object_x, object_y, window_w / 100 * object.w, window_h / 100 * object.h)
-                love.graphics.setColor(1, 1, 1)
-            elseif object.type == "text" then
-                if object.x ~= "center" then
+            if object.not_display == nil then
+                if object.type == "rect" then
                     object_x = window_x + window_w / 100 * object.x
-                else
-                    object_x = window_x + window_w / 100 * 50 - fonts.list[object.size]:getWidth(object.text) / 2
-                end
-                if object.y ~= "center" then
                     object_y = window_y + window_h / 100 * object.y
-                else
-                    object_y = window_y + window_h / 100 * 50 - fonts.list[object.size]:getHeight(object.text) / 2
+                    love.graphics.setColor(object.r / 255, object.g / 255, object.b / 255, object.a / 255)
+                    love.graphics.rectangle("fill", object_x, object_y, window_w / 100 * object.w, window_h / 100 * object.h)
+                    love.graphics.setColor(1, 1, 1)
+                elseif object.type == "text" then
+                    if object.x ~= "center" then
+                        object_x = window_x + window_w / 100 * object.x
+                    else
+                        object_x = window_x + window_w / 100 * 50 - fonts.list[object.size]:getWidth(object.text) / 2
+                    end
+                    if object.y ~= "center" then
+                        object_y = window_y + window_h / 100 * object.y
+                    else
+                        object_y = window_y + window_h / 100 * 50 - fonts.list[object.size]:getHeight(object.text) / 2
+                    end
+                    love.graphics.setColor(object.r / 255, object.g / 255, object.b / 255, object.a / 255)
+                    love.graphics.print(object.text, fonts.list[object.size], object_x, object_y)
+                    love.graphics.setColor(1, 1, 1)
+                elseif object.type == "image" then
+                    object_x = window_x + window_w / 100 * object.x
+                    object_y = window_y + window_h / 100 * object.y
+                    local sprite = sprites[object.sprite]
+                    local factor_x = (window_w / 100 * object.w) / sprite.w
+                    local factor_y = (window_h / 100 * object.h) / sprite.h
+                    love.graphics.draw(sprite.img, object_x, object_y, nil, factor_x, factor_y)
+                elseif object.type == "imageX" then
+                    object_x = window_x + window_w / 100 * object.x
+                    object_y = window_y + window_w / 100 * object.y
+                    local sprite = sprites[object.sprite]
+                    local factor_x = (window_w / 100 * object.w) / sprite.w
+                    love.graphics.draw(sprite.img, object_x, object_y, nil, factor_x)
                 end
-                love.graphics.setColor(object.r / 255, object.g / 255, object.b / 255, object.a / 255)
-                love.graphics.print(object.text, fonts.list[object.size], object_x, object_y)
-                love.graphics.setColor(1, 1, 1)
             end
         end
     end

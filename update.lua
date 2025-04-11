@@ -8,6 +8,8 @@ local light = require("level_two/light")
 local physics = require("level_two/physics")
 local fonts = require("level_three/fonts")
 local gui = require("level_two/gui")
+local items = require("level_two/items")
+local items_funcs = require("level_two/items_funcs")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
@@ -131,6 +133,11 @@ function update.player()
             player.y = player.y + 15
         end
         update_player_moving_timer = love.timer.getTime()
+    end
+    if data.scene == 'game' and player.inventory[player.inventory_select] ~= nil then
+        if items[player.inventory[player.inventory_select].name].func ~= nil then
+            player.inventory[player.inventory_select] = items_funcs[items[player.inventory[player.inventory_select].name].func](player.inventory[player.inventory_select])
+        end
     end
 end
 

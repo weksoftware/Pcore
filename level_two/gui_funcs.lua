@@ -2,6 +2,8 @@ local data = require("level_three/data")
 local funcs = require("level_two/funcs")
 local map = require("level_two/map")
 local planets = require("level_three/planets")
+local player = require("level_three/player")
+local fonts = require("level_three/fonts")
 
 local gui_funcs = {}
 
@@ -74,6 +76,11 @@ function gui_funcs.saves_update(scene)
         scene.windows[#scene.windows + 1] = back
         scene.windows[#scene.windows + 1] = saves
     end
+    return scene
+end
+
+function gui_funcs.game_update(scene)
+    player.inventory_select = 5 - math.floor((data.scene_scroll.y % 10) / 2)
     return scene
 end
 
@@ -191,6 +198,42 @@ end
 
 function gui_funcs.update_version(window, mouse)
     window.objects[2].text = "v" .. data.version .. " by weksoftware | github.com/weksoftware/Pcore"
+    return window
+end
+
+function gui_funcs.inventory_update(window, mouse)
+    if mouse == true then
+        data.scene_scroll.y = (5 - window.id) * 3
+    end
+    if player.inventory_select == window.id then
+        window.objects[1].sprite = "inventory2"
+    else
+        window.objects[1].sprite = "inventory1"
+    end
+    if player.inventory[window.id] ~= nil then
+        window.objects[2].sprite = player.inventory[window.id].name
+        window.objects[3].text = player.inventory[window.id].count
+        window.objects[2].not_display = nil
+        window.objects[3].not_display = nil
+    else
+        window.objects[2].not_display = true
+        window.objects[3].not_display = true
+    end
+    return window
+end
+
+function gui_funcs.item_name_inventory_update(window, mouse)
+    if player.inventory[player.inventory_select] ~= nil then
+        local name = player.inventory[player.inventory_select].name
+        local font_w = #name * 1
+        window.w = font_w + 2
+        window.objects[2] = {type="text", x="center", y="center", size=8, text=name, r=255, g=255, b=255, a=255}
+        window.objects[1].not_display = nil
+        window.objects[2].not_display = nil
+    else
+        window.objects[1].not_display = true
+        window.objects[2].not_display = true
+    end
     return window
 end
 

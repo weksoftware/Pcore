@@ -4,6 +4,8 @@ local data = require("level_three/data")
 local json = require("level_three/json")
 local planets = require("level_three/planets")
 local player = require("level_three/player")
+local sprites = require("level_three/sprites")
+local items = require("level_two/items")
 
 local funcs = {}
 
@@ -94,6 +96,26 @@ function funcs.blocks_imgs_load()
             else
                 blocks[block].texture = funcs.multiblock_img_load(blocks[block].texture, blocks[block].tileset_type)
             end
+        end
+    end
+end
+
+function funcs.sprite_img_load(path)
+    local sprite = {}
+    sprite.img = love.graphics.newImage(path)
+    sprite.img:setFilter("nearest", "nearest")
+    sprite.h = sprite.img:getPixelHeight()
+    sprite.w = sprite.img:getPixelWidth()
+    return sprite
+end
+
+function funcs.sprites_imgs_load()
+    for sprite, path in pairs(sprites) do
+        sprites[sprite] = funcs.sprite_img_load(path)
+    end
+    for item, value in pairs(items) do
+        if items[item].texture ~= nil then
+            sprites[item] = funcs.sprite_img_load(items[item].texture)
         end
     end
 end
