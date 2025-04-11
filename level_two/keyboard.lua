@@ -113,46 +113,46 @@ function keyboard.update()
 
     local mouse_x, mouse_y = love.mouse.getPosition()
 
-    if love.mouse.isDown(1) then
-        if data.coord_for_rect ~= nil then
-            local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-            local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
-            local x = math.min(mouse_xf, data.coord_for_rect.x)
-            local y = math.min(mouse_yf, data.coord_for_rect.y)
-            local w = math.max(mouse_xf, data.coord_for_rect.x) - x
-            local h = math.max(mouse_yf, data.coord_for_rect.y) - y
-            for xi = 0, w do
-                for yi = 0, h do
-                    planets[data.planet].map[xi + x][yi + y].block = data.blocks_for_building[data.block]
-                    planets[data.planet].map[xi + x][yi + y].fire = nil
-                end
-            end
-            data.coord_for_rect = nil
-        else         
-            if blocks[data.blocks_for_building[data.block]].multiblock == nil then
-                planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block = data.blocks_for_building[data.block]
-            else
-                local w = blocks[data.blocks_for_building[data.block]].multiblock.w
-                local h = blocks[data.blocks_for_building[data.block]].multiblock.h
-                local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-                local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
-                for xi = 0, w - 1 do
-                    for yi = 0, h - 1 do
-                        planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].block = data.blocks_for_building[data.block]
-                        planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].multiblock = {x_in_block = xi, y_in_block = yi, x = mouse_xf, y = mouse_yf}
-                    end
-                end
-            end
-        end
-    end
-    if love.mouse.isDown(2) then
-        local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-        local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
-        data.coord_for_rect = {x = mouse_xf, y = mouse_yf}
-    end
-    if love.mouse.isDown(3) then
-        planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
-    end
+    -- if love.mouse.isDown(1) then
+    --     if data.coord_for_rect ~= nil then
+    --         local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
+    --         local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+    --         local x = math.min(mouse_xf, data.coord_for_rect.x)
+    --         local y = math.min(mouse_yf, data.coord_for_rect.y)
+    --         local w = math.max(mouse_xf, data.coord_for_rect.x) - x
+    --         local h = math.max(mouse_yf, data.coord_for_rect.y) - y
+    --         for xi = 0, w do
+    --             for yi = 0, h do
+    --                 planets[data.planet].map[xi + x][yi + y].block = data.blocks_for_building[data.block]
+    --                 planets[data.planet].map[xi + x][yi + y].fire = nil
+    --             end
+    --         end
+    --         data.coord_for_rect = nil
+    --     else         
+    --         if blocks[data.blocks_for_building[data.block]].multiblock == nil then
+    --             planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block = data.blocks_for_building[data.block]
+    --         else
+    --             local w = blocks[data.blocks_for_building[data.block]].multiblock.w
+    --             local h = blocks[data.blocks_for_building[data.block]].multiblock.h
+    --             local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
+    --             local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+    --             for xi = 0, w - 1 do
+    --                 for yi = 0, h - 1 do
+    --                     planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].block = data.blocks_for_building[data.block]
+    --                     planets[data.planet].map[mouse_xf + xi][mouse_yf + yi].multiblock = {x_in_block = xi, y_in_block = yi, x = mouse_xf, y = mouse_yf}
+    --                 end
+    --             end
+    --         end
+    --     end
+    -- end
+    -- if love.mouse.isDown(2) then
+    --     local mouse_xf = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
+    --     local mouse_yf = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+    --     data.coord_for_rect = {x = mouse_xf, y = mouse_yf}
+    -- end
+    -- if love.mouse.isDown(3) then
+    --     planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
+    -- end
     if love.keyboard.isDown('r') then
         if blocks[planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block].flammability ~= nil then
             planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].fire = true

@@ -201,4 +201,25 @@ blocks.meteorite.physics_type = "solid"
 blocks.meteorite.shadow = 0.7
 blocks.meteorite.transparency = 0.95
 
+blocks.bricks = {}
+blocks.bricks.texture = "textures/blocks/bricks1.png"
+blocks.bricks.tileset_type = tilesets[1]
+blocks.bricks.physics_type = "solid"
+blocks.bricks.shadow = 0.7
+blocks.bricks.transparency = 0.95
+
+blocks.impure_steel = {}
+blocks.impure_steel.texture = "textures/blocks/impure_steel1.png"
+blocks.impure_steel.tileset_type = tilesets[1]
+blocks.impure_steel.physics_type = "solid"
+blocks.impure_steel.shadow = 0.6
+blocks.impure_steel.transparency = 0.99
+
+blocks.aluminum = {}
+blocks.aluminum.texture = "textures/blocks/aluminum1.png"
+blocks.aluminum.tileset_type = tilesets[1]
+blocks.aluminum.physics_type = "solid"
+blocks.aluminum.shadow = 0.6
+blocks.aluminum.transparency = 0.99
+
 return blocks

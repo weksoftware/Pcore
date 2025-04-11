@@ -26,6 +26,7 @@ function start.game()
     love.window.setTitle("Pcore")
     love.window.setIcon(love.image.newImageData("textures/icon.png"))
     funcs.blocks_imgs_load()
+    funcs.sprites_imgs_load()
 
     funcs.update_settings()
 
