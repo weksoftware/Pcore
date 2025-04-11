@@ -44,11 +44,9 @@ function items_funcs.match(item)
 end
 
 function items_funcs.pickaxe(item)
-    if data.mouse.x ~= nil then
+    if data.mouse.button == 1 then
         local mouse_x = data.mouse.x
         local mouse_y = data.mouse.y
-        data.mouse.x = nil
-        data.mouse.y = nil
         local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
         local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
         local physics_type = blocks[planets[data.planet].map[x][y].block].physics_type
