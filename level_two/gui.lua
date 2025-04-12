@@ -40,6 +40,8 @@ function gui.display()
         love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, height - 200)
         love.graphics.print('version ' .. data.version, font1, 40, height - 240)
         love.graphics.print('scene: ' .. data.scene, font1, 40, height - 280)
+        love.graphics.print('mouse.button: ' .. tostring(data.mouse.button), font1, 40, height - 320)
+        love.graphics.print('mouse x ' .. tostring(data.mouse.x) .. '/y ' .. tostring(data.mouse.y), font1, 40, height - 360)
     end
 
     for key_win, window in ipairs(scenes[data.scene].windows) do
@@ -130,10 +132,11 @@ function gui.update()
             end
 
             local mouse = false
-            if data.mouse.x ~= nil and data.mouse.x > window_x and data.mouse.x < window_x + window_w and data.mouse.y > window_y and data.mouse.y < window_y + window_h then
+            if data.mouse.button ~= nil and data.mouse.x ~= nil and data.mouse.x > window_x and data.mouse.x < window_x + window_w and data.mouse.y > window_y and data.mouse.y < window_y + window_h then
                 mouse = true
                 data.mouse.x = nil
                 data.mouse.y = nil
+                data.mouse.button = nil
             end
             if window.button ~= nil then
                 window = window.button(window, mouse)

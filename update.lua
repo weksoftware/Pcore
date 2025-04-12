@@ -22,10 +22,19 @@ function love.resize(w, h)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
-    if button == 1 then
-        data.mouse.x = x
-        data.mouse.y = y
-    end
+    data.mouse.x = x
+    data.mouse.y = y
+    data.mouse.button = button
+end
+
+function love.mousereleased(x, y, button, istouch, presses)
+    data.mouse.button = nil
+end
+
+function update.mouse()
+    local x, y = love.mouse.getPosition( )
+    data.mouse.x = x
+    data.mouse.y = y
 end
 
 function update.multiblock(block, x, y, planet_w, planet_h)
@@ -96,6 +105,7 @@ function update.blocks()
                     else
                         planets[data.planet].map[x][y].block = 'air'
                     end
+                    planets[data.planet].map[x][y].destruction = 0
                 end
             end
         end
@@ -161,6 +171,7 @@ function update.autosave()
 end
 
 function update.all()
+    update.mouse()
     update.player()
     keyboard.update()
     gui.update()

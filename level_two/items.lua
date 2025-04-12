@@ -21,6 +21,7 @@ items.match = {
 }
 items.impure_steel_pickaxe = {
     texture="textures/items/impure_steel_pickaxe1.png",
+    pickaxe_speed=25,
     func="pickaxe"
 }
 return items
