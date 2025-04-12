@@ -15,7 +15,8 @@ local skies = {
 }
 local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
-local fire1 = funcs.fire_img_load("textures/fire1.png")
+local fire1 = funcs.animation_img_load("textures/fire1.png", 4)
+local destruction1 = funcs.animation_img_load("textures/destruction1.png", 5)
 
 function display.blocks()
     local width, height = love.graphics.getDimensions()
@@ -25,6 +26,7 @@ function display.blocks()
             local y = math.floor(yi + player.y / 24) % planets[data.planet].h + 1
             local texture = blocks[planets[data.planet].map[x][y].block].texture
             local fire = planets[data.planet].map[x][y].fire
+            local destruction = planets[data.planet].map[x][y].destruction
             local texture1 = blocks[planets[data.planet].map[x][y].background].texture
             local light = planets[data.planet].map[x][y].light / 256
             if texture1 ~= nil and (blocks[planets[data.planet].map[x][y].block].background_display ~= nil or funcs.is_not_full_block(planets[data.planet].map[x][y].img_num) == true) then
@@ -39,8 +41,11 @@ function display.blocks()
                 love.graphics.draw(texture, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
+            if destruction > 0 then
+                love.graphics.draw(destruction1[math.ceil(destruction / 20)], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+            end
             if fire ~= nil then
-                love.graphics.draw(fire1[math.floor((planets[data.planet].ticks/1)%4)], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(fire1[planets[data.planet].ticks%4+1], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
             end
         end
     end

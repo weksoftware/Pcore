@@ -39,26 +39,34 @@ function physics.update()
                 elseif blocks[planet.map[x][y].block].physics_type == 'powder' then
                     if planet.map[x][funcs.coordy(y + 1, h, w)].block == 'air' then
                         planet.map[x][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
+                        planet.map[x][funcs.coordy(y + 1, h, w)].destruction = planet.map[x][y].destruction
                         planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
                         planet.map[x][y].block = 'air'
+                        planet.map[x][y].destruction = 0
                         planet.map[x][y].fire = nil
                     elseif blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid' then
                         local block = planet.map[x][funcs.coordy(y + 1, h, w)].block
                         planet.map[x][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
+                        planet.map[x][funcs.coordy(y + 1, h, w)].destruction = planet.map[x][y].destruction
                         planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
                         planet.map[x][y].block = block
+                        planet.map[x][y].destruction = 0
                         planet.map[x][y].fire = nil
                     else
                         local orientation = love.math.random(2)
                         if orientation == 1 and planet.map[funcs.coordx(x - 1,h, w)][funcs.coordy(y + 1, h, w)].block == 'air' then
                             planet.map[funcs.coordx(x - 1,h, w)][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
+                            planet.map[funcs.coordx(x - 1,h, w)][funcs.coordy(y + 1, h, w)].destruction = planet.map[x][y].destruction
                             planet.map[funcs.coordx(x - 1,h, w)][funcs.coordy(y + 1, h, w)].tick = planet.ticks
                             planet.map[x][y].block = 'air'
+                            planet.map[x][y].destruction = 0
                             planet.map[x][y].fire = nil
                         elseif orientation == 2 and planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].block == 'air' then
                             planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
+                            planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].destruction = planet.map[x][y].destruction
                             planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].tick = planet.ticks
                             planet.map[x][y].block = 'air'
+                            planet.map[x][y].destruction = 0
                             planet.map[x][y].fire = nil
                         end
                     end

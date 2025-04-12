@@ -105,6 +105,7 @@ function update.blocks()
                     else
                         planets[data.planet].map[x][y].block = 'air'
                     end
+                    planets[data.planet].map[x][y].destruction = 0
                 end
             end
         end
