@@ -1,7 +1,7 @@
 local data = {}
 
 data.message = ""
-data.settings = {shader = nil, name = 'mrwek', multiplayer = false}
+--data.settings = {shader = nil, name = 'mrwek', multiplayer = false}
 data.planet = "pcore"
 data.block = 1
 data.blocks_for_building = {"air", "water", "sand", "steel", "clay", "debug", "glass", "lamp", "cypress_wood", "cypress_leaves", "cypress_cone", "dirt", "grass", "stone", "cable", "oxygen", "solar_panel", "electric_furnance", "cypress_planks", "martian_regolith", "bricks"}

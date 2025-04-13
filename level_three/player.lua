@@ -1,7 +1,7 @@
 local player = {}
 
-player.x = 0
-player.y = 0
+player.x = 240
+player.y = 240
 player.moving = {}
 player.moving.right = false
 player.moving.left = false
@@ -10,6 +10,8 @@ player.moving.down = false
 player.orientation = "down"
 
 player.camera = {}
+player.camera.x = 0
+player.camera.y = 0
 player.camera.zoom = 1
 
 player.chat = {}

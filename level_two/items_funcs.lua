@@ -12,8 +12,8 @@ function items_funcs.simple_build(item)
     if data.mouse.x ~= nil and data.mouse.button ~= nil then
         local mouse_x = data.mouse.x
         local mouse_y = data.mouse.y
-        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
+        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         if planets[data.planet].map[x][y].block == "air" then
             planets[data.planet].map[x][y].block = items[item.name].block
             item.count = item.count - 1
@@ -32,8 +32,8 @@ function items_funcs.match(item)
         data.mouse.x = nil
         data.mouse.y = nil
         data.mouse.button = nil
-        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
+        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         if planets[data.planet].map[x][y].fire ~= true and blocks[planets[data.planet].map[x][y].block].flammability ~= nil then
             planets[data.planet].map[x][y].fire = true
             item.count = item.count - 1
@@ -49,8 +49,8 @@ function items_funcs.pickaxe(item)
     if data.mouse.button == 1 and pickaxe_timer < love.timer.getTime()  then
         local mouse_x = data.mouse.x
         local mouse_y = data.mouse.y
-        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1
-        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1
+        local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
+        local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         local physics_type = blocks[planets[data.planet].map[x][y].block].physics_type
         if physics_type == "powder" or physics_type == "solid" then
             local destruction_factor =  blocks[planets[data.planet].map[x][y].block].strength

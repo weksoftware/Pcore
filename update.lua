@@ -10,6 +10,7 @@ local fonts = require("level_three/fonts")
 local gui = require("level_two/gui")
 local items = require("level_two/items")
 local items_funcs = require("level_two/items_funcs")
+local collision = require("level_three/collision")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
@@ -129,20 +130,50 @@ function update.planet()
 end
 
 function update.player()
-    if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then
-        if player.moving.right == true then
-            player.x = player.x + 15
+    local width, height = love.graphics.getDimensions()
+    player.camera.x = (player.x - width / 2) / player.camera.zoom
+    player.camera.y = (player.y - height / 2) / player.camera.zoom
+
+    if planets[data.planet].game_mode == "debug" then
+        if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then
+            if player.moving.right == true then
+                player.x = player.x + 15
+            end
+            if player.moving.left == true then
+                player.x = player.x - 15
+            end
+            if player.moving.up == true then
+                player.y = player.y - 15
+            end
+            if player.moving.down == true then
+                player.y = player.y + 15
+            end
+            update_player_moving_timer = love.timer.getTime()
         end
-        if player.moving.left == true then
-            player.x = player.x - 15
+    else
+        if update_player_moving_timer + 0.01 < love.timer.getTime() then
+            if player.moving.right == true then
+                player.x = player.x + 15
+            end
+            if player.moving.left == true then
+                player.x = player.x - 15
+            end
+            if player.moving.up == true then
+                player.y = player.y - 30
+            end
+            if player.moving.down == true then
+                player.y = player.y + 15
+            end
+            
+            if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then
+                player.y = player.y + 15
+            elseif collision.player(player.x, player.y + 5, planets[data.planet].map, player.camera.zoom) == false then
+                player.y = player.y + 5
+            elseif collision.player(player.x, player.y + 1, planets[data.planet].map, player.camera.zoom) == false then
+                player.y = player.y + 1
+            end
+            update_player_moving_timer = love.timer.getTime()
         end
-        if player.moving.up == true then
-            player.y = player.y - 15
-        end
-        if player.moving.down == true then
-            player.y = player.y + 15
-        end
-        update_player_moving_timer = love.timer.getTime()
     end
     if data.scene == 'game' and player.inventory[player.inventory_select] ~= nil then
         if items[player.inventory[player.inventory_select].name].func ~= nil then

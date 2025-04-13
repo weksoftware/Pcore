@@ -64,6 +64,7 @@ function map.generation(type)
     planet.h = 130
     planet.ticks = 0
     planet.subtick = 0
+    planet.game_mode = "normal"
 
     if type == "pcore" then
         local water_h = 64

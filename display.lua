@@ -23,8 +23,8 @@ function display.blocks()
     local width, height = love.graphics.getDimensions()
     for xi = 0, math.ceil(width / 24 / player.camera.zoom) do
         for yi = 0, math.ceil(height / 24 / player.camera.zoom) do
-            local x = math.floor(xi + player.x / 24) % planets[data.planet].w + 1
-            local y = math.floor(yi + player.y / 24) % planets[data.planet].h + 1
+            local x = math.floor(xi + player.camera.x / 24) % planets[data.planet].w + 1
+            local y = math.floor(yi + player.camera.y / 24) % planets[data.planet].h + 1
             local texture = blocks[planets[data.planet].map[x][y].block].texture
             local fire = planets[data.planet].map[x][y].fire
             local destruction = planets[data.planet].map[x][y].destruction
@@ -33,20 +33,20 @@ function display.blocks()
             if texture1 ~= nil and (blocks[planets[data.planet].map[x][y].block].background_display ~= nil or funcs.is_not_full_block(planets[data.planet].map[x][y].img_num) == true) then
                 texture1 = texture1[funcs.select_background_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)]
                 love.graphics.setColor(0.85 * light, 0.85 * light, 0.85 * light)
-                love.graphics.draw(texture1, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(texture1, ((xi) * 24 - player.camera.x % 24) * player.camera.zoom, ((yi) * 24 - player.camera.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if texture ~= nil then
                 texture = texture[planets[data.planet].map[x][y].img_num]
                 love.graphics.setColor(light, light, light)
-                love.graphics.draw(texture, ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(texture, ((xi) * 24 - player.camera.x % 24) * player.camera.zoom, ((yi) * 24 - player.camera.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(1, 1, 1)
             end
             if destruction > 0 then
-                love.graphics.draw(destruction1[math.ceil(destruction / 20)], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(destruction1[math.ceil(destruction / 20)], ((xi) * 24 - player.camera.x % 24) * player.camera.zoom, ((yi) * 24 - player.camera.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
             end
             if fire ~= nil then
-                love.graphics.draw(fire1[planets[data.planet].ticks%4+1], ((xi) * 24 - player.x % 24) * player.camera.zoom, ((yi) * 24 - player.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
+                love.graphics.draw(fire1[planets[data.planet].ticks%4+1], ((xi) * 24 - player.camera.x % 24) * player.camera.zoom, ((yi) * 24 - player.camera.y % 24) * player.camera.zoom, nil, 3 * player.camera.zoom)
             end
         end
     end
@@ -62,9 +62,11 @@ function display.player()
         end
         local width, height = love.graphics.getDimensions()
         local color = data.settings_values.player_color[data.settings.player_color]
-        love.graphics.draw(player1[orientation], width / 2, height / 2, nil, 3 * player.camera.zoom)
+        local x = width / 2 - 12 * player.camera.zoom
+        local y = height / 2 - 24 * player.camera.zoom
+        love.graphics.draw(player1[orientation], x, y, nil, 3 * player.camera.zoom)
         love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
-        love.graphics.draw(player1[3 + orientation], width / 2, height / 2, nil, 3 * player.camera.zoom)
+        love.graphics.draw(player1[3 + orientation], x, y, nil, 3 * player.camera.zoom)
         love.graphics.setColor(1, 1, 1)
     end
 end
