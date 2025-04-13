@@ -17,6 +17,7 @@ local sputnik1 = funcs.img_load("textures/sputnik2.png")
 local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
 local fire1 = funcs.animation_img_load("textures/fire1.png", 4)
 local destruction1 = funcs.animation_img_load("textures/destruction1.png", 5)
+local player1 = funcs.player_img_load("textures/player1.png")
 
 function display.blocks()
     local width, height = love.graphics.getDimensions()
@@ -51,10 +52,28 @@ function display.blocks()
     end
 end
 
+function display.player()
+    if data.scene == "game" then
+        local orientation = 2
+        if player.orientation == "left" then
+            orientation = 1
+        elseif player.orientation == "right" then
+            orientation = 3
+        end
+        local width, height = love.graphics.getDimensions()
+        local color = data.settings_values.player_color[data.settings.player_color]
+        love.graphics.draw(player1[orientation], width / 2, height / 2, nil, 3 * player.camera.zoom)
+        love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
+        love.graphics.draw(player1[3 + orientation], width / 2, height / 2, nil, 3 * player.camera.zoom)
+        love.graphics.setColor(1, 1, 1)
+    end
+end
+
 function display.all()
     local width, height = love.graphics.getDimensions()
     love.graphics.draw(skies[data.planet], 0, 0, nil, width / 640, height / 360)
     display.blocks()
+    display.player()
     chat.display()
     gui.display()
 end

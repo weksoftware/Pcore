@@ -7,6 +7,7 @@ player.moving.right = false
 player.moving.left = false
 player.moving.up = false
 player.moving.down = false
+player.orientation = "down"
 
 player.camera = {}
 player.camera.zoom = 1

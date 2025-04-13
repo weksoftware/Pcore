@@ -54,6 +54,21 @@ function funcs.block_img_load(path, tileset)
     return textures
 end
 
+function funcs.player_img_load(path)
+    local textures = {}
+    local tiles = love.image.newImageData(path)
+
+    for i = 0, 5 do
+        local cropped = love.image.newImageData(8, 16)
+        cropped:paste(tiles, 0, 0, i * 8, 0, 8, 16)
+        local img = love.graphics.newImage(cropped)
+        img:setFilter("nearest", "nearest")
+        textures[i + 1] = img
+    end
+
+    return textures
+end
+
 function funcs.multiblock_img_load(path, tileset)
     local textures = {}
     local tiles = love.image.newImageData(path)

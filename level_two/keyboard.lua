@@ -26,12 +26,16 @@ function love.keypressed(key)
     if data.scene == 'game' then
         if key == 'd' then
             player.moving.right = true
+            player.orientation = "right"
         elseif key == 'a' then
             player.moving.left = true
+            player.orientation = "left"
         elseif key == 'w' then
             player.moving.up = true
+            player.orientation = "down"
         elseif key == 's' then
             player.moving.down = true
+            player.orientation = "down"
         elseif key == 'z' then
             funcs.save_map(data.map_name)
         elseif key == 'x' then
