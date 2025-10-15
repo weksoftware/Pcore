@@ -4,6 +4,7 @@ local data = require("level_three/data")
 local player = require("level_three/player")
 local planets = require("level_three/planets")
 local blocks = require("level_three/blocks")
+local commands = require("level_two/commands")
 
 local keyboard = {}
 
@@ -16,14 +17,11 @@ local debug_hide_timer = love.timer.getTime()
 local utf8 = require("utf8")
 
 function love.textinput(text)
-    if player.chat_status == 'open' and love.system.getOS() ~= "Linux" then
-        data.message = data.message .. text
-    end
     data.text_input = data.text_input .. text
 end
 
 function love.keypressed(key)
-    if data.scene == 'game' then
+    if data.scene == 'game' and player.chat_status == "close" then
         if key == 'd' then
             player.moving.right = true
             player.orientation = "right"
@@ -76,23 +74,41 @@ function keyboard.update()
 
     if love.keyboard.isDown('c') and player.chat_status == 'close' then
         player.chat_status = 'open'
+        data.text_input = ''
     end
 
     if love.keyboard.isDown('return') and player.chat_status == 'open' then
-        if data.message ~= '' then
+        if data.text_input ~= '' then
 
-            if settings.multiplayer == 'client' then
+            if false then--settings.multiplayer == 'client' then
                 --local server_message = multiplayer.client(message)
                 --player.chat = server_message
                 --player = funcs.create_message(player, server_message, os.clock(), 255, 255, 255)
                 multiplayer.client(message)
 
             else
-                data.message = ' ' .. settings.name .. ': ' .. data.message .. ' '
-                player = funcs.create_message(player, data.message, os.clock(), 255, 255, 255)
+                local text = data.text_input
+                data.text_input = ' ' .. player.nickname .. ': ' .. data.text_input .. ' '
+                player = funcs.create_message(player, data.text_input, os.clock(), 255, 255, 255)
+                
+                if string.sub(text, 1, 1) == "/" then
+                    local search_command = string.sub(text, 2, -1)
+                    local command_exists = false
+
+                    for _, command in pairs(commands.list) do
+                        if command == search_command then
+                            commands[search_command]()
+                            command_exists = true
+                        end
+                    end
+
+                    if command_exists == false then
+                        funcs.create_message(player, "Комманда не найдена.", os.clock(), 255, 50, 50)
+                    end
+                end
             end
 
-            data.message = ''
+            data.text_input = ''
         end
         player.chat_status = 'close'
     end
@@ -161,29 +177,6 @@ function keyboard.update()
         if blocks[planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block].flammability ~= nil then
             planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].fire = true
         end
-    end
-    
-    if select_block_timer + 0.2 < love.timer.getTime() then
-        if love.keyboard.isDown('f') then
-            if data.block > 1 then 
-                data.block = data.block - 1 
-            else 
-                data.block = #data.blocks_for_building
-            end
-        end
-        if love.keyboard.isDown('g') then
-            if data.block < #data.blocks_for_building then 
-                data.block = data.block + 1 
-            else 
-                data.block = 1
-            end
-        end
-        select_block_timer = love.timer.getTime()
-    end
-
-    if debug_hide_timer + 0.2 < love.timer.getTime() and love.keyboard.isDown('h') then
-        data.display_debug = not (data.display_debug == true)
-        debug_hide_timer = love.timer.getTime()
     end
 
 end

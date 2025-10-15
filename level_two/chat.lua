@@ -24,20 +24,20 @@ function chat.display()
 
         local w = font1:getWidth(' Введите сообщение... ')
 
-        if data.message ~= '' then
-            w = font1:getWidth(data.message .. '  ')
+        if data.text_input ~= '' then
+            w = font1:getWidth(data.text_input .. '  ')
         end
 
         love.graphics.setColor(0, 0, 0, 0.5)
         love.graphics.rectangle("fill", 0, 950, w, 48)
         love.graphics.setColor(1, 1, 1)
 
-        if data.message ~= '' then
+        if data.text_input ~= '' then
             local cursor = ''
             if os.time() % 2 == 1 then
                 cursor = '|'
             end
-            love.graphics.print(' ' .. data.message .. cursor, font1, 0, 950)
+            love.graphics.print(' ' .. data.text_input .. cursor, font1, 0, 950)
         else
             love.graphics.setColor(0.7, 0.7, 0.7)
             love.graphics.print(' Введите сообщение...', font1, 0, 950)
