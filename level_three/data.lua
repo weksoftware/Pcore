@@ -11,7 +11,7 @@ data.version = "0.0.2.2"
 data.scene = "menu"
 data.scene_scroll = {x=0, y=0}
 data.mouse = {x=nil, y=nil}
-data.settings = {vsync=1, display_debug=2, language=1, zoom=4, autosave=2, player_color=2}
+data.settings = {vsync=1, display_debug=2, language=1, zoom=4, autosave=2, player_color=2, shaders=2}
 data.settings_values = {
     vsync={true, false}, 
     display_debug={true, false}, 
@@ -32,7 +32,8 @@ data.settings_values = {
         {r=140, g=240, b=255, a=1},
         {r=60, g=140, b=255, a=1},
         {r=30, g=50, b=180, a=1}
-    }
+    },
+    shaders={false, "light", "b4x4", "tiles", "bw", "bw_contrast", "contrast", "rainbow", "notebook"}
 }
 data.world_select = nil
 data.text_input = ""
