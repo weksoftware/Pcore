@@ -1,9 +1,9 @@
-local data = require("level_three/data")
-local funcs = require("level_two/funcs")
-local map = require("level_two/map")
-local planets = require("level_three/planets")
-local player = require("level_three/player")
-local fonts = require("level_three/fonts")
+local data = require("engine/core/data")
+local funcs = require("engine/core/funcs")
+local map = require("engine/modules/worlds/update/map")
+local planets = require("engine/modules/worlds/planets")
+local player = require("engine/modules/player/player")
+local fonts = require("engine/modules/graphics/fonts")
 
 local gui_funcs = {}
 

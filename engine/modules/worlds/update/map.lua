@@ -1,4 +1,4 @@
-local blocks = require("level_three/blocks")
+local blocks = require("engine/modules/worlds/blocks")
 
 local map = {}
 

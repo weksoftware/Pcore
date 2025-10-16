@@ -1,8 +1,8 @@
-local player = require("level_three/player")
-local data = require("level_three/data")
+local player = require("engine/modules/player/player")
+local data = require("engine/core/data")
 local chat = {}
 
-local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
+local font1 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 48)
 
 function chat.display()
     local start_y = 870 - player.chat_size * 48 - player.chat_scroll * 48

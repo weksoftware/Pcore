@@ -1,4 +1,4 @@
-local gui_funcs = require("level_two/gui_funcs")
+local gui_funcs = require("engine/modules/graphics/gui/gui_funcs")
 
 local scenes = {}
 

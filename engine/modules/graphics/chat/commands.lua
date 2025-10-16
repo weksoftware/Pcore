@@ -1,5 +1,5 @@
-local funcs = require("level_two/funcs")
-local player = require("level_three/player")
+local funcs = require("engine/core/funcs")
+local player = require("engine/modules/player/player")
 
 local commands = {}
 

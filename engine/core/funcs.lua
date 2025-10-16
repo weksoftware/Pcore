@@ -1,11 +1,11 @@
-local blocks = require("level_three/blocks")
-local tilesets = require("level_three/tilesets")
-local data = require("level_three/data")
-local json = require("level_three/json")
-local planets = require("level_three/planets")
-local player = require("level_three/player")
-local sprites = require("level_three/sprites")
-local items = require("level_two/items")
+local blocks = require("engine/modules/worlds/blocks")
+local tilesets = require("engine/modules/graphics/tilesets")
+local data = require("engine/core/data")
+local json = require("engine/libs/json")
+local planets = require("engine/modules/worlds/planets")
+local player = require("engine/modules/player/player")
+local sprites = require("engine/modules/graphics/sprites")
+local items = require("engine/modules/items/items")
 
 local funcs = {}
 

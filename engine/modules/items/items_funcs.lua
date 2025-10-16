@@ -1,8 +1,8 @@
-local data = require("level_three/data")
-local planets = require("level_three/planets")
-local items = require("level_two/items")
-local player = require("level_three/player")
-local blocks = require("level_three/blocks")
+local data = require("engine/core/data")
+local planets = require("engine/modules/worlds/planets")
+local items = require("engine/modules/items/items")
+local player = require("engine/modules/player/player")
+local blocks = require("engine/modules/worlds/blocks")
 
 local items_funcs = {}
 

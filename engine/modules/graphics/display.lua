@@ -1,23 +1,23 @@
-local blocks = require("level_three/blocks")
-local funcs = require("level_two/funcs")
-local player = require("level_three/player")
-local shaders = require("level_three/shaders")
-local data = require("level_three/data")
-local planets = require("level_three/planets")
-local gui = require("level_two/gui")
-local chat = require("level_two/chat")
+local blocks = require("engine/modules/worlds/blocks")
+local funcs = require("engine/core/funcs")
+local player = require("engine/modules/player/player")
+local shaders = require("engine/modules/graphics/shaders")
+local data = require("engine/core/data")
+local planets = require("engine/modules/worlds/planets")
+local gui = require("engine/modules/graphics/gui/gui")
+local chat = require("engine/modules/graphics/chat/chat")
 
 local display = {}
 
 local skies = {
-    pcore=funcs.img_load("textures/skies/pcore.png"), 
-    mars=funcs.img_load("textures/skies/mars.png")
+    pcore=funcs.img_load("media/textures/skies/pcore.png"), 
+    mars=funcs.img_load("media/textures/skies/mars.png")
 }
-local sputnik1 = funcs.img_load("textures/sputnik2.png")
-local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
-local fire1 = funcs.animation_img_load("textures/fire1.png", 4)
-local destruction1 = funcs.animation_img_load("textures/destruction1.png", 5)
-local player1 = funcs.player_img_load("textures/player1.png")
+local sputnik1 = funcs.img_load("media/textures/sputnik2.png")
+local font1 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 48)
+local fire1 = funcs.animation_img_load("media/textures/fire1.png", 4)
+local destruction1 = funcs.animation_img_load("media/textures/destruction1.png", 5)
+local player1 = funcs.player_img_load("media/textures/player1.png")
 
 function display.blocks()
     local width, height = love.graphics.getDimensions()

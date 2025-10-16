@@ -1,7 +1,7 @@
-local blocks = require("level_three/blocks")
-local funcs = require("level_two/funcs")
-local data = require("level_three/data")
-local planets = require("level_three/planets")
+local blocks = require("engine/modules/worlds/blocks")
+local funcs = require("engine/core/funcs")
+local data = require("engine/core/data")
+local planets = require("engine/modules/worlds/planets")
 
 local light = {}
 

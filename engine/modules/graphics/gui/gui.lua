@@ -1,15 +1,15 @@
-local player = require("level_three/player")
-local data = require("level_three/data")
-local planets = require("level_three/planets")
-local scenes = require("level_two/scenes")
-local funcs = require("level_two/funcs")
-local fonts = require("level_three/fonts")
-local sprites = require("level_three/sprites")
+local player = require("engine/modules/player/player")
+local data = require("engine/core/data")
+local planets = require("engine/modules/worlds/planets")
+local scenes = require("engine/modules/graphics/gui/scenes")
+local funcs = require("engine/core/funcs")
+local fonts = require("engine/modules/graphics/fonts")
+local sprites = require("engine/modules/graphics/sprites")
 
 local gui = {}
 
-local cursor = funcs.img_load("textures/cursor.png")
-local font1 = love.graphics.newFont("fonts/basis33/regular.ttf", 48)
+local cursor = funcs.img_load("media/textures/cursor.png")
+local font1 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 48)
 
 local fps = 0
 local fps_display = 0

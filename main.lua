@@ -1,6 +1,6 @@
-local display = require("display")
-local update = require("update")
-local start = require("start")
+local display = require("engine/modules/graphics/display")
+local update = require("engine/core/update")
+local start = require("engine/core/start")
 
 function love.load(arg)
     start.game()

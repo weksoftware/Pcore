@@ -1,11 +1,11 @@
 local start = {}
-local map = require("level_two/map")
-local funcs = require("level_two/funcs")
-local player = require("level_three/player")
-local data = require("level_three/data")
-local planets = require("level_three/planets")
-local fonts = require("level_three/fonts")
-local json = require("level_three/json")
+local map = require("engine/modules/worlds/update/map")
+local funcs = require("engine/core/funcs")
+local player = require("engine/modules/player/player")
+local data = require("engine/core/data")
+local planets = require("engine/modules/worlds/planets")
+local fonts = require("engine/modules/graphics/fonts")
+local json = require("engine/libs/json")
 
 function start.game()
 
@@ -24,7 +24,7 @@ function start.game()
     fonts.load_fonts()
     love.mouse.setVisible(false)
     love.window.setTitle("Pcore")
-    love.window.setIcon(love.image.newImageData("textures/icon.png"))
+    love.window.setIcon(love.image.newImageData("media/textures/icon.png"))
     funcs.blocks_imgs_load()
     funcs.sprites_imgs_load()
 

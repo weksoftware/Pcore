@@ -1,10 +1,10 @@
-local funcs = require("level_two/funcs")
-local multiplayer = require("multiplayer")
-local data = require("level_three/data")
-local player = require("level_three/player")
-local planets = require("level_three/planets")
-local blocks = require("level_three/blocks")
-local commands = require("level_two/commands")
+local funcs = require("engine/core/funcs")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
+local data = require("engine/core/data")
+local player = require("engine/modules/player/player")
+local planets = require("engine/modules/worlds/planets")
+local blocks = require("engine/modules/worlds/blocks")
+local commands = require("engine/modules/graphics/chat/commands")
 
 local keyboard = {}
 
