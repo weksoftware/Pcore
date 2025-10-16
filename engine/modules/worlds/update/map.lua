@@ -94,8 +94,9 @@ function map.generation(type)
                         planet.map[x][y].block = 'sand'
                     elseif y - noise[x] <= 30 then
                         planet.map[x][y].block = 'clay'
-                        if y - noise[x] <= 15 then
+                        if y - noise[x] <= 15 and  y - noise[x] > 5 then
                             planet.map[x][y].block = 'dirt'
+                            planet.map[x][y].background = 'dirt'
                         end
                         if y - noise[x] <= 5 then
                             planet.map[x][y].block = 'grass'

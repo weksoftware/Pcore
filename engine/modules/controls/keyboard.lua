@@ -11,8 +11,8 @@ local keyboard = {}
 local zoom_timer = love.timer.getTime()
 local backspace_timer = love.timer.getTime()
 local chat_scroll_timer = love.timer.getTime()
-local select_block_timer = love.timer.getTime()
-local debug_hide_timer = love.timer.getTime()
+local last_message_timer = love.timer.getTime()
+local selected_message_number = -1
 
 local utf8 = require("utf8")
 
@@ -75,6 +75,7 @@ function keyboard.update()
     if love.keyboard.isDown('c') and player.chat_status == 'close' then
         player.chat_status = 'open'
         data.text_input = ''
+        selected_message_number = -1
     end
 
     if love.keyboard.isDown('return') and player.chat_status == 'open' then
@@ -120,6 +121,28 @@ function keyboard.update()
             backspace_timer = love.timer.getTime()
         end
     end
+    if player.chat_status == 'open' and love.keyboard.isDown('left') and last_message_timer + 0.2 < love.timer.getTime() then
+        if selected_message_number + 1 < #player.chat then
+            selected_message_number = selected_message_number + 1
+        end
+        if #player.chat - selected_message_number > 0 then
+            data.text_input = player.chat[#player.chat - selected_message_number].text
+        end
+        last_message_timer = love.timer.getTime()
+    end
+    if player.chat_status == 'open' and love.keyboard.isDown('right') and last_message_timer + 0.2 < love.timer.getTime() then
+        if selected_message_number > 0 then
+            selected_message_number = selected_message_number - 1
+            if #player.chat - selected_message_number > 0 then
+                data.text_input = player.chat[#player.chat - selected_message_number].text
+            end
+            last_message_timer = love.timer.getTime()
+        else
+            data.text_input = ""
+        end
+
+    end
+
 
     if chat_scroll_timer + 0.2 < love.timer.getTime() and player.chat_status == 'open' and love.keyboard.isDown('up') then
         player.chat_scroll = player.chat_scroll - 1
