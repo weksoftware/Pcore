@@ -1,4 +1,4 @@
-local display = require("engine/modules/graphics/display")
+local display = require("engine/core/display")
 local update = require("engine/core/update")
 local start = require("engine/core/start")
 
