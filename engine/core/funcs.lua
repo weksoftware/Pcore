@@ -278,6 +278,13 @@ function funcs.create_message(player, author, text, time, rc, gc, bc)
     local message = {author=author, text=text, time=time, w=nil, color={r=rc/255, g=gc/255, b=bc/255}}
     player.chat_size = player.chat_size + 1
     player.chat[player.chat_size] = message
+
+    if author ~= nil then
+        print(author .. ": " .. text)
+    else
+        print(text)
+    end 
+    
     return player
 end
 

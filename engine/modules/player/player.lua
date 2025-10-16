@@ -18,7 +18,7 @@ player.chat = {}
 player.chat_size = 0
 player.chat_status = 'close'
 player.chat_scroll = 0
-player.nickname = "user"
+player.nickname = "player"
 
 player.inventory = {}
 player.inventory[3] = {name="steel_block", count=100}

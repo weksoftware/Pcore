@@ -1,76 +1,47 @@
-local multiplayer = {}
-local funcs = require("engine/core/funcs")
-local player = require("engine/modules/player/player")
-local json = require("engine/libs/json")
-
 local enet = require "enet"
-local host = nil
-local server = nil
+local json = require "engine/libs/json"
+local funcs = require "engine/core/funcs"
+local player = require("engine/modules/player/player")
+local data = require("engine/core/data")
 
---local server_funcs = {}
+local multiplayer = {}
 
---function server_funcs.new_message()
+local thread0_out = nil
+local thread1_out = nil
 
-function multiplayer.connect_to_server(ip)
-    host = enet.host_create()
-    server = host:connect(ip)
+local update_timer = love.timer.getTime()
+
+function multiplayer.start()
+    thread = love.thread.newThread("engine/modules/multiplayer/" .. data.multiplayer.enet_type .. ".lua")
+    thread:start()
+    -- get thread channels
+    thread0_out = love.thread.getChannel('thread0_out')
+    thread1_out = love.thread.getChannel('thread1_out')
+    player = funcs.create_message(player, nil, "Мультиплеер запущен.", os.clock(), 255, 255, 0)
 end
 
-function multiplayer.client(message)
-    local event = host:service(10)
-    local message_from_server = nil
-    while event do
-        if event.type == "receive" then
-            --print("Got message: ", event.data, event.peer)
-            message_from_server = event.data
-            event.peer:send(message)
-        elseif event.type == "connect" then
-            event.peer:send('')
-            --message_from_server = json.decode(event.data)
-        elseif event.type == "disconnect" then
-            print(event.peer, "disconnected.")
-        end
-
-        event = host:service()
+function multiplayer.message_send(message)
+    if thread0_out ~= nil then
+        thread0_out:push(json.encode(message))
     end
-    return message_from_server
 end
 
-function multiplayer.server_start(ip)
-    host = enet.host_create(ip)
-    print('Server is active! (naverno)')
-    player = funcs.create_message(player, 'Сервер запущен', os.clock(), 0, 173, 3)
-end
-
-function multiplayer.server()
-    local event = host:service(10)
-
-    while event do
-        local message = ''
-        if event.type == "receive" then
-            if event.data ~= '' then
-                message = tostring(event.peer) .. ': ' .. event.data
+function multiplayer.update()
+    if update_timer + 0.1 < love.timer.getTime() then
+        if thread1_out ~= nil then
+            local thread_data = thread1_out:pop()
+            if thread_data then
+                local message = json.decode(thread_data)
+                if message.type == "receive" then
+                    player = funcs.create_message(player, message.body.author, message.body.text, os.clock(), 255, 255, 255)
+                elseif message.type == "connect" then
+                    --player = funcs.create_message(player, nil, message.body.author .. " подключился.", os.clock(), 255, 255, 0)
+                elseif message.type == "disconnect" then
+                    --player = funcs.create_message(player, nil, message.body.author .. " отключился.", os.clock(), 255, 255, 0)
+                end
             end
-            event.peer:send(json.encode(player.chat))
-
-        elseif event.type == "connect" then
-            message = 'Player ' .. tostring(event.peer) .. ' connected'
-            player = funcs.create_message(player, message, os.clock(), 255, 233, 36)
-            message = ''
-            print(message)
-
-        elseif event.type == "disconnect" then
-            message = 'Player ' .. tostring(event.peer) .. ' disconnected'
-            player = funcs.create_message(player, message, os.clock(), 255, 233, 36)
-            message = ''
-            print(message)
         end
-
-        if message ~= '' then
-            player = funcs.create_message(player, message, os.clock(), 255, 255, 255)
-            print(message)
-        end
-        event = host:service()
+        update_timer = love.timer.getTime()
     end
 end
 

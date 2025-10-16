@@ -1,4 +1,7 @@
-local display = require("engine/core/display")
+local data = require("engine/core/data")
+if data.multiplayer.enet_type ~= "host" then
+    display = require("engine/core/display")
+end
 local update = require("engine/core/update")
 local start = require("engine/core/start")
 

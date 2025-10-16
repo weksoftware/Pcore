@@ -7,10 +7,13 @@ local keyboard = require("engine/modules/controls/keyboard")
 local light = require("engine/modules/worlds/update/light")
 local physics = require("engine/modules/worlds/update/physics")
 local fonts = require("engine/modules/graphics/fonts")
-local gui = require("engine/modules/graphics/gui/gui")
+if data.multiplayer.enet_type ~= "host" then
+    gui = require("engine/modules/graphics/gui/gui")
+end
 local items = require("engine/modules/items/items")
 local items_funcs = require("engine/modules/items/items_funcs")
 local collision = require("engine/modules/player/collision")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
@@ -202,10 +205,16 @@ function update.autosave()
 end
 
 function update.all()
-    update.mouse()
-    update.player()
-    keyboard.update()
-    gui.update()
+    if data.multiplayer.enet_type ~= nil then
+        multiplayer.update()
+    end
+
+    if data.multiplayer.enet_type ~= "host" then
+        update.mouse()
+        update.player()
+        keyboard.update()
+        gui.update()
+    end
     update.planet()
     update.autosave()
 end

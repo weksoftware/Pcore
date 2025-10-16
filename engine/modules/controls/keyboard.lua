@@ -89,7 +89,12 @@ function keyboard.update()
 
             else
                 local text = data.text_input
-                player = funcs.create_message(player, player.nickname, data.text_input, os.clock(), 255, 255, 255)
+                if data.multiplayer.enet_type == "client" then
+                    multiplayer.message_send({author=player.nickname, text=data.text_input})
+                else
+                    player = funcs.create_message(player, player.nickname, data.text_input, os.clock(), 255, 255, 255)
+                end
+
                 
                 if string.sub(text, 1, 1) == "/" then
                     local search_command = string.sub(text, 2, -1)
