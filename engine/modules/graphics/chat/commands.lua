@@ -7,9 +7,9 @@ local commands = {}
 commands.list = {"help", "rndshader"}
 
 function commands.help()
-    funcs.create_message(player, "Список команд:", os.clock(), 152, 255, 92)
+    funcs.create_message(player, nil, "Список команд:", os.clock(), 152, 255, 92)
     for _, command in pairs(commands.list) do
-        funcs.create_message(player, "/" .. command, os.clock(), 152, 255, 92)
+        funcs.create_message(player, nil, "/" .. command, os.clock(), 152, 255, 92)
     end
 end
 

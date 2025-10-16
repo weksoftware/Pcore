@@ -9,13 +9,23 @@ function chat.display()
     for i = 1, player.chat_size do
         if player.chat[i].time + 5 >= os.clock() or player.chat_status == 'open' then
             if player.chat[i].w == nil then
-                player.chat[i].w = font1:getWidth(player.chat[i].text)
+                local author = player.chat[i].author
+                if author == nil then
+                    author = ""
+                else
+                    author = author .. ": "
+                end
+                player.chat[i].w = font1:getWidth(author .. player.chat[i].text)
             end
 
             love.graphics.setColor(0, 0, 0, 0.5)
             love.graphics.rectangle("fill", 0, start_y + i * 48, player.chat[i].w, 48)
             love.graphics.setColor(player.chat[i].color.r, player.chat[i].color.g, player.chat[i].color.b)
-            love.graphics.print(player.chat[i].text, font1, 0, start_y + i * 48)
+            if player.chat[i].author ~= nil then
+                love.graphics.print(player.chat[i].author .. ": " .. player.chat[i].text, font1, 0, start_y + i * 48)
+            else
+                love.graphics.print(player.chat[i].text, font1, 0, start_y + i * 48)
+            end
             love.graphics.setColor(1, 1, 1)
         end
     end

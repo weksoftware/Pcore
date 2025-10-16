@@ -89,8 +89,7 @@ function keyboard.update()
 
             else
                 local text = data.text_input
-                data.text_input = ' ' .. player.nickname .. ': ' .. data.text_input .. ' '
-                player = funcs.create_message(player, data.text_input, os.clock(), 255, 255, 255)
+                player = funcs.create_message(player, player.nickname, data.text_input, os.clock(), 255, 255, 255)
                 
                 if string.sub(text, 1, 1) == "/" then
                     local search_command = string.sub(text, 2, -1)
@@ -104,7 +103,7 @@ function keyboard.update()
                     end
 
                     if command_exists == false then
-                        funcs.create_message(player, "Комманда не найдена.", os.clock(), 255, 50, 50)
+                        funcs.create_message(player, nil, "Комманда не найдена.", os.clock(), 255, 50, 50)
                     end
                 end
             end

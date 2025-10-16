@@ -30,8 +30,8 @@ function start.game()
 
     funcs.update_settings()
 
-    player = funcs.create_message(player, 'Вы оказались на планете Pcore', 3, 125, 227, 255)
-    player = funcs.create_message(player, 'Постройте корабль и выбирайтесь отсюда!', 5, 125, 227, 255)
+    player = funcs.create_message(player, nil, 'Вы оказались на планете Pcore', 3, 125, 227, 255)
+    player = funcs.create_message(player, nil, 'Постройте корабль и выбирайтесь отсюда!', 5, 125, 227, 255)
 
     player.camera.y = 30
 
