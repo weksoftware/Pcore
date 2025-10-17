@@ -37,12 +37,12 @@ function start.game()
         print("Игра запущена.")
     end
 
-    player.camera.y = 30
-
-    planets[data.planet] = map.generation("pcore")
-
     if data.multiplayer.enet_type == "host" then
+        funcs.load_map(data.multiplayer.save_name)
         multiplayer.start()
+    else
+        player.camera.y = 30
+        planets[data.planet] = map.generation("pcore")
     end
 
 end

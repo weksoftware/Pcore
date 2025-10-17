@@ -11,6 +11,7 @@ while data == nil do
 end
 
 data = json.decode(data)
+local map = data.map -- игровая карта на момент включения сервера
 
 local host = enet.host_create(data.ip .. ":" .. data.port)
 local peers = {}
@@ -23,18 +24,23 @@ while true do
         if event.type == "receive" then
             local net_event = json.decode(event.data)
             if net_event.type == "message" then
-                thread1_out:push(net_event)
-                host:broadcast(net_event)
+                thread1_out:push(event.data)
+                host:broadcast(event.data)
             elseif net_event.type == "connect" then
-                new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
+                peers[tostring(event.peer)] = net_event.player
+
+                local new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
                 thread1_out:push(new_net_event)
                 host:broadcast(new_net_event)
+
+                new_net_event = json.encode({type="map", map=map})
+                event.peer:send(new_net_event)
             end
         elseif event.type == "disconnect" then
+            local new_net_event = json.encode({type="message", message={author=nil, text=peers[tostring(event.peer)] .. " отключился"}})
+            thread1_out:push(new_net_event)
+            host:broadcast(new_net_event)
             peers[tostring(event.peer)] = nil
-            local message = json.encode({type="disconnect", body=event_data_decode})
-
-            thread1_out:push(message)
         end
         event = host:service()
     end

@@ -73,14 +73,21 @@ function map.generation(type)
         local noise = {}
 
         for x = 1, planet.w do
+            if x < planet.w - 50 then
+                local noise1 = love.math.noise(x / 256 + 0.0001, seed)
+                local noise2 = love.math.noise(x / 32 + 0.0001, seed)
+                local noise3 = love.math.noise(x / 8 + 0.0001, seed)
+                noise[x] = planet.h - (noise1 * 70 + noise2 * 8 + noise3 * 2 + 24)
+            else
+                diff = noise[1] - noise[x-51]
+                noise[x] = noise[1] + (diff / 50) * (x - planet.w)
+            end
+        end
+
+        for x = 1, planet.w do
             planet.map[x] = {}
-            local noise1 = love.math.noise(x / 256 + 0.0001, seed)
-            local noise2 = love.math.noise(x / 32 + 0.0001, seed)
-            local noise3 = love.math.noise(x / 8 + 0.0001, seed)
-            noise[x] = planet.h - (noise1 * 70 + noise2 * 8 + noise3 * 2 + 24)
             for y = 1, planet.h do
                 local noise_methane = love.math.noise(x / 58 + 0.0001, y / 58 + 0.0001, seed)
-
                 planet.map[x][y] = {}
                 planet.map[x][y].tick = 0
                 planet.map[x][y].pressure = 0
@@ -145,6 +152,7 @@ function map.generation(type)
                 planet.map[x][y].background = 'air'
                 planet.map[x][y].light = 256
                 planet.map[x][y].img_num = 1
+                planet.map[x][y].destruction = 0
 
                 if noise[x] < y then
                     if y - noise[x] <= 10 then

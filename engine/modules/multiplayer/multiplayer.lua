@@ -4,6 +4,7 @@ local funcs = require "engine/core/funcs"
 local player = require("engine/modules/player/player")
 local data = require("engine/core/data")
 local commands = require("engine/modules/multiplayer/commands")
+local planets = require("engine/modules/worlds/planets")
 
 local multiplayer = {}
 
@@ -22,10 +23,16 @@ function multiplayer.start()
         thread2_out = love.thread.getChannel('thread2_out')
     end
 
-    -- get thread channels
+    -- каналы для мультиплеерного потока
     thread0_out = love.thread.getChannel('thread0_out')
     thread1_out = love.thread.getChannel('thread1_out')
-    thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port}))
+
+    if data.multiplayer.enet_type == "host" then
+        thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, map=planets}))
+    else 
+        thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port}))
+    end
+
     player = funcs.create_message(player, nil, "Мультиплеер запущен.", os.clock(), 255, 255, 0)
 end
 
@@ -84,6 +91,8 @@ function multiplayer.update()
                 local net_event = json.decode(thread_data)
                 if net_event.type == "message" then
                     player = funcs.create_message(player, net_event.message.author, net_event.message.text, os.clock(), 255, 255, 255)
+                elseif net_event.type == "map" then
+                    planets = net_event.map
                 end
             end
         end

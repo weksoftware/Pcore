@@ -26,6 +26,9 @@ while true do
             if event_data_decode.type == "message" then
                 local net_event = {message=event_data_decode.message, type=event_data_decode.type}
                 thread1_out:push(json.encode(net_event))
+            elseif event_data_decode.type == "map" then
+                local net_event = {map=event_data_decode.map, type=event_data_decode.type}
+                thread1_out:push(json.encode(net_event))
             end
         elseif event.type == "connect" then
             server:send(json.encode({type="connect", player=player.nickname}))

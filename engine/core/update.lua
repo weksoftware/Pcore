@@ -168,13 +168,13 @@ function update.player()
                 player.y = player.y + 15
             end
             
-            if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then
-                player.y = player.y + 15
-            elseif collision.player(player.x, player.y + 5, planets[data.planet].map, player.camera.zoom) == false then
-                player.y = player.y + 5
-            elseif collision.player(player.x, player.y + 1, planets[data.planet].map, player.camera.zoom) == false then
-                player.y = player.y + 1
-            end
+            -- if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then
+            --     player.y = player.y + 15
+            -- elseif collision.player(player.x, player.y + 5, planets[data.planet].map, player.camera.zoom) == false then
+            --     player.y = player.y + 5
+            -- elseif collision.player(player.x, player.y + 1, planets[data.planet].map, player.camera.zoom) == false then
+            --     player.y = player.y + 1
+            -- end
             update_player_moving_timer = love.timer.getTime()
         end
     end

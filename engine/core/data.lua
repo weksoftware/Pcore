@@ -37,6 +37,6 @@ data.settings_values = {
 data.world_select = nil
 data.text_input = ""
 data.map_name = "1.json"
-data.multiplayer = {ip = "localhost", port = "60776", enet_type = nil}
+data.multiplayer = {ip = "localhost", port = "60776", enet_type = nil, save_name="world1.json"}
 
 return data
