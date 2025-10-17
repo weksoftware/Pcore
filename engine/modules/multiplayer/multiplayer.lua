@@ -14,6 +14,7 @@ local thread1_out = nil
 local thread2_out = nil -- Ввод консоли
 
 local update_timer = love.timer.getTime()
+local update_map_timer = love.timer.getTime()
 
 function multiplayer.start()
     thread = love.thread.newThread("engine/modules/multiplayer/" .. data.multiplayer.enet_type .. ".lua")
@@ -48,6 +49,12 @@ end
 function multiplayer.message_send(message)
     if thread0_out ~= nil then
         thread0_out:push(json.encode({type="message", message=message}))
+    end
+end
+
+function multiplayer.block_send(x, y)
+    if thread0_out ~= nil then
+        thread0_out:push(json.encode({type="block", x=x, y=y, block=planets.pcore.map[x][y]}))
     end
 end
 

@@ -3,6 +3,7 @@ local planets = require("engine/modules/worlds/planets")
 local items = require("engine/modules/items/items")
 local player = require("engine/modules/player/player")
 local blocks = require("engine/modules/worlds/blocks")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
 
 local items_funcs = {}
 
@@ -16,6 +17,7 @@ function items_funcs.simple_build(item)
         local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         if planets[data.planet].map[x][y].block == "air" then
             planets[data.planet].map[x][y].block = items[item.name].block
+            multiplayer.block_send(x, y)
             item.count = item.count - 1
             if item.count < 1 then
                 return nil
@@ -36,6 +38,7 @@ function items_funcs.match(item)
         local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         if planets[data.planet].map[x][y].fire ~= true and blocks[planets[data.planet].map[x][y].block].flammability ~= nil then
             planets[data.planet].map[x][y].fire = true
+            multiplayer.block_send(x, y)
             item.count = item.count - 1
             if item.count < 1 then
                 return nil
@@ -58,6 +61,7 @@ function items_funcs.pickaxe(item)
             if planets[data.planet].map[x][y].destruction >= 100 then
                 planets[data.planet].map[x][y].destruction = 0
                 planets[data.planet].map[x][y].block = "air"
+                multiplayer.block_send(x, y)
             end
         end
         pickaxe_timer = love.timer.getTime() + 0.2
