@@ -23,23 +23,36 @@ while true do
     while event do
         if event.type == "receive" then
             local net_event = json.decode(event.data)
+
             if net_event.type == "message" then
                 thread1_out:push(event.data)
                 host:broadcast(event.data)
+
             elseif net_event.type == "connect" then
                 peers[tostring(event.peer)] = net_event.player
                 for x = 1, map.w do
-                    new_net_event = json.encode({type="map", map=map.map[x], planet="pcore", x=x})
+                    local new_net_event = json.encode({type="map", map=map.map[x], planet="pcore", x=x})
                     event.peer:send(new_net_event)
                 end
                 local new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
                 host:broadcast(new_net_event)
-                 thread1_out:push(new_net_event)
+                thread1_out:push(new_net_event)
+
+                new_net_event = json.encode({type="player", action="connected", nickname=net_event.player, player={x=0, y=0}})
+                host:broadcast(new_net_event)
+
+            elseif net_event.type == "player" then
+                host:broadcast(event.data)
             end
+            
         elseif event.type == "disconnect" then
             local new_net_event = json.encode({type="message", message={author=nil, text=peers[tostring(event.peer)] .. " отключился"}})
-            thread1_out:push(new_net_event)
             host:broadcast(new_net_event)
+            thread1_out:push(new_net_event)
+
+            new_net_event = json.encode({type="player", action="disconnected", nickname=peers[tostring(event.peer)]})
+            host:broadcast(new_net_event)
+
             peers[tostring(event.peer)] = nil
         end
         event = host:service()

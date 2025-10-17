@@ -6,6 +6,7 @@ local data = require("engine/core/data")
 local planets = require("engine/modules/worlds/planets")
 local gui = require("engine/modules/graphics/gui/gui")
 local chat = require("engine/modules/graphics/chat/chat")
+local players = require("engine/modules/multiplayer/players")
 
 local display = {}
 
@@ -15,6 +16,7 @@ local skies = {
 }
 local sputnik1 = funcs.img_load("media/textures/sputnik2.png")
 local font1 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 48)
+local font2 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 12)
 local fire1 = funcs.animation_img_load("media/textures/fire1.png", 4)
 local destruction1 = funcs.animation_img_load("media/textures/destruction1.png", 5)
 local player1 = funcs.player_img_load("media/textures/player1.png")
@@ -85,6 +87,17 @@ function display.player()
         love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
         love.graphics.draw(player1[3 + orientation], x, y, nil, 3 * player.camera.zoom)
         love.graphics.setColor(1, 1, 1)
+        if data.multiplayer.enet_type == "client" then
+            for nickname, player_data in pairs(players) do
+                local x = (player_data.x / player.camera.zoom - player.camera.x - 12) * player.camera.zoom
+                local y = (player_data.y / player.camera.zoom - player.camera.y - 24) * player.camera.zoom
+                love.graphics.draw(player1[2], x, y, nil, 3 * player.camera.zoom)
+                love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
+                love.graphics.draw(player1[3 + 2], x, y, nil, 3 * player.camera.zoom)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.print(nickname, font1, x - font1:getWidth(nickname) / 2 + 12 * player.camera.zoom, y - 48 * player.camera.zoom)
+            end
+        end
     end
 end
 

@@ -40,7 +40,7 @@ function gui.display()
             mouse_x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
             mouse_y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         end
-        love.graphics.print('x: ' .. math.floor(player.x / 24) .. ' / y: ' .. math.floor(player.y / 24), font1, 40, height - 80)
+        love.graphics.print('x: ' .. math.floor(player.x) .. ' / y: ' .. math.floor(player.y), font1, 40, height - 80)
         love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, height - 120)
         love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, height - 160)
         love.graphics.print('block: ' .. data.blocks_for_building[data.block], font1, 40, height - 200)

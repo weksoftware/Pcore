@@ -243,6 +243,7 @@ function gui_funcs.nickname_set(window, mouse)
         data.settings.nickname = data.text_input
         funcs.save_settings()
         data.scene = "multiplayer"
+        data.text_input = ""
     end
     return window
 end

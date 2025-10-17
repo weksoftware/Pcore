@@ -1,0 +1,3 @@
+local players = {}
+
+return players

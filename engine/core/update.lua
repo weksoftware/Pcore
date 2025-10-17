@@ -142,32 +142,32 @@ function update.player()
     if planets[data.planet].game_mode == "debug" then
         if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then
             if player.moving.right == true then
-                player.x = player.x + 15
+                player.x = player.x + 10
             end
             if player.moving.left == true then
-                player.x = player.x - 15
+                player.x = player.x - 10
             end
             if player.moving.up == true then
-                player.y = player.y - 15
+                player.y = player.y - 10
             end
             if player.moving.down == true then
-                player.y = player.y + 15
+                player.y = player.y + 10
             end
             update_player_moving_timer = love.timer.getTime()
         end
     else
         if update_player_moving_timer + 0.01 < love.timer.getTime() then
             if player.moving.right == true then
-                player.x = player.x + 15
+                player.x = player.x + 10
             end
             if player.moving.left == true then
-                player.x = player.x - 15
+                player.x = player.x - 10
             end
             if player.moving.up == true then
                 player.y = player.y - 30
             end
             if player.moving.down == true then
-                player.y = player.y + 15
+                player.y = player.y + 10
             end
             
             -- if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then

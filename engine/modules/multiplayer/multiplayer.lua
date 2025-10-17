@@ -5,6 +5,7 @@ local player = require("engine/modules/player/player")
 local data = require("engine/core/data")
 local commands = require("engine/modules/multiplayer/commands")
 local planets = require("engine/modules/worlds/planets")
+local players = require("engine/modules/multiplayer/players")
 
 local multiplayer = {}
 
@@ -95,12 +96,25 @@ function multiplayer.update()
                     planets[net_event.planet].map[net_event.x] = net_event.map
                 elseif net_event.type == "block" then
                     planets.pcore.map[net_event.x][net_event.y].block = net_event.block
+                elseif net_event.type == "player" then
+                    if net_event.action == "connected" and data.settings.nickname ~= net_event.nickname then
+                        players[net_event.nickname] = net_event.player
+                    elseif net_event.action == "disconnected" then
+                        players[net_event.nickname] = nil
+                    elseif net_event.action == "move" and data.settings.nickname ~= net_event.nickname then
+                        players[net_event.nickname] = net_event.player
+                    end
                 end
+
                 thread_data = thread1_out:pop()
             end
         end
 
         multiplayer.console_update()
+
+        if data.multiplayer.enet_type == "client" then
+            thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y}}))
+        end
         
         update_timer = love.timer.getTime()
     end
