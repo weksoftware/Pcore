@@ -220,6 +220,33 @@ function gui_funcs.multiplayer_connect(window, mouse)
     return window
 end
 
+function gui_funcs.multiplayer_nickname(window, mouse)
+    window.objects[2].text = data.settings.nickname
+    return window
+end
+
+function gui_funcs.nickname(window, mouse)
+    if mouse == true then
+        data.scene = "nickname"
+        data.text_input = ""
+    end
+    return window
+end
+
+function gui_funcs.nickname_text(window, mouse)
+    window.objects[2].text = data.text_input
+    return window
+end
+
+function gui_funcs.nickname_set(window, mouse)
+    if mouse == true then
+        data.settings.nickname = data.text_input
+        funcs.save_settings()
+        data.scene = "multiplayer"
+    end
+    return window
+end
+
 function gui_funcs.update_version(window, mouse)
     window.objects[2].text = "v" .. data.version .. " by weksoftware | github.com/weksoftware/Pcore"
     return window

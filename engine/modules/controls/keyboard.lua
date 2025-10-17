@@ -96,9 +96,9 @@ function keyboard.update()
             else
                 local text = data.text_input
                 if data.multiplayer.enet_type == "client" then
-                    multiplayer.message_send({author=player.nickname, text=data.text_input})
+                    multiplayer.message_send({author=data.settings.nickname, text=data.text_input})
                 else
-                    player = funcs.create_message(player, player.nickname, data.text_input, os.clock(), 255, 255, 255)
+                    player = funcs.create_message(player, data.settings.nickname, data.text_input, os.clock(), 255, 255, 255)
                 end
 
                 

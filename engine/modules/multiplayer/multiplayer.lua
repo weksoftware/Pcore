@@ -30,7 +30,7 @@ function multiplayer.start()
     if data.multiplayer.enet_type == "host" then
         thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, map=planets}))
     else 
-        thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port}))
+        thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, nickname=data.settings.nickname}))
     end
 
     player = funcs.create_message(player, nil, "Мультиплеер запущен.", os.clock(), 255, 255, 0)
