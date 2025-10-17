@@ -119,8 +119,10 @@ end
 function update.planet()
     if update_planet_timer + 0.02 < love.timer.getTime() then
         update_planet_timer = love.timer.getTime()
-        physics.update()
-        update.blocks()
+        if data.multiplayer.enet_type ~= "client" then
+            physics.update()
+            update.blocks()
+        end
 
         planets[data.planet].subtick = planets[data.planet].subtick + 1
 

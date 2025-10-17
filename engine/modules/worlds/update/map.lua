@@ -68,7 +68,7 @@ function map.generation(type)
 
     if type == "pcore" then
         local water_h = 64
-        local seed = 4.0
+        local seed = 3.0
 
         local noise = {}
 

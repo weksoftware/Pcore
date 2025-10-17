@@ -200,6 +200,7 @@ end
 function gui_funcs.multiplayer(window, mouse)
     if mouse == true then
         data.scene = "multiplayer"
+        data.text_input = ""
     end
     return window
 end

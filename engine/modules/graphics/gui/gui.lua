@@ -34,6 +34,12 @@ function gui.display()
 
     if data.display_debug == true then
         gui.fps()
+        local mouse_x = data.mouse.x
+        local mouse_y = data.mouse.y
+        if mouse_x ~= nil then
+            mouse_x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
+            mouse_y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
+        end
         love.graphics.print('x: ' .. math.floor(player.x / 24) .. ' / y: ' .. math.floor(player.y / 24), font1, 40, height - 80)
         love.graphics.print(planets[data.planet].ticks .. ' ticks', font1, 40, height - 120)
         love.graphics.print(player.camera.zoom .. ' zoom', font1, 40, height - 160)
@@ -41,7 +47,7 @@ function gui.display()
         love.graphics.print('version ' .. data.version, font1, 40, height - 240)
         love.graphics.print('scene: ' .. data.scene, font1, 40, height - 280)
         love.graphics.print('mouse.button: ' .. tostring(data.mouse.button), font1, 40, height - 320)
-        love.graphics.print('mouse x ' .. tostring(data.mouse.x) .. '/y ' .. tostring(data.mouse.y), font1, 40, height - 360)
+        love.graphics.print('mouse x ' .. tostring(mouse_x) .. '/y ' .. tostring(mouse_y), font1, 40, height - 360)
         love.graphics.print(data.multiplayer.ip .. ":" .. data.multiplayer.port, font1, 40, height - 400)
     end
 

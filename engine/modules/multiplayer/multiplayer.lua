@@ -72,7 +72,7 @@ function multiplayer.console_update()
                     if command_in_list == true then
                         result = commands[search_command](arguments)
                         if result ~= nil then
-                            multiplayer.message_send({type="receive", body={author="server", text=result}})
+                            multiplayer.message_send({author="server", text=result})
                         end
                     else
                         print("Комманда " .. search_command .. " не найдена.")
@@ -87,13 +87,16 @@ function multiplayer.update()
     if update_timer + 0.1 < love.timer.getTime() then
         if thread1_out ~= nil then
             local thread_data = thread1_out:pop()
-            if thread_data then
+            while thread_data ~= nil do
                 local net_event = json.decode(thread_data)
                 if net_event.type == "message" then
                     player = funcs.create_message(player, net_event.message.author, net_event.message.text, os.clock(), 255, 255, 255)
                 elseif net_event.type == "map" then
-                    planets = net_event.map
+                    planets[net_event.planet].map[net_event.x] = net_event.map
+                elseif net_event.type == "block" then
+                    planets.pcore.map[net_event.x][net_event.y].block = net_event.block
                 end
+                thread_data = thread1_out:pop()
             end
         end
 
