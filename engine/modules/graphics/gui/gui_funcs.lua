@@ -137,6 +137,23 @@ function gui_funcs.settings_update(window, mouse)
     return window
 end
 
+function gui_funcs.settings_update_color(window, mouse)
+    if mouse == true then
+        if data.settings[window.id] < #data.settings_values[window.id] then
+            data.settings[window.id] = data.settings[window.id] + 1
+        else
+            data.settings[window.id] = 1
+        end
+        funcs.update_settings()
+        funcs.save_settings()
+    else
+        window.objects[2].r = data.settings_values[window.id][data.settings[window.id]].r
+        window.objects[2].g = data.settings_values[window.id][data.settings[window.id]].g
+        window.objects[2].b = data.settings_values[window.id][data.settings[window.id]].b
+    end
+    return window
+end
+
 function gui_funcs.world_select(window, mouse)
     if mouse == true then
         data.world_select = window.id

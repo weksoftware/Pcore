@@ -17,7 +17,6 @@ function items_funcs.simple_build(item)
         local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
         if planets[data.planet].map[x][y].block == "air" then
             planets[data.planet].map[x][y].block = items[item.name].block
-            multiplayer.block_send(x, y)
             item.count = item.count - 1
             if item.count < 1 then
                 return nil

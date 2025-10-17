@@ -284,6 +284,18 @@ scenes.settings.windows = {
         h=10,
         objects={
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=8, text="player_color", r=255, g=255, b=255, a=255}
+        },
+        id="player_color",
+        button=gui_funcs.settings_update_color
+    },
+    {
+        x=0,
+        y=70,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
             {type="text", x="center", y="center", size=8, text="shaders", r=255, g=255, b=255, a=255}
         },
         id="shaders",

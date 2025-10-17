@@ -18,6 +18,7 @@ local multiplayer = require("engine/modules/multiplayer/multiplayer")
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
 local autosave_timer = love.timer.getTime()
+local players = require("engine/modules/multiplayer/players")
 
 local update = {}
 
@@ -164,10 +165,27 @@ function update.player()
                 player.x = player.x - 10
             end
             if player.moving.up == true then
-                player.y = player.y - 30
+                player.y = player.y - 10
             end
             if player.moving.down == true then
                 player.y = player.y + 10
+            end
+
+            if data.multiplayer.enet_type == "client" then
+                for nickname, player_net in pairs(players) do
+                    if player_net.moving.right == true then
+                        player_net.x = player_net.x + 10
+                    end
+                    if player_net.moving.left == true then
+                        player_net.x = player_net.x - 10
+                    end
+                    if player_net.moving.up == true then
+                        player_net.y = player_net.y - 10
+                    end
+                    if player.moving.down == true then
+                        player_net.y = player_net.y + 10
+                    end
+                end
             end
             
             -- if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then

@@ -43,6 +43,8 @@ while true do
 
             elseif net_event.type == "player" then
                 host:broadcast(event.data)
+            elseif net_event.type == "block" then
+                host:broadcast(event.data)
             end
             
         elseif event.type == "disconnect" then
