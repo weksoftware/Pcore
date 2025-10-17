@@ -102,7 +102,7 @@ function multiplayer.update()
                 elseif net_event.type == "map" then
                     planets[net_event.planet].map[net_event.x] = net_event.map
                 elseif net_event.type == "block" then
-                    planets.pcore.map[net_event.x][net_event.y].block = net_event.block
+                    planets.pcore.map[net_event.x][net_event.y] = net_event.block
                 elseif net_event.type == "player" then
                     if net_event.action == "connected" and data.settings.nickname ~= net_event.nickname then
                         players[net_event.nickname] = net_event.player
