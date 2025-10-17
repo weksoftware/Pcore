@@ -45,6 +45,7 @@ while true do
                 host:broadcast(event.data)
             elseif net_event.type == "block" then
                 host:broadcast(event.data)
+                map.map[net_event.x][net_event.y] = net_event.block
             end
             
         elseif event.type == "disconnect" then

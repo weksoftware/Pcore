@@ -39,8 +39,14 @@ function multiplayer.start()
 end
 
 function multiplayer.stop()
+    thread0_out:clear()
+    thread1_out:clear()
+    thread0_out:release()
+    thread1_out:release()
     thread:release()
     if data.multiplayer.enet_type == "host" then
+        thread2_out:clear()
+        thread2_out:release()
         thread2:release()
     end
     player = funcs.create_message(player, nil, "Мультиплеер остановлен.", os.clock(), 255, 255, 0)

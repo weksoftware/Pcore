@@ -6,7 +6,7 @@ local thread0_out = love.thread.getChannel('thread0_out')
 local thread1_out = love.thread.getChannel('thread1_out')
 
 local data = nil
-while data == nil do
+while data == nil or (type(data) == "string" and json.decode(data).port) == nil do
     data = thread0_out:pop()
 end
 
@@ -15,6 +15,7 @@ data = json.decode(data)
 local nickname = data.nickname
 
 local host = enet.host_create()
+print(data.ip)
 local server = host:connect(data.ip .. ":" .. data.port)
 
 while true do
