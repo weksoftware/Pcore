@@ -61,8 +61,8 @@ function items_funcs.pickaxe(item)
             if planets[data.planet].map[x][y].destruction >= 100 then
                 planets[data.planet].map[x][y].destruction = 0
                 planets[data.planet].map[x][y].block = "air"
-                multiplayer.block_send(x, y)
             end
+            multiplayer.block_send(x, y)
         end
         pickaxe_timer = love.timer.getTime() + 0.2
     end

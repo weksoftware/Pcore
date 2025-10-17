@@ -3,7 +3,7 @@ local funcs = require "engine/core/funcs"
 local commands = {}
 -- Серверные команды
 
-commands.list = {"say"}
+commands.list = {"say", "save"}
 
 function commands.say(text)
     return text

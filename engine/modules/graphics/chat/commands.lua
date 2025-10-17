@@ -22,8 +22,8 @@ function commands.players()
     funcs.create_message(player, nil, "Список текущих игроков:", os.clock(), 152, 255, 92)
 
     funcs.create_message(player, nil, data.settings.nickname, os.clock(), 152, 255, 92)
-    for _, player_data in pairs(players) do
-        funcs.create_message(player, nil, player_data.nickname, os.clock(), 152, 255, 92)
+    for nickname, player_data in pairs(players) do
+        funcs.create_message(player, nil, nickname, os.clock(), 152, 255, 92)
     end
 end
 
