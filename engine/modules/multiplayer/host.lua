@@ -21,21 +21,15 @@ while true do
 
     while event do
         if event.type == "receive" then
-            local event_data_decode = json.decode(event.data)
-            local message = json.encode({type="receive", body=event_data_decode})
-            thread1_out:push(message)
-            host:broadcast(message)
-            -- for key, val in pairs(peers) do
-            --     if key ~= tostring(event.peer) then
-            --         local peer = host:get_peer(val)
-            --         peer:send(message)
-            --     end
-            -- end
-        elseif event.type == "connect" then
-            peers[tostring(event.peer)] = event.peer:index()
-            local message = json.encode({type="connect", body=event_data_decode})
-
-            thread1_out:push(message)
+            local net_event = json.decode(event.data)
+            if net_event.type == "message" then
+                thread1_out:push(net_event)
+                host:broadcast(net_event)
+            elseif net_event.type == "connect" then
+                new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
+                thread1_out:push(new_net_event)
+                host:broadcast(new_net_event)
+            end
         elseif event.type == "disconnect" then
             peers[tostring(event.peer)] = nil
             local message = json.encode({type="disconnect", body=event_data_decode})

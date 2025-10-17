@@ -39,7 +39,7 @@ end
 
 function multiplayer.message_send(message)
     if thread0_out ~= nil then
-        thread0_out:push(json.encode(message))
+        thread0_out:push(json.encode({type="message", message=message}))
     end
 end
 
@@ -81,13 +81,9 @@ function multiplayer.update()
         if thread1_out ~= nil then
             local thread_data = thread1_out:pop()
             if thread_data then
-                local message = json.decode(thread_data)
-                if message.type == "receive" then
-                    player = funcs.create_message(player, message.body.author, message.body.text, os.clock(), 255, 255, 255)
-                elseif message.type == "connect" then
-                    --player = funcs.create_message(player, nil, message.body.author .. " подключился.", os.clock(), 255, 255, 0)
-                elseif message.type == "disconnect" then
-                    --player = funcs.create_message(player, nil, message.body.author .. " отключился.", os.clock(), 255, 255, 0)
+                local net_event = json.decode(thread_data)
+                if net_event.type == "message" then
+                    player = funcs.create_message(player, net_event.message.author, net_event.message.text, os.clock(), 255, 255, 255)
                 end
             end
         end

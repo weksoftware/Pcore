@@ -1,5 +1,6 @@
 local enet = require "enet"
 local json = require "engine/libs/json"
+local player = require "engine/modules/player/player"
 
 -- get thread channels
 local thread0_out = love.thread.getChannel('thread0_out')
@@ -22,8 +23,12 @@ while true do
     while event do
         if event.type == "receive" then
             local event_data_decode = json.decode(event.data)
-            local message = {body=event_data_decode.body, type=event_data_decode.type}
-            thread1_out:push(json.encode(message))
+            if event_data_decode.type == "message" then
+                local net_event = {message=event_data_decode.message, type=event_data_decode.type}
+                thread1_out:push(json.encode(net_event))
+            end
+        elseif event.type == "connect" then
+            server:send(json.encode({type="connect", player=player.nickname}))
         end
     
         event = host:service()
