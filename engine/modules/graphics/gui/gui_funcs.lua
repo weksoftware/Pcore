@@ -4,6 +4,7 @@ local map = require("engine/modules/worlds/update/map")
 local planets = require("engine/modules/worlds/planets")
 local player = require("engine/modules/player/player")
 local fonts = require("engine/modules/graphics/fonts")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
 
 local gui_funcs = {}
 
@@ -192,6 +193,28 @@ function gui_funcs.world_create(window, mouse)
         funcs.save_map(data.text_input .. ".json")
         data.map_name = data.text_input .. ".json"
         gui_funcs.play(window, mouse)
+    end
+    return window
+end
+
+function gui_funcs.multiplayer(window, mouse)
+    if mouse == true then
+        data.scene = "multiplayer"
+    end
+    return window
+end
+
+function gui_funcs.multiplayer_ip(window, mouse)
+    window.objects[2].text = data.text_input
+    return window
+end
+
+function gui_funcs.multiplayer_connect(window, mouse)
+    if mouse == true then
+        data.multiplayer.enet_type = "client"
+        data.multiplayer.ip = data.text_input
+        multiplayer.start()
+        data.scene = "game"
     end
     return window
 end

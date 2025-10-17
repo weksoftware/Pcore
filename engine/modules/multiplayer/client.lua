@@ -1,13 +1,19 @@
 local enet = require "enet"
 local json = require "engine/libs/json"
-local data = require("engine/core/data")
 
 -- get thread channels
 local thread0_out = love.thread.getChannel('thread0_out')
 local thread1_out = love.thread.getChannel('thread1_out')
 
+local data = nil
+while data == nil do
+    data = thread0_out:pop()
+end
+
+data = json.decode(data)
+
 local host = enet.host_create()
-local server = host:connect(data.multiplayer.ip .. ":" .. data.multiplayer.port)
+local server = host:connect(data.ip .. ":" .. data.port)
 
 while true do
     local event = host:service()

@@ -5,6 +5,7 @@ local player = require("engine/modules/player/player")
 local planets = require("engine/modules/worlds/planets")
 local blocks = require("engine/modules/worlds/blocks")
 local commands = require("engine/modules/graphics/chat/commands")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
 
 local keyboard = {}
 
@@ -39,9 +40,14 @@ function love.keypressed(key)
         elseif key == 'x' then
             funcs.load_map()
         elseif key == 'q' then
-            if data.settings_values.autosave[data.settings.autosave] ~= false then
-                funcs.save_map(data.map_name)
-            end 
+            if data.multiplayer.enet_type ~= "client" then
+                if data.settings_values.autosave[data.settings.autosave] ~= false then
+                    funcs.save_map(data.map_name)
+                end
+            else
+                multiplayer.stop()
+                data.multiplayer.enet_type = nil
+            end
             data.scene = "menu"
         elseif key == 'l' then
             data.planet = 'mars'

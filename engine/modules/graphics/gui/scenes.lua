@@ -43,9 +43,9 @@ scenes.menu.windows = {
         h=10,
         objects={
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
-            {type="text", x="center", y="center", size=12, text="Наша команда", r=255, g=255, b=255, a=255}
+            {type="text", x="center", y="center", size=12, text="Мультиплеер", r=255, g=255, b=255, a=255}
         },
-        button=gui_funcs.team
+        button=gui_funcs.multiplayer
     },
     {
         x=25,
@@ -54,6 +54,17 @@ scenes.menu.windows = {
         h=10,
         objects={
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=12, text="Наша команда", r=255, g=255, b=255, a=255}
+        },
+        button=gui_funcs.team
+    },
+    {
+        x=25,
+        y=65,
+        w=50,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
             {type="text", x="center", y="center", size=12, text="Выход", r=255, g=255, b=255, a=255}
         },
         button=gui_funcs.exit
@@ -341,6 +352,54 @@ scenes.new_world.windows = {
             {type="text", x="center", y="center", size=12, text="Назад", r=255, g=255, b=255, a=255}
         },
         button=gui_funcs.play
+    }
+}
+
+scenes.multiplayer = {}
+scenes.multiplayer.display_game = true
+scenes.multiplayer.windows = {
+    {
+        x=0,
+        y=0,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=12, text="Подключение к сетевой игре", r=255, g=255, b=255, a=255}
+        }
+    },
+    {
+        x=0,
+        y=10,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=120},
+            {type="text", x="center", y="center", size=8, text="Айпи адрес...", r=255, g=255, b=255, a=255}
+        },
+        button=gui_funcs.multiplayer_ip
+    },
+    {
+        x=0,
+        y=20,
+        w=100,
+        h=15,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=10, text="Подключиться", r=255, g=255, b=255, a=255}
+        },
+        button=gui_funcs.multiplayer_connect
+    },
+    {
+        x=0,
+        y=90,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=12, text="Назад", r=255, g=255, b=255, a=255}
+        },
+        button=gui_funcs.menu
     }
 }
 

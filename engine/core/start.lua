@@ -41,7 +41,7 @@ function start.game()
 
     planets[data.planet] = map.generation("pcore")
 
-    if data.multiplayer.enet_type ~= nil then
+    if data.multiplayer.enet_type == "host" then
         multiplayer.start()
     end
 
