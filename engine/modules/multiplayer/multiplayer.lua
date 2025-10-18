@@ -116,7 +116,7 @@ function multiplayer.update()
                 elseif net_event.type == "block" then
                     planets.pcore.map[net_event.x][net_event.y] = net_event.block
                 elseif net_event.type == "player" then
-                    if net_event.action == "connected" then--and data.settings.nickname ~= net_event.nickname then
+                    if net_event.action == "connected" and data.settings.nickname ~= net_event.nickname then
                         players.new[net_event.nickname] = net_event.player
                         players.old[net_event.nickname] = net_event.player
                         players.pseudo[net_event.nickname] = net_event.player
@@ -124,7 +124,7 @@ function multiplayer.update()
                         players.new[net_event.nickname] = nil
                         players.old[net_event.nickname] = nil
                         players.pseudo[net_event.nickname] = nil
-                    elseif net_event.action == "move" then--and data.settings.nickname ~= net_event.nickname then
+                    elseif net_event.action == "move" and data.settings.nickname ~= net_event.nickname then
                         players.old[net_event.nickname] = players.pseudo[net_event.nickname]
                         players.new[net_event.nickname] = net_event.player
                     end
