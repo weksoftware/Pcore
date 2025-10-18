@@ -155,7 +155,7 @@ function multiplayer.update()
             -- else
             --     x = 1
             -- end
-            if update_players_area_timer + 0.5 < love.timer.getTime() then
+            if false and update_players_area_timer + 0.5 < love.timer.getTime() then
                 local blocks_for_update = {}
                 for i = 1, planets.pcore.w do
                     table.insert(blocks_for_update, false)
