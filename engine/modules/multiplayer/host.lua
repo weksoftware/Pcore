@@ -1,6 +1,5 @@
 local enet = require "enet"
 local json = require "engine/libs/json"
-local update = require("engine/core/update")
 
 -- get thread channels
 local thread0_out = love.thread.getChannel('thread0_out')
@@ -12,7 +11,7 @@ while data == nil do
 end
 
 data = json.decode(data)
-local planets = data.map -- игровая карта
+local map = data.map.pcore -- игровая карта на момент включения сервера
 
 local host = enet.host_create(data.ip .. ":" .. data.port)
 local peers = {}
@@ -20,8 +19,6 @@ local peers = {}
 while true do
     local event = host:service()
     local data = thread0_out:pop()
-
-    planets = update.planet("pcore", planets)
 
     while event do
         if event.type == "receive" then
@@ -33,30 +30,22 @@ while true do
 
             elseif net_event.type == "connect" then
                 peers[tostring(event.peer)] = net_event.player
-                for x = 1, planets.pcore.w do
-                    local new_net_event = json.encode({type="map", map=planets.pcore.map[x], planet="pcore", x=x})
+                for x = 1, map.w do
+                    local new_net_event = json.encode({type="map", map=map.map[x], planet="pcore", x=x})
                     event.peer:send(new_net_event)
                 end
                 local new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
                 host:broadcast(new_net_event)
                 thread1_out:push(new_net_event)
 
-                new_net_event = json.encode({
-                    type="player", 
-                    action="connected", 
-                    nickname=net_event.player, 
-                    player={x=0, y=0, 
-                    moving={right=false, left=false, up=false, down=false}, 
-                    color=1, 
-                    orientation="down"}})
-
+                new_net_event = json.encode({type="player", action="connected", nickname=net_event.player, player={x=0, y=0}})
                 host:broadcast(new_net_event)
 
             elseif net_event.type == "player" then
                 host:broadcast(event.data)
             elseif net_event.type == "block" then
                 host:broadcast(event.data)
-                planets.pcore.map[net_event.x][net_event.y] = net_event.block
+                map.map[net_event.x][net_event.y] = net_event.block
             end
             
         elseif event.type == "disconnect" then

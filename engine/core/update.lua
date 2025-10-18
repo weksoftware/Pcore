@@ -13,6 +13,7 @@ end
 local items = require("engine/modules/items/items")
 local items_funcs = require("engine/modules/items/items_funcs")
 local collision = require("engine/modules/player/collision")
+local multiplayer = require("engine/modules/multiplayer/multiplayer")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
@@ -64,9 +65,8 @@ function update.multiblock(block, x, y, planet_w, planet_h)
     end
 end
 
-function update.blocks(planet, world)
-    local planet_name = planet
-    local planet = world[planet]
+function update.blocks()
+    local planet = planets[data.planet]
     local h = planet.h
     local w = planet.w
     local subtick_h = h / 10 --Высота, которую игра будет обрабатывать за один сабтик
@@ -74,70 +74,65 @@ function update.blocks(planet, world)
 
     for x = 1, w do
         for y = start_h, start_h - subtick_h + 1, -1 do
-            if blocks[world[planet_name].map[x][y].block].multiblock == nil then
-                world[planet_name].map[x][y].img_num = funcs.select_block_img(world[planet_name].map, x, y, world[planet_name].h, world[planet_name].w)
+            if blocks[planets[data.planet].map[x][y].block].multiblock == nil then
+                planets[data.planet].map[x][y].img_num = funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)
             else
-                local multiblock = world[planet_name].map[x][y].multiblock
-                world[planet_name].map[x][y].img_num = multiblock.y_in_block * 8 + multiblock.x_in_block + 1
-                local block = world[planet_name].map[x][y].block
+                local multiblock = planets[data.planet].map[x][y].multiblock
+                planets[data.planet].map[x][y].img_num = multiblock.y_in_block * 8 + multiblock.x_in_block + 1
+                local block = planets[data.planet].map[x][y].block
                 if multiblock.x_in_block == 0 and multiblock.y_in_block == 0 then
-                    update.multiblock(world[planet_name].map[x][y].block, x, y, w, h)
-                elseif world[planet_name].map[multiblock.x][multiblock.y].block ~= world[planet_name].map[x][y].block then
+                    update.multiblock(planets[data.planet].map[x][y].block, x, y, w, h)
+                elseif planets[data.planet].map[multiblock.x][multiblock.y].block ~= planets[data.planet].map[x][y].block then
                     for xi = 0, blocks[block].multiblock.w - 1 do
                         for yi = 0, blocks[block].multiblock.h - 1 do
-                            world[planet_name].map[multiblock.x + xi][multiblock.y + yi].block = 'air'
+                            planets[data.planet].map[multiblock.x + xi][multiblock.y + yi].block = 'air'
                         end
                     end
                 end
             end
-            if world[planet_name].map[x][y].fire ~= nil then
+            if planets[data.planet].map[x][y].fire ~= nil then
                 if love.math.random() >= 0.4 then
                     local orientation = love.math.random(4)
-                    if orientation == 1 and blocks[world[planet_name].map[funcs.coordx(x - 1, h, w)][y].block].flammability ~= nil then
-                        world[planet_name].map[funcs.coordx(x - 1, h, w)][y].fire = true
-                    elseif orientation == 2 and blocks[world[planet_name].map[x][funcs.coordy(y + 1, h, w)].block].flammability ~= nil then
-                        world[planet_name].map[x][funcs.coordy(y + 1, h, w)].fire = true
-                    elseif orientation == 3 and blocks[world[planet_name].map[funcs.coordx(x + 1, h, w)][y].block].flammability ~= nil then
-                        world[planet_name].map[funcs.coordx(x + 1, h, w)][y].fire = true
-                    elseif orientation == 4 and blocks[world[planet_name].map[x][funcs.coordy(y - 1, h, w)].block].flammability ~= nil then
-                        world[planet_name].map[x][funcs.coordy(y - 1, h, w)].fire = true
+                    if orientation == 1 and blocks[planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].block].flammability ~= nil then
+                        planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].fire = true
+                    elseif orientation == 2 and blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].flammability ~= nil then
+                        planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].fire = true
+                    elseif orientation == 3 and blocks[planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].block].flammability ~= nil then
+                        planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].fire = true
+                    elseif orientation == 4 and blocks[planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].block].flammability ~= nil then
+                        planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].fire = true
                     end
                 end
-                if love.math.random() >= blocks[world[planet_name].map[x][y].block].flammability then
-                    world[planet_name].map[x][y].fire = nil
-                    if blocks[world[planet_name].map[x][y].block].combustion_product ~= nil then
-                        world[planet_name].map[x][y].block = blocks[world[planet_name].map[x][y].block].combustion_product
+                if love.math.random() >= blocks[planets[data.planet].map[x][y].block].flammability then
+                    planets[data.planet].map[x][y].fire = nil
+                    if blocks[planets[data.planet].map[x][y].block].combustion_product ~= nil then
+                        planets[data.planet].map[x][y].block = blocks[planets[data.planet].map[x][y].block].combustion_product
                     else
-                        world[planet_name].map[x][y].block = 'air'
+                        planets[data.planet].map[x][y].block = 'air'
                     end
-                    world[planet_name].map[x][y].destruction = 0
+                    planets[data.planet].map[x][y].destruction = 0
                 end
             end
         end
     end
-
-    return world
 end
       
-function update.planet(planet, world)
+function update.planet()
     if update_planet_timer + 0.02 < love.timer.getTime() then
         update_planet_timer = love.timer.getTime()
         if data.multiplayer.enet_type ~= "client" then
-            world = physics.update(planet, world)
-            world = update.blocks(planet, world)
+            physics.update()
+            update.blocks()
         end
 
-        world[planet].subtick = world[planet].subtick + 1
+        planets[data.planet].subtick = planets[data.planet].subtick + 1
 
-        if world[planet].subtick == 10 then
-            if data.multiplayer.enet_type ~= "host" then
-                light.update()
-            end
-            world[planet].subtick = 0
-            world[planet].ticks = world[planet].ticks + 1
+        if planets[data.planet].subtick == 10 then
+            light.update()
+            planets[data.planet].subtick = 0
+            planets[data.planet].ticks = planets[data.planet].ticks + 1
         end
     end
-    return world
 end
 
 function update.player()
@@ -230,14 +225,18 @@ function update.autosave()
 end
 
 function update.all()
+    if data.multiplayer.enet_type ~= nil then
+        multiplayer.update()
+    end
+
     if data.multiplayer.enet_type ~= "host" then
         update.mouse()
         update.player()
         keyboard.update()
         gui.update()
-        planets = update.planet(data.planet, planets)
-        update.autosave()
     end
+    update.planet()
+    update.autosave()
 end
 
 return update
