@@ -34,6 +34,8 @@ while true do
                 thread1_out:push(event.data)
             elseif event_data_decode.type == "player" then
                 thread1_out:push(event.data)
+            elseif event_data_decode.type == "map_done" then
+                thread1_out:push(event.data)
             end
         elseif event.type == "connect" then
             server:send(json.encode({type="connect", player=nickname}))

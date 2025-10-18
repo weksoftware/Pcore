@@ -327,4 +327,13 @@ function funcs.player_coords_loop(x, y, planet_w, planet_h)
     return x, y
 end
 
+function funcs.player_x_loop(x, planet_w)
+    if x < 0 then
+        x = planet_w - math.abs(x) % planet_w
+    elseif x > planet_w then
+        x = x % planet_w
+    end
+    return x
+end
+
 return funcs

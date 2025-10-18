@@ -5,7 +5,7 @@ local players = require("engine/modules/multiplayer/players")
 
 local commands = {}
 
-commands.list = {"help", "rndshader", "players"}
+commands.list = {"help", "rndshader", "players", "spawn"}
 
 function commands.help()
     funcs.create_message(player, nil, "Список команд:", os.clock(), 152, 255, 92)

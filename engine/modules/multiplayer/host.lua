@@ -1,5 +1,6 @@
 local enet = require "enet"
 local json = require "engine/libs/json"
+local server_config = require("server_config")
 
 -- get thread channels
 local thread0_out = love.thread.getChannel('thread0_out')
@@ -34,7 +35,14 @@ while true do
                     local new_net_event = json.encode({type="map", map=map.map[x], planet="pcore", x=x})
                     event.peer:send(new_net_event)
                 end
-                local new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
+                new_net_event = json.encode({
+                    type="map_done", 
+                    hello_message=server_config.hello_message, 
+                    spawn_x=server_config.spawn_x,
+                    spawn_y=server_config.spawn_y
+                }})
+                event.peer:send(new_net_event)
+                new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
                 host:broadcast(new_net_event)
                 thread1_out:push(new_net_event)
 
@@ -42,11 +50,13 @@ while true do
                     type="player", 
                     action="connected", 
                     nickname=net_event.player, 
-                    player={x=0, y=0, color=1, orientation="down"}})
+                    player={x=server_config.spawn_x, y=server_config.spawn_y, color=1, orientation="down"}})
                 host:broadcast(new_net_event)
+                thread1_out:push(new_net_event)
 
             elseif net_event.type == "player" then
-                host:broadcast(event.data)
+                host:broadcast(event.data, 0, "unreliable")
+                thread1_out:push(event.data)
             elseif net_event.type == "block" then
                 thread1_out:push(event.data)
                 host:broadcast(event.data)
@@ -60,6 +70,7 @@ while true do
 
             new_net_event = json.encode({type="player", action="disconnected", nickname=peers[tostring(event.peer)]})
             host:broadcast(new_net_event)
+            thread1_out:push(event.data)
 
             peers[tostring(event.peer)] = nil
         end

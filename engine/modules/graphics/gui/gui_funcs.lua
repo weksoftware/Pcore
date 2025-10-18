@@ -232,7 +232,7 @@ function gui_funcs.multiplayer_connect(window, mouse)
         data.multiplayer.enet_type = "client"
         data.multiplayer.ip = data.text_input
         multiplayer.start()
-        data.scene = "game"
+        data.scene = "multiplayer_load"
     end
     return window
 end

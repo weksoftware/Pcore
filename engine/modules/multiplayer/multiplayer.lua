@@ -15,6 +15,7 @@ local thread2_out = nil -- Ввод консоли
 
 local update_timer = love.timer.getTime()
 local update_map_timer = love.timer.getTime()
+local update_players_area_timer = love.timer.getTime()
 
 local x = 1 -- Координата возвращений обновлений карты хосту
 
@@ -33,15 +34,12 @@ function multiplayer.start()
 
     if data.multiplayer.enet_type == "host" then
         thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, map=planets}))
-        blocks_for_update_template = {}
-        for i = 1, planets.pcore.w do
-            table.insert(blocks_for_update_template, false)
-        end
     else 
         thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, nickname=data.settings.nickname}))
     end
 
     player = funcs.create_message(player, nil, "Мультиплеер запущен.", os.clock(), 255, 255, 0)
+    multiplayer_is_loaded = false
 end
 
 function multiplayer.stop()
@@ -56,6 +54,7 @@ function multiplayer.stop()
         thread2:release()
     end
     player = funcs.create_message(player, nil, "Мультиплеер остановлен.", os.clock(), 255, 255, 0)
+    multiplayer_is_loaded = false
 end
 
 function multiplayer.message_send(message)
@@ -128,6 +127,12 @@ function multiplayer.update()
                         players.old[net_event.nickname] = players.pseudo[net_event.nickname]
                         players.new[net_event.nickname] = net_event.player
                     end
+                elseif net_event.type == "map_done" then
+                    player.x = net_event.spawn_x
+                    player.y = net_event.spawn_y
+                    player = funcs.create_message(player, "server", net_event.hello_message, os.clock(), 255, 255, 255)
+                    multiplayer_is_loaded = true
+                    data.scene = "game"
                 end
 
                 thread_data = thread1_out:pop()
@@ -136,23 +141,43 @@ function multiplayer.update()
 
         multiplayer.console_update()
 
-        if data.multiplayer.enet_type == "client" then
+        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == true then
             thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, color=data.settings.player_color, orientation=player.orientation}}))
         end
 
         if data.multiplayer.enet_type == "host" then
-            for i = x, x + 4 do
-                thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
-            end
-            if x + 5 < planets.pcore.w then
-                x = x + 5
-            else
-                x = 1
-            end
-            -- local blocks_for_update = blocks_for_update_template
-            -- for nickname, player_data in pairs(players) then
-            --     local coord_x = player_data.x/24/player_data.zoom+1
+            -- for i = x, x + 4 do
+            --     thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
             -- end
+            -- if x + 5 < planets.pcore.w then
+            --     x = x + 5
+            -- else
+            --     x = 1
+            -- end
+            if update_players_area_timer + 0.5 < love.timer.getTime() then
+                local blocks_for_update = {}
+                for i = 1, planets.pcore.w do
+                    table.insert(blocks_for_update, false)
+                end
+
+                for nickname, player_data in pairs(players.new) do
+                    print(nickname .. "|" .. player_data.x)
+                    for i = math.floor(player_data.x) - 40, math.floor(player_data.x) + 40 do
+                        local coord = funcs.player_x_loop(i, planets.pcore.w)
+                        blocks_for_update[coord] = true
+                    end
+                end
+
+                for i = 1, planets.pcore.w do
+                    if blocks_for_update[i] == true then
+                        thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
+                        print(i)
+                    end
+                end
+                print(tostring(planets.pcore.w) .. "-------")
+                blocks_for_update = nil
+                update_players_area_timer = love.timer.getTime()
+            end
         end
         
         update_timer = love.timer.getTime()
