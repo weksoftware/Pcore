@@ -161,7 +161,6 @@ function multiplayer.update()
                 end
 
                 for nickname, player_data in pairs(players.new) do
-                    print(nickname .. "|" .. player_data.x)
                     for i = math.floor(player_data.x) - 40, math.floor(player_data.x) + 40 do
                         local coord = funcs.player_x_loop(i, planets.pcore.w)
                         blocks_for_update[coord] = true
@@ -171,10 +170,8 @@ function multiplayer.update()
                 for i = 1, planets.pcore.w do
                     if blocks_for_update[i] == true then
                         thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
-                        print(i)
                     end
                 end
-                print(tostring(planets.pcore.w) .. "-------")
                 blocks_for_update = nil
                 update_players_area_timer = love.timer.getTime()
             end
