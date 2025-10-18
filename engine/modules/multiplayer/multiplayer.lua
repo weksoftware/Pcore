@@ -16,6 +16,8 @@ local thread2_out = nil -- Ввод консоли
 local update_timer = love.timer.getTime()
 local update_map_timer = love.timer.getTime()
 
+local x = 1 -- Координата возвращений обновлений карты хосту
+
 function multiplayer.start()
     thread = love.thread.newThread("engine/modules/multiplayer/" .. data.multiplayer.enet_type .. ".lua")
     thread:start() -- Мультиплеер
@@ -127,6 +129,17 @@ function multiplayer.update()
 
         if data.multiplayer.enet_type == "client" then
             thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, moving=player.moving, color=data.settings.player_color, orientation=player.orientation}}))
+        end
+
+        if data.multiplayer.enet_type == "host" then
+            for i = x, x + 9 do
+                thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
+            end
+            if x + 10 < planets.pcore.w then
+                x = x + 10
+            else
+                x = 1
+            end
         end
         
         update_timer = love.timer.getTime()

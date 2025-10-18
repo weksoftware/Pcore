@@ -44,6 +44,7 @@ while true do
             elseif net_event.type == "player" then
                 host:broadcast(event.data)
             elseif net_event.type == "block" then
+                thread1_out:push(event.data)
                 host:broadcast(event.data)
                 map.map[net_event.x][net_event.y] = net_event.block
             end
@@ -64,6 +65,10 @@ while true do
     if data then
         if data ~= "users" then
             host:broadcast(data)
+            local net_event = json.decode(data)
+            if net_event.type == "map" then
+                map.map[net_event.x] = net_event.map
+            end
         else
             thread1_out:push(json.encode({type="users", list=users}))
         end
