@@ -40,7 +40,7 @@ while true do
                     hello_message=server_config.hello_message, 
                     spawn_x=server_config.spawn_x,
                     spawn_y=server_config.spawn_y
-                }})
+                })
                 event.peer:send(new_net_event)
                 new_net_event = json.encode({type="message", message={author=nil, text=net_event.player .. " подключился"}})
                 host:broadcast(new_net_event)

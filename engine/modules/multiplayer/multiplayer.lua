@@ -6,6 +6,7 @@ local data = require("engine/core/data")
 local commands = require("engine/modules/multiplayer/commands")
 local planets = require("engine/modules/worlds/planets")
 local players = require("engine/modules/multiplayer/players")
+local server_config = require("server_config")
 
 local multiplayer = {}
 
@@ -161,7 +162,7 @@ function multiplayer.update()
                 end
 
                 for nickname, player_data in pairs(players.new) do
-                    for i = math.floor(player_data.x) - 40, math.floor(player_data.x) + 40 do
+                    for i = math.floor(player_data.x) - server_config.update_area, math.floor(player_data.x) + server_config.update_area do
                         local coord = funcs.player_x_loop(i, planets.pcore.w)
                         blocks_for_update[coord] = true
                     end
