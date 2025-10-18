@@ -38,7 +38,11 @@ while true do
                 host:broadcast(new_net_event)
                 thread1_out:push(new_net_event)
 
-                new_net_event = json.encode({type="player", action="connected", nickname=net_event.player, player={x=0, y=0}})
+                new_net_event = json.encode({
+                    type="player", 
+                    action="connected", 
+                    nickname=net_event.player, 
+                    player={x=0, y=0, color=1, orientation="down"}})
                 host:broadcast(new_net_event)
 
             elseif net_event.type == "player" then

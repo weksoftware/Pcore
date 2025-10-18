@@ -88,16 +88,16 @@ function display.player()
         love.graphics.draw(player1[3 + orientation], x, y, nil, 3 * player.camera.zoom)
         love.graphics.setColor(1, 1, 1)
         if data.multiplayer.enet_type == "client" then
-            for nickname, player_data in pairs(players) do
+            for nickname, player_data in pairs(players.pseudo) do
                 local orientation = 2
-                if player_data.orientation == "left" then
+                if players.new[nickname].orientation == "left" then
                     orientation = 1
-                elseif player_data.orientation == "right" then
+                elseif players.new[nickname].orientation == "right" then
                     orientation = 3
                 end
                 local x = (player_data.x * 24 / player.camera.zoom - player.camera.x - 12) * player.camera.zoom
                 local y = (player_data.y * 24 / player.camera.zoom - player.camera.y - 24) * player.camera.zoom
-                color = data.settings_values.player_color[player_data.color]
+                color = data.settings_values.player_color[players.new[nickname].color]
                 love.graphics.draw(player1[orientation], x, y, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
                 love.graphics.draw(player1[3 + orientation], x, y, nil, 3 * player.camera.zoom)

@@ -117,11 +117,16 @@ function multiplayer.update()
                     planets.pcore.map[net_event.x][net_event.y] = net_event.block
                 elseif net_event.type == "player" then
                     if net_event.action == "connected" then--and data.settings.nickname ~= net_event.nickname then
-                        players[net_event.nickname] = net_event.player
+                        players.new[net_event.nickname] = net_event.player
+                        players.old[net_event.nickname] = net_event.player
+                        players.pseudo[net_event.nickname] = net_event.player
                     elseif net_event.action == "disconnected" then
-                        players[net_event.nickname] = nil
+                        players.new[net_event.nickname] = nil
+                        players.old[net_event.nickname] = nil
+                        players.pseudo[net_event.nickname] = nil
                     elseif net_event.action == "move" then--and data.settings.nickname ~= net_event.nickname then
-                        players[net_event.nickname] = net_event.player
+                        players.old[net_event.nickname] = players.pseudo[net_event.nickname]
+                        players.new[net_event.nickname] = net_event.player
                     end
                 end
 
@@ -132,8 +137,7 @@ function multiplayer.update()
         multiplayer.console_update()
 
         if data.multiplayer.enet_type == "client" then
-            thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, moving=player.moving, color=data.settings.player_color, orientation=player.orientation, zoom=player.camera.zoom}}))
-            thread0_out:push(json.encode({type="block", x=math.floor(player.x/player.camera.zoom+1), y=math.floor(player.y/player.camera.zoom+1), block=planets.pcore.map[50][50]}))
+            thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, color=data.settings.player_color, orientation=player.orientation}}))
         end
 
         if data.multiplayer.enet_type == "host" then

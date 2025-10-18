@@ -5,7 +5,8 @@ local chat = {}
 local font1 = love.graphics.newFont("media/fonts/basis33/regular.ttf", 48)
 
 function chat.display()
-    local start_y = 870 - player.chat_size * 48 - player.chat_scroll * 48
+    local width, height = love.graphics.getDimensions()
+    local start_y = height - 210 - player.chat_size * 48 - player.chat_scroll * 48
     for i = 1, player.chat_size do
         if player.chat[i].time + 5 >= os.clock() or player.chat_status == 'open' then
             if player.chat[i].w == nil then
@@ -39,7 +40,7 @@ function chat.display()
         end
 
         love.graphics.setColor(0, 0, 0, 0.5)
-        love.graphics.rectangle("fill", 0, 950, w, 48)
+        love.graphics.rectangle("fill", 0, height - 160, w, 48)
         love.graphics.setColor(1, 1, 1)
 
         if data.text_input ~= '' then
@@ -47,10 +48,10 @@ function chat.display()
             if os.time() % 2 == 1 then
                 cursor = '|'
             end
-            love.graphics.print(' ' .. data.text_input .. cursor, font1, 0, 950)
+            love.graphics.print(' ' .. data.text_input .. cursor, font1, 0, height - 160)
         else
             love.graphics.setColor(0.7, 0.7, 0.7)
-            love.graphics.print(' Введите сообщение...', font1, 0, 950)
+            love.graphics.print(' Введите сообщение...', font1, 0, height - 160)
             love.graphics.setColor(1, 1, 1)
         end
     end

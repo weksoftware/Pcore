@@ -312,4 +312,19 @@ function funcs.reverse_sort(num1, num2)
     return num1 > num2
 end
 
+function funcs.player_coords_loop(x, y, planet_w, planet_h)
+    if x < 0 then
+        x = planet_w - math.abs(x) % planet_w
+    elseif x > planet_w then
+        x = x % planet_w
+    end
+
+    if y < 0 then
+        y = planet_h - math.abs(y) % planet_h
+    elseif y > planet_h then
+        y = y % planet_h
+    end
+    return x, y
+end
+
 return funcs

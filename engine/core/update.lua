@@ -159,31 +159,37 @@ function update.player()
     else
         if update_player_moving_timer + 0.01 < love.timer.getTime() then
             if player.moving.right == true then
-                player.x = player.x + 0.5
+                player.x = player.x + 0.4
             end
             if player.moving.left == true then
-                player.x = player.x - 0.5
+                player.x = player.x - 0.4
             end
             if player.moving.up == true then
-                player.y = player.y - 0.5
+                player.y = player.y - 0.4
             end
             if player.moving.down == true then
-                player.y = player.y + 0.5
+                player.y = player.y + 0.4
             end
 
+            player.x, player.y = funcs.player_coords_loop(player.x, player.y, planets[data.planet].w, planets[data.planet].h)
+
             if data.multiplayer.enet_type == "client" then
-                for nickname, player_net in pairs(players) do
-                    if player_net.moving.right == true then
-                        player_net.x = player_net.x + 0.5
+                for nickname, player_net in pairs(players.pseudo) do
+                    local diff_x = players.new[nickname].x - players.old[nickname].x
+                    local diff_y = players.new[nickname].y - players.old[nickname].y
+                    local diff_pseudo_x = players.new[nickname].x - players.pseudo[nickname].x
+                    local diff_pseudo_y = players.new[nickname].y - players.pseudo[nickname].y
+
+                    if math.abs(diff_pseudo_x) > math.abs(diff_x / 8) then
+                        players.pseudo[nickname].x = players.pseudo[nickname].x + diff_x / 9
+                    else
+                        players.pseudo[nickname].x = players.new[nickname].x
                     end
-                    if player_net.moving.left == true then
-                        player_net.x = player_net.x - 0.5
-                    end
-                    if player_net.moving.up == true then
-                        player_net.y = player_net.y - 0.5
-                    end
-                    if player.moving.down == true then
-                        player_net.y = player_net.y + 0.5
+
+                    if math.abs(diff_pseudo_y) > math.abs(diff_y / 8) then
+                        players.pseudo[nickname].y = players.pseudo[nickname].y + diff_y / 9
+                    else
+                        players.pseudo[nickname].y = players.new[nickname].y
                     end
                 end
             end
