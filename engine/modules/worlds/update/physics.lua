@@ -5,8 +5,9 @@ local funcs = require("engine/core/funcs")
 
 local physics = {}
 
-function physics.update()
-    local planet = planets[data.planet]
+function physics.update(planet, world)
+    local planet_name = planet
+    local planet = world[planet_name]
     local h = planet.h
     local w = planet.w
     local subtick_h = h / 10 --Высота, которую игра будет обрабатывать за один сабтик
@@ -97,8 +98,8 @@ function physics.update()
     end
 
 
-
-    planets[data.planet] = planet
+    world[planet_name] = planet
+    return world
 end
 
 return physics

@@ -15,6 +15,9 @@ function love.load(arg)
 end
 
 function love.update(dt)
+    if data.multiplayer.enet_type ~= nil then
+        multiplayer.update()
+    end
     update.all()
 end
 
