@@ -33,6 +33,10 @@ function multiplayer.start()
 
     if data.multiplayer.enet_type == "host" then
         thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, map=planets}))
+        blocks_for_update_template = {}
+        for i = 1, planets.pcore.w do
+            table.insert(blocks_for_update_template, false)
+        end
     else 
         thread0_out:push(json.encode({ip=data.multiplayer.ip, port=data.multiplayer.port, nickname=data.settings.nickname}))
     end
@@ -112,11 +116,11 @@ function multiplayer.update()
                 elseif net_event.type == "block" then
                     planets.pcore.map[net_event.x][net_event.y] = net_event.block
                 elseif net_event.type == "player" then
-                    if net_event.action == "connected" and data.settings.nickname ~= net_event.nickname then
+                    if net_event.action == "connected" then--and data.settings.nickname ~= net_event.nickname then
                         players[net_event.nickname] = net_event.player
                     elseif net_event.action == "disconnected" then
                         players[net_event.nickname] = nil
-                    elseif net_event.action == "move" and data.settings.nickname ~= net_event.nickname then
+                    elseif net_event.action == "move" then--and data.settings.nickname ~= net_event.nickname then
                         players[net_event.nickname] = net_event.player
                     end
                 end
@@ -128,18 +132,23 @@ function multiplayer.update()
         multiplayer.console_update()
 
         if data.multiplayer.enet_type == "client" then
-            thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, moving=player.moving, color=data.settings.player_color, orientation=player.orientation}}))
+            thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, moving=player.moving, color=data.settings.player_color, orientation=player.orientation, zoom=player.camera.zoom}}))
+            thread0_out:push(json.encode({type="block", x=math.floor(player.x/player.camera.zoom+1), y=math.floor(player.y/player.camera.zoom+1), block=planets.pcore.map[50][50]}))
         end
 
         if data.multiplayer.enet_type == "host" then
-            for i = x, x + 9 do
+            for i = x, x + 4 do
                 thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
             end
-            if x + 10 < planets.pcore.w then
-                x = x + 10
+            if x + 5 < planets.pcore.w then
+                x = x + 5
             else
                 x = 1
             end
+            -- local blocks_for_update = blocks_for_update_template
+            -- for nickname, player_data in pairs(players) then
+            --     local coord_x = player_data.x/24/player_data.zoom+1
+            -- end
         end
         
         update_timer = love.timer.getTime()
