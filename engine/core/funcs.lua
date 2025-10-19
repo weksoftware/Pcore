@@ -339,5 +339,7 @@ end
 function funcs.host_change_block(x, y)
     if data.multiplayer.enet_type == "host" then
         table.insert(data.multiplayer.blocks_changes, {x=x, y=y})
+    end
+end
 
 return funcs

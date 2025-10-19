@@ -91,7 +91,7 @@ function physics.update()
                         planet.map[x][y].block = 'air'
                         planet.map[x][y].fire = nil
                         funcs.host_change_block(x, y)
-                        funcs.host_change_block(x, [funcs.coordy(y - 1, h, w))
+                        funcs.host_change_block(x, funcs.coordy(y - 1, h, w))
 
                     else
                         local orientation = love.math.random(2)
@@ -108,7 +108,7 @@ function physics.update()
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].fire = nil
                             funcs.host_change_block(x, y)
-                            funcs.host_change_block([funcs.coordx(x + 1,h, w), y)
+                            funcs.host_change_block(funcs.coordx(x + 1,h, w), y)
                         end
                     end
                 end
