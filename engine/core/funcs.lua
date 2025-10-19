@@ -336,4 +336,8 @@ function funcs.player_x_loop(x, planet_w)
     return x
 end
 
+function funcs.host_change_block(x, y)
+    if data.multiplayer.enet_type == "host" then
+        table.insert(data.multiplayer.blocks_changes, {x=x, y=y})
+
 return funcs

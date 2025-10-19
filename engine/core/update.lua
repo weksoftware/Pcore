@@ -86,6 +86,7 @@ function update.blocks()
                     for xi = 0, blocks[block].multiblock.w - 1 do
                         for yi = 0, blocks[block].multiblock.h - 1 do
                             planets[data.planet].map[multiblock.x + xi][multiblock.y + yi].block = 'air'
+                            funcs.host_change_block(multiblock.x + xi, multiblock.y + yi)
                         end
                     end
                 end
@@ -95,20 +96,26 @@ function update.blocks()
                     local orientation = love.math.random(4)
                     if orientation == 1 and blocks[planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].block].flammability ~= nil then
                         planets[data.planet].map[funcs.coordx(x - 1, h, w)][y].fire = true
+                        funcs.host_change_block(funcs.coordx(x - 1, h, w), y)
                     elseif orientation == 2 and blocks[planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].block].flammability ~= nil then
                         planets[data.planet].map[x][funcs.coordy(y + 1, h, w)].fire = true
+                        funcs.host_change_block(x, funcs.coordy(y + 1, h, w))
                     elseif orientation == 3 and blocks[planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].block].flammability ~= nil then
                         planets[data.planet].map[funcs.coordx(x + 1, h, w)][y].fire = true
+                        funcs.host_change_block(funcs.coordy(x + 1, h, w), y)
                     elseif orientation == 4 and blocks[planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].block].flammability ~= nil then
                         planets[data.planet].map[x][funcs.coordy(y - 1, h, w)].fire = true
+                        funcs.host_change_block(x, funcs.coordy(y - 1, h, w))
                     end
                 end
                 if love.math.random() >= blocks[planets[data.planet].map[x][y].block].flammability then
                     planets[data.planet].map[x][y].fire = nil
                     if blocks[planets[data.planet].map[x][y].block].combustion_product ~= nil then
                         planets[data.planet].map[x][y].block = blocks[planets[data.planet].map[x][y].block].combustion_product
+                        funcs.host_change_block(x, y)
                     else
                         planets[data.planet].map[x][y].block = 'air'
+                        funcs.host_change_block(x, y)
                     end
                     planets[data.planet].map[x][y].destruction = 0
                 end

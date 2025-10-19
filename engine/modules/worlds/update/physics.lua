@@ -21,6 +21,8 @@ function physics.update()
                         planet.map[x][funcs.coordy(y + 1, h, w)].tick = planet.ticks
                         planet.map[x][y].block = 'air'
                         planet.map[x][y].fire = nil
+                        funcs.host_change_block(x, y)
+                        funcs.host_change_block(x, funcs.coordy(y + 1, h, w))
 
                     else
                         local orientation = love.math.random(2)
@@ -29,11 +31,15 @@ function physics.update()
                             planet.map[funcs.coordx(x - 1,h, w)][y].tick = planet.ticks
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block(funcs.coordx(x - 1,h, w), y)
                         elseif orientation == 2 and planet.map[funcs.coordx(x + 1,h, w)][y].block == 'air' then
                             planet.map[funcs.coordx(x + 1,h, w)][y].block = planet.map[x][y].block
                             planet.map[funcs.coordx(x + 1,h, w)][y].tick = planet.ticks
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block(funcs.coordx(x + 1,h, w), y)
                         end
                     end
                 elseif blocks[planet.map[x][y].block].physics_type == 'powder' then
@@ -44,6 +50,8 @@ function physics.update()
                         planet.map[x][y].block = 'air'
                         planet.map[x][y].destruction = 0
                         planet.map[x][y].fire = nil
+                        funcs.host_change_block(x, y)
+                        funcs.host_change_block(x, funcs.coordy(y + 1, h, w))
                     elseif blocks[planet.map[x][funcs.coordy(y + 1, h, w)].block].physics_type == 'liquid' then
                         local block = planet.map[x][funcs.coordy(y + 1, h, w)].block
                         planet.map[x][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
@@ -52,6 +60,8 @@ function physics.update()
                         planet.map[x][y].block = block
                         planet.map[x][y].destruction = 0
                         planet.map[x][y].fire = nil
+                        funcs.host_change_block(x, y)
+                        funcs.host_change_block(x, funcs.coordy(y + 1, h, w))
                     else
                         local orientation = love.math.random(2)
                         if orientation == 1 and planet.map[funcs.coordx(x - 1,h, w)][funcs.coordy(y + 1, h, w)].block == 'air' then
@@ -61,6 +71,8 @@ function physics.update()
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].destruction = 0
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block(funcs.coordx(x - 1,h, w), funcs.coordy(y + 1, h, w))
                         elseif orientation == 2 and planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].block == 'air' then
                             planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].block = planet.map[x][y].block
                             planet.map[funcs.coordx(x + 1,h, w)][funcs.coordy(y + 1, h, w)].destruction = planet.map[x][y].destruction
@@ -68,6 +80,8 @@ function physics.update()
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].destruction = 0
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block(funcs.coordx(x + 1,h, w), funcs.coordy(y + 1, h, w))
                         end
                     end
                 elseif blocks[planet.map[x][y].block].physics_type == 'gas' then
@@ -76,6 +90,8 @@ function physics.update()
                         planet.map[x][funcs.coordy(y - 1, h, w)].tick = planet.ticks
                         planet.map[x][y].block = 'air'
                         planet.map[x][y].fire = nil
+                        funcs.host_change_block(x, y)
+                        funcs.host_change_block(x, [funcs.coordy(y - 1, h, w))
 
                     else
                         local orientation = love.math.random(2)
@@ -84,11 +100,15 @@ function physics.update()
                             planet.map[funcs.coordx(x - 1,h, w)][y].tick = planet.ticks
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block(funcs.coordx(x - 1,h, w), y)
                         elseif orientation == 2 and planet.map[funcs.coordx(x + 1,h, w)][y].block == 'air' then
                             planet.map[funcs.coordx(x + 1,h, w)][y].block = planet.map[x][y].block
                             planet.map[funcs.coordx(x + 1,h, w)][y].tick = planet.ticks
                             planet.map[x][y].block = 'air'
                             planet.map[x][y].fire = nil
+                            funcs.host_change_block(x, y)
+                            funcs.host_change_block([funcs.coordx(x + 1,h, w), y)
                         end
                     end
                 end

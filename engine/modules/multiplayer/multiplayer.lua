@@ -17,9 +17,9 @@ local thread2_out = nil -- Ввод консоли
 local update_timer = love.timer.getTime()
 local update_map_timer = love.timer.getTime()
 local update_players_area_timer = love.timer.getTime()
+local update_blocks_timer = love.timer.getTime() -- таймер обновления отдельных изменённых блоков
 local first_package_timer = love.timer.getTime() -- таймер ожидания первого пакета
-
-local x = 1 -- Координата возвращений обновлений карты хосту
+local player_send_timer = love.timer.getTime() -- таймер отправки информации об игроке
 
 function multiplayer.start()
     thread = love.thread.newThread("engine/modules/multiplayer/" .. data.multiplayer.enet_type .. ".lua")
@@ -163,8 +163,9 @@ function multiplayer.update()
 
         multiplayer.console_update()
 
-        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == true then
+        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == true and player_send_timer + 0.5 < love.timer.getTime() then
             thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, color=data.settings.player_color, orientation=player.orientation}}))
+            player_send_timer = love.timer.getTime()
         end
 
         if data.multiplayer.enet_type == "host" then
@@ -176,32 +177,44 @@ function multiplayer.update()
             -- else
             --     x = 1
             -- end
-            if false and update_players_area_timer + 0.5 < love.timer.getTime() then
-                local blocks_for_update = {}
-                for i = 1, planets.pcore.w do
-                    table.insert(blocks_for_update, false)
-                end
-
-                for nickname, player_data in pairs(players.new) do
-                    for i = math.floor(player_data.x) - server_config.update_area, math.floor(player_data.x) + server_config.update_area do
-                        local coord = funcs.player_x_loop(i, planets.pcore.w)
-                        blocks_for_update[coord] = true
+            if server_config.update_area > 0 then
+                if update_players_area_timer + server_config.update_area_time < love.timer.getTime() then
+                    local blocks_for_update = {}
+                    for i = 1, planets.pcore.w do
+                        table.insert(blocks_for_update, false)
                     end
-                end
 
-                for i = 1, planets.pcore.w do
-                    if blocks_for_update[i] == true then
-                        thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
+                    for nickname, player_data in pairs(players.new) do
+                        for i = math.floor(player_data.x) - server_config.update_area, math.floor(player_data.x) + server_config.update_area do
+                            local coord = funcs.player_x_loop(i, planets.pcore.w)
+                            blocks_for_update[coord] = true
+                        end
                     end
+
+                    for i = 1, planets.pcore.w do
+                        if blocks_for_update[i] == true then
+                            thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
+                        end
+                    end
+                    blocks_for_update = nil
+                    update_players_area_timer = love.timer.getTime()
                 end
-                blocks_for_update = nil
-                update_players_area_timer = love.timer.getTime()
+            end
+
+            if server_config.update_blocks_time > 0 then
+                if update_blocks_timer + server_config.update_blocks_time < love.timer.getTime() then
+                    for i, coords in ipairs(data.multiplayer.blocks_changes) do
+                        thread0_out:push(json.encode({type="block", x=coords.x, y=coords.y, block=planets.pcore.map[coords.x][coords.y]}))
+                    end
+                    data.multiplayer.blocks_changes = {}
+                    update_blocks_timer = love.timer.getTime()
+                end
             end
         end
         
         update_timer = love.timer.getTime()
 
-        if multiplayer_is_loaded == false and map_size == nil and first_package_timer + 10 < love.timer.getTime() then
+        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == false and map_size == nil and first_package_timer + 10 < love.timer.getTime() then
             multiplayer.stop()
             data.scene = "multiplayer_error"
         end

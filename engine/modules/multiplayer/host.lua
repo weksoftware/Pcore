@@ -102,10 +102,12 @@ while true do
 
     if data then
         if data ~= "users" then
-            host:broadcast(data)
             local net_event = json.decode(data)
             if net_event.type == "map" then
                 map.map[net_event.x] = net_event.map
+                host:broadcast(data, 0, "unreliable")
+            else
+                host:broadcast(data)
             end
         else
             thread1_out:push(json.encode({type="users", list=users}))
