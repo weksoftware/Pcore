@@ -34,7 +34,7 @@ while true do
                 thread1_out:push(event.data)
             elseif event_data_decode.type == "player" then
                 thread1_out:push(event.data)
-            elseif event_data_decode.type == "map_done" then
+            elseif event_data_decode.type == "server_info" then
                 thread1_out:push(event.data)
             end
         elseif event.type == "connect" then

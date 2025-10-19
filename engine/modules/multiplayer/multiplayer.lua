@@ -17,6 +17,7 @@ local thread2_out = nil -- Ввод консоли
 local update_timer = love.timer.getTime()
 local update_map_timer = love.timer.getTime()
 local update_players_area_timer = love.timer.getTime()
+local first_package_timer = love.timer.getTime() -- таймер ожидания первого пакета
 
 local x = 1 -- Координата возвращений обновлений карты хосту
 
@@ -41,6 +42,8 @@ function multiplayer.start()
 
     player = funcs.create_message(player, nil, "Мультиплеер запущен.", os.clock(), 255, 255, 0)
     multiplayer_is_loaded = false
+    map_size = nil
+    first_package_timer = love.timer.getTime()
 end
 
 function multiplayer.stop()
@@ -56,6 +59,8 @@ function multiplayer.stop()
     end
     player = funcs.create_message(player, nil, "Мультиплеер остановлен.", os.clock(), 255, 255, 0)
     multiplayer_is_loaded = false
+    data.multiplayer.world_load_status = 0
+    data.multiplayer.enet_type = nil
 end
 
 function multiplayer.message_send(message)
@@ -108,13 +113,24 @@ function multiplayer.update()
         if thread1_out ~= nil then
             local thread_data = thread1_out:pop()
             while thread_data ~= nil do
+
                 local net_event = json.decode(thread_data)
                 if net_event.type == "message" then
                     player = funcs.create_message(player, net_event.message.author, net_event.message.text, os.clock(), 255, 255, 255)
                 elseif net_event.type == "map" then
                     planets[net_event.planet].map[net_event.x] = net_event.map
+                    if multiplayer_is_loaded == false and net_event.x == map_size then
+                        multiplayer_is_loaded = true
+                        data.scene = "game"
+                    end
+
+                    if multiplayer_is_loaded == false then
+                        data.multiplayer.world_load_status = math.floor(net_event.x / map_size * 100)
+                    end
+
                 elseif net_event.type == "block" then
                     planets.pcore.map[net_event.x][net_event.y] = net_event.block
+
                 elseif net_event.type == "player" then
                     if net_event.action == "connected" and data.settings.nickname ~= net_event.nickname then
                         players.new[net_event.nickname] = net_event.player
@@ -125,15 +141,20 @@ function multiplayer.update()
                         players.old[net_event.nickname] = nil
                         players.pseudo[net_event.nickname] = nil
                     elseif net_event.action == "move" and data.settings.nickname ~= net_event.nickname then
+                        -- if players.pseudo[net_event.nickname] == nil then
+                        --     players.pseudo[net_event.nickname] = net_event.player
+                        -- end
                         players.old[net_event.nickname] = players.pseudo[net_event.nickname]
                         players.new[net_event.nickname] = net_event.player
                     end
-                elseif net_event.type == "map_done" then
+
+                elseif net_event.type == "server_info" then
                     player.x = net_event.spawn_x
                     player.y = net_event.spawn_y
                     player = funcs.create_message(player, "server", net_event.hello_message, os.clock(), 255, 255, 255)
-                    multiplayer_is_loaded = true
-                    data.scene = "game"
+                    map_size = net_event.map_size
+                    server_config.spawn_x = net_event.spawn_x
+                    server_config.spawn_y = net_event.spawn_y
                 end
 
                 thread_data = thread1_out:pop()
@@ -179,6 +200,11 @@ function multiplayer.update()
         end
         
         update_timer = love.timer.getTime()
+
+        if multiplayer_is_loaded == false and map_size == nil and first_package_timer + 10 < love.timer.getTime() then
+            multiplayer.stop()
+            data.scene = "multiplayer_error"
+        end
     end
 end
 

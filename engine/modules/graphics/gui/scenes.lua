@@ -492,11 +492,40 @@ scenes.multiplayer_load.windows = {
         x=0,
         y=45,
         w=100,
+        h=20,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=50, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y=15, size=12, text="Загрузка мира...", r=255, g=255, b=255, a=255},
+            {type="rect", x=0, y=50, w=100, h=50, r=0, g=0, b=0, a=200},
+            {type="rect", x=0, y=50, w=0, h=50, r=0, g=255, b=80, a=255}
+        },
+        button=gui_funcs.multiplayer_load_status
+    }
+}
+
+scenes.multiplayer_error = {}
+scenes.multiplayer_error.display_game = true
+scenes.multiplayer_error.windows = {
+    {
+        x=0,
+        y=0,
+        w=100,
         h=10,
         objects={
             {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
-            {type="text", x="center", y="center", size=12, text="Загрузка мира...", r=255, g=255, b=255, a=255}
+            {type="text", x="center", y="center", size=12, text="Не удалось подключиться.", r=255, g=255, b=255, a=255}
         }
+    },
+    {
+        x=0,
+        y=90,
+        w=100,
+        h=10,
+        objects={
+            {type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=170},
+            {type="text", x="center", y="center", size=12, text="Назад", r=255, g=255, b=255, a=255}
+        },
+        button=gui_funcs.multiplayer
     }
 }
 

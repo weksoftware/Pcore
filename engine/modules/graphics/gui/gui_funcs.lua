@@ -265,6 +265,11 @@ function gui_funcs.nickname_set(window, mouse)
     return window
 end
 
+function gui_funcs.multiplayer_load_status(window, mouse)
+    window.objects[4].w = data.multiplayer.world_load_status
+    return window
+end
+
 function gui_funcs.update_version(window, mouse)
     window.objects[2].text = "v" .. data.version .. " by weksoftware | github.com/weksoftware/Pcore"
     return window
