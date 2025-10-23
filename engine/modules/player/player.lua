@@ -1,6 +1,6 @@
 local player = {}
 
-player.x = 0
+player.x = 50
 player.y = 50
 player.moving = {}
 player.moving.right = false

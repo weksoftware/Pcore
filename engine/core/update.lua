@@ -75,7 +75,11 @@ function update.blocks()
     for x = 1, w do
         for y = start_h, start_h - subtick_h + 1, -1 do
             if blocks[planets[data.planet].map[x][y].block].multiblock == nil then
+                local old_img_num = planets[data.planet].map[x][y].img_num
                 planets[data.planet].map[x][y].img_num = funcs.select_block_img(planets[data.planet].map, x, y, planets[data.planet].h, planets[data.planet].w)
+                if planets[data.planet].map[x][y].img_num ~= old_img_num then
+                    funcs.host_change_block(x, y)
+                end
             else
                 local multiblock = planets[data.planet].map[x][y].multiblock
                 planets[data.planet].map[x][y].img_num = multiblock.y_in_block * 8 + multiblock.x_in_block + 1
@@ -179,6 +183,18 @@ function update.player()
             end
 
             player.x, player.y = funcs.player_coords_loop(player.x, player.y, planets[data.planet].w, planets[data.planet].h)
+            
+            -- if collision.player(player.x, player.y + 0.4, planets[data.planet]) == false then
+            --     player.y = player.y + 0.4
+            -- elseif collision.player(player.x, player.y + 0.2, planets[data.planet]) == false then
+            --     player.y = player.y + 0.2
+            -- elseif collision.player(player.x, player.y + 0.05, planets[data.planet]) == false then
+            --     player.y = player.y + 0.05
+            -- elseif collision.player(player.x, player.y + 0.01, planets[data.planet]) == false then
+            --     player.y = math.floor(player.y)
+            -- end
+
+            --planets.pcore.map[math.ceil(player.x)][math.ceil(player.y)].block = "glass"
 
             if data.multiplayer.enet_type == "client" then
                 for nickname, player_net in pairs(players.pseudo) do
@@ -201,13 +217,6 @@ function update.player()
                 end
             end
             
-            -- if collision.player(player.x, player.y + 15, planets[data.planet].map, player.camera.zoom) == false then
-            --     player.y = player.y + 15
-            -- elseif collision.player(player.x, player.y + 5, planets[data.planet].map, player.camera.zoom) == false then
-            --     player.y = player.y + 5
-            -- elseif collision.player(player.x, player.y + 1, planets[data.planet].map, player.camera.zoom) == false then
-            --     player.y = player.y + 1
-            -- end
             update_player_moving_timer = love.timer.getTime()
         end
     end

@@ -313,16 +313,16 @@ function funcs.reverse_sort(num1, num2)
 end
 
 function funcs.player_coords_loop(x, y, planet_w, planet_h)
-    if x < 0 then
+    if x < 1 then
         x = planet_w - math.abs(x) % planet_w
     elseif x > planet_w then
-        x = x % planet_w
+        x = x % planet_w + 1
     end
 
-    if y < 0 then
+    if y < 1 then
         y = planet_h - math.abs(y) % planet_h
     elseif y > planet_h then
-        y = y % planet_h
+        y = y % planet_h + 1
     end
     return x, y
 end
