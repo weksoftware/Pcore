@@ -147,10 +147,12 @@ function update.planet()
             data.tps = data.tps + 1
         end
     end
-    if tps_timer + 5 < love.timer.getTime() then
-        data.tps_display = data.tps / 5
-        data.tps = 0
-        tps_timer = love.timer.getTime()
+    if data.multiplayer.enet_type ~= "client" then
+        if tps_timer + 5 < love.timer.getTime() then
+            data.tps_display = data.tps / 5
+            data.tps = 0
+            tps_timer = love.timer.getTime()
+        end
     end
 end
 

@@ -47,7 +47,7 @@ function commands.tps()
 end
 
 function commands.ping()
-    funcs.create_message(player, nil, "Ping (время ответа сервера): " .. tostring(data.ping), os.clock(), 152, 255, 92)
+    funcs.create_message(player, nil, "Ping (время ответа сервера): " .. tostring(data.ping) .. " ms", os.clock(), 152, 255, 92)
 end
 
 

@@ -8,6 +8,8 @@ local planets = require("engine/modules/worlds/planets")
 local players = require("engine/modules/multiplayer/players")
 local server_config = require("server_config")
 
+local socket = require("socket")
+
 local multiplayer = {}
 
 local thread0_out = nil
@@ -159,7 +161,7 @@ function multiplayer.update()
 
                 elseif net_event.type == "server_stat" then
                     data.tps_display = net_event.tps
-                    data.ping = (os.time() - net_event.time) * 2
+                    data.ping = math.floor((socket.gettime() - net_event.time) * 2000)
                 end
 
                 thread_data = thread1_out:pop()
@@ -216,8 +218,9 @@ function multiplayer.update()
                 end
             end
 
-            if server_stat_timer + 5 < love.timer.getTime() then
-                thread0_out:push(json.encode({type="server_stat", tps=data.tps_display, time=os.time()}))
+            if server_stat_timer + 2 < love.timer.getTime() then
+                thread0_out:push(json.encode({type="server_stat", tps=data.tps_display, time=socket.gettime()}))
+                server_stat_timer = love.timer.getTime()
             end
             
         end
