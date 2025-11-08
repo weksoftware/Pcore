@@ -158,8 +158,8 @@ end
 
 function update.player()
     local width, height = love.graphics.getDimensions()
-    player.camera.x = (player.x * 24 - width / 2) / player.camera.zoom
-    player.camera.y = (player.y * 24 - height / 2) / player.camera.zoom
+    player.camera.x = player.x * 24 - (width / 2 / player.camera.zoom)
+    player.camera.y = player.y * 24 - (height / 2 / player.camera.zoom)
 
     if planets[data.planet].game_mode == "debug" then
         if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then

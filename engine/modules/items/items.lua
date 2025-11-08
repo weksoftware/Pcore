@@ -15,6 +15,11 @@ items.aluminum_block = {
     block="aluminum",
     func="simple_build"
 }
+items.stone_bricks_block = {
+    texture="media/textures/items/stone_bricks_block1.png",
+    block="stone_bricks",
+    func="simple_build"
+}
 items.match = {
     texture="media/textures/items/match1.png",
     func="match"

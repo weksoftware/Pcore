@@ -95,8 +95,8 @@ function display.player()
                 elseif players.new[nickname].orientation == "right" then
                     orientation = 3
                 end
-                local x = (player_data.x * 24 / player.camera.zoom - player.camera.x - 12) * player.camera.zoom
-                local y = (player_data.y * 24 / player.camera.zoom - player.camera.y - 24) * player.camera.zoom
+                local x = (player_data.x * 24 - player.camera.x - 12) * player.camera.zoom
+                local y = (player_data.y * 24 - player.camera.y - 24) * player.camera.zoom
                 color = data.settings_values.player_color[players.new[nickname].color]
                 love.graphics.draw(player1[orientation], x, y, nil, 3 * player.camera.zoom)
                 love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255)
