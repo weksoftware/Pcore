@@ -20,6 +20,7 @@ local update_players_area_timer = love.timer.getTime()
 local update_blocks_timer = love.timer.getTime() -- таймер обновления отдельных изменённых блоков
 local first_package_timer = love.timer.getTime() -- таймер ожидания первого пакета
 local player_send_timer = love.timer.getTime() -- таймер отправки информации об игроке
+local server_stat_timer = love.timer.getTime() -- таймер отправки статистики сервера (тпс и тд)
 
 function multiplayer.start()
     thread = love.thread.newThread("engine/modules/multiplayer/" .. data.multiplayer.enet_type .. ".lua")
@@ -155,6 +156,10 @@ function multiplayer.update()
                     map_size = net_event.map_size
                     server_config.spawn_x = net_event.spawn_x
                     server_config.spawn_y = net_event.spawn_y
+
+                elseif net_event.type == "server_stat" then
+                    data.tps_display = net_event.tps
+                    data.ping = (os.time() - net_event.time) * 2
                 end
 
                 thread_data = thread1_out:pop()
@@ -210,6 +215,11 @@ function multiplayer.update()
                     update_blocks_timer = love.timer.getTime()
                 end
             end
+
+            if server_stat_timer + 5 < love.timer.getTime() then
+                thread0_out:push(json.encode({type="server_stat", tps=data.tps_display, time=os.time()}))
+            end
+            
         end
         
         update_timer = love.timer.getTime()

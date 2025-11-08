@@ -49,6 +49,7 @@ function gui.display()
         love.graphics.print('mouse.button: ' .. tostring(data.mouse.button), font1, 40, height - 320)
         love.graphics.print('mouse x ' .. tostring(mouse_x) .. '/y ' .. tostring(mouse_y), font1, 40, height - 360)
         love.graphics.print(data.multiplayer.ip .. ":" .. data.multiplayer.port, font1, 40, height - 400)
+        love.graphics.print('TPS ' .. data.tps_display, font1, 40, height - 440)
     end
 
     for key_win, window in ipairs(scenes[data.scene].windows) do

@@ -14,11 +14,13 @@ local items = require("engine/modules/items/items")
 local items_funcs = require("engine/modules/items/items_funcs")
 local collision = require("engine/modules/player/collision")
 local multiplayer = require("engine/modules/multiplayer/multiplayer")
+local players = require("engine/modules/multiplayer/players")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
 local autosave_timer = love.timer.getTime()
-local players = require("engine/modules/multiplayer/players")
+local tps_timer = love.timer.getTime()
+
 
 local update = {}
 
@@ -142,7 +144,13 @@ function update.planet()
             light.update()
             planets[data.planet].subtick = 0
             planets[data.planet].ticks = planets[data.planet].ticks + 1
+            data.tps = data.tps + 1
         end
+    end
+    if tps_timer + 5 < love.timer.getTime() then
+        data.tps_display = data.tps / 5
+        data.tps = 0
+        tps_timer = love.timer.getTime()
     end
 end
 

@@ -6,7 +6,7 @@ local server_config = require("server_config")
 
 local commands = {}
 
-commands.list = {"help", "rndshader", "players", "spawn", "debug"}
+commands.list = {"help", "rndshader", "players", "spawn", "debug", "tps", "ping"}
 
 function commands.help()
     funcs.create_message(player, nil, "Список команд:", os.clock(), 152, 255, 92)
@@ -40,6 +40,14 @@ function commands.debug()
     else
         data.display_debug = true
     end
+end
+
+function commands.tps()
+    funcs.create_message(player, nil, "TPS (обновления в секунду): " .. tostring(data.tps_display), os.clock(), 152, 255, 92)
+end
+
+function commands.ping()
+    funcs.create_message(player, nil, "Ping (время ответа сервера): " .. tostring(data.ping), os.clock(), 152, 255, 92)
 end
 
 
