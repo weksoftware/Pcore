@@ -18,8 +18,39 @@ local host = enet.host_create()
 print(data.ip)
 local server = host:connect(data.ip .. ":" .. data.port)
 
+function service_protect_code()
+    event = host:service()
+end
+
+function service_protect()
+    local success, error = pcall(service_protect_code)
+    if success then
+        
+    else
+        thread1_out:push(json.encode({type="message", message={author=nil, text="Error: " .. error}}))
+        if type(event) == "table" then
+            print(">>")
+            for key, value in pairs(event) do
+                print(key)
+                if key == "peer" then
+                    print(event.peer)
+                elseif key == "type" then
+                    print(event.type)
+                elseif key == "data" then
+                    print(event.data)
+                end
+            end
+            print("<<")
+        else
+            print(">>" ..  type(event) .. "<<")
+        end
+        event = nil
+    end
+end
+
 while true do
-    local event = host:service()
+    service_protect()
+    
     local data = thread0_out:pop()
 
     while event do
@@ -43,7 +74,7 @@ while true do
             server:send(json.encode({type="connect", player=nickname}))
         end
     
-        event = host:service()
+        service_protect()
     end
     if data then
         server:send(data)

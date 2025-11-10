@@ -170,7 +170,7 @@ function multiplayer.update()
 
         multiplayer.console_update()
 
-        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == true and player_send_timer + 0.5 < love.timer.getTime() then
+        if data.multiplayer.enet_type == "client" and multiplayer_is_loaded == true and player_send_timer + 0.2 < love.timer.getTime() then
             thread0_out:push(json.encode({type="player", action="move", nickname=data.settings.nickname, player={x=player.x, y=player.y, color=data.settings.player_color, orientation=player.orientation}}))
             player_send_timer = love.timer.getTime()
         end

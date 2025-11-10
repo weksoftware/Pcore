@@ -106,6 +106,9 @@ while true do
             if net_event.type == "map" then
                 map.map[net_event.x] = net_event.map
                 host:broadcast(data, 0, "unreliable")
+            elseif net_event.type == "block" then
+                map.map[net_event.x][net_event.y] = net_event.block
+                host:broadcast(data)
             else
                 host:broadcast(data)
             end
