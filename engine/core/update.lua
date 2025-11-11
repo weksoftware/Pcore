@@ -279,10 +279,15 @@ function update.items()
                 end
             end
 
-            if math.sqrt((player.x - item.x) ^ 2 + (player.y - item.y) ^ 2) < 2 then
-                planets[data.planet].items[i].count = funcs.add_to_inventory(item.id, item.count)
-                if planets[data.planet].items[i].count == 0 then
-                    table.remove(planets[data.planet].items, i)
+            if data.multiplayer.enet_type ~= "host" then
+                if math.sqrt((player.x - item.x) ^ 2 + (player.y - item.y) ^ 2) < 2 then
+                    planets[data.planet].items[i].count = funcs.add_to_inventory(item.id, item.count)
+                    if planets[data.planet].items[i].count == 0 then
+                        table.remove(planets[data.planet].items, i)
+                        multiplayer.item_send(i, "remove")
+                    else
+                        multiplayer.item_send(i, "update")
+                    end
                 end
             end
         end

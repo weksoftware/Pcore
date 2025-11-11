@@ -80,10 +80,14 @@ while true do
             elseif net_event.type == "player" then
                 host:broadcast(event.data)
                 thread1_out:push(event.data)
+
             elseif net_event.type == "block" then
                 thread1_out:push(event.data)
                 host:broadcast(event.data)
                 map.map[net_event.x][net_event.y] = net_event.block
+
+            elseif net_event.type == "item" then
+                thread1_out:push(event.data)
             end
             
         elseif event.type == "disconnect" then

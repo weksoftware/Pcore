@@ -79,6 +79,7 @@ function items_funcs.pickaxe(item)
                 local item = blocks[planets[data.planet].map[x][y].block].item
                 if item ~= nil then
                     table.insert(planets[data.planet].items, {id=item, count=1, x=x, y=y})
+                    multiplayer.item_send(#planets[data.planet].items, "insert")
                 end
 
                 planets[data.planet].map[x][y].block = "air"

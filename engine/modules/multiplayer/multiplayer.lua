@@ -78,6 +78,12 @@ function multiplayer.block_send(x, y)
     end
 end
 
+function multiplayer.item_send(id, action)
+    if thread0_out ~= nil then
+        thread0_out:push(json.encode({type="item", item=planets.pcore.items[id], action=action}))
+    end
+end
+
 function multiplayer.console_update()
     if data.multiplayer.enet_type == "host" then
         if thread2_out ~= nil then
@@ -164,6 +170,18 @@ function multiplayer.update()
                 elseif net_event.type == "server_stat" then
                     data.tps_display = net_event.tps
                     data.ping = math.floor((socket.gettime() - net_event.time) * 2000)
+                
+                elseif net_event.type == "item" then
+                    if net_event.action == "insert" then
+                        table.insert(planets.pcore.items, net_event.item)
+                    elseif net_event.action == "remove" then
+                        table.remove(planets.pcore.items, net_event.id)
+                    elseif net_event.action == "update" then
+                        planets.pcore.items[net_event.id] = net_event.item
+                    end
+                    thread0_out:push(json.encode({type="items", items=planets.pcore.items}))
+                elseif net_event.type == "items" then
+                    planets.pcore.items = net_event.items
                 end
 
                 thread_data = thread1_out:pop()
@@ -178,14 +196,6 @@ function multiplayer.update()
         end
 
         if data.multiplayer.enet_type == "host" then
-            -- for i = x, x + 4 do
-            --     thread0_out:push(json.encode({type="map", map=planets.pcore.map[i], planet="pcore", x=i}))
-            -- end
-            -- if x + 5 < planets.pcore.w then
-            --     x = x + 5
-            -- else
-            --     x = 1
-            -- end
             if server_config.update_area > 0 then
                 if update_players_area_timer + server_config.update_area_time < love.timer.getTime() then
                     local blocks_for_update = {}

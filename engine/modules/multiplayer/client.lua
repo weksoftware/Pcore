@@ -69,6 +69,8 @@ while true do
                 thread1_out:push(event.data)
             elseif event_data_decode.type == "server_stat" then
                 thread1_out:push(event.data)
+            elseif event_data_decode.type == "items" then
+                thread1_out:push(event.data)
             end
         elseif event.type == "connect" then
             server:send(json.encode({type="connect", player=nickname}))
