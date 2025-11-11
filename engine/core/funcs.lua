@@ -342,4 +342,20 @@ function funcs.host_change_block(x, y)
     end
 end
 
+function funcs.add_to_inventory(item, count)
+
+    for id = 1, player.inventory_size do
+        if player.inventory[id] == nil then
+            player.inventory[id] = {item=item, count=count}
+            return 0
+        elseif player.inventory[id].item == item then
+            player.inventory[id].count = player.inventory[id].count + count
+            return 0
+        end
+    end
+
+    return count
+
+end
+
 return funcs

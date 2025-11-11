@@ -27,6 +27,7 @@ blocks.sand.physics_type = "powder"
 blocks.sand.shadow = 0.7
 blocks.sand.transparency = 0.9
 blocks.sand.strength = 1
+blocks.sand.item = "sand_block"
 
 blocks.steel = {}
 blocks.steel.texture = "media/textures/blocks/steel1.png"
@@ -35,6 +36,7 @@ blocks.steel.physics_type = "solid"
 blocks.steel.shadow = 0.6
 blocks.steel.transparency = 0.99
 blocks.steel.strength = 10
+blocks.steel.item = "steel_block"
 
 blocks.oxygen = {}
 blocks.oxygen.texture = "media/textures/blocks/oxygen1.png"
@@ -89,6 +91,7 @@ blocks.cypress_wood.transparency = 1
 blocks.cypress_wood.flammability = 0.95
 blocks.cypress_wood.combustion_product = 'water'
 blocks.cypress_wood.strength = 2
+blocks.cypress_wood.item = "cypress_wood_block"
 
 blocks.cypress_planks = {}
 blocks.cypress_planks.texture = "media/textures/blocks/cypress_planks1.png"
@@ -126,6 +129,7 @@ blocks.dirt.physics_type = "powder"
 blocks.dirt.shadow = 0.5
 blocks.dirt.transparency = 0.95
 blocks.dirt.strength = 1
+blocks.dirt.item = "dirt_block"
 
 blocks.grass = {}
 blocks.grass.texture = "media/textures/blocks/grass1.png"
@@ -134,6 +138,7 @@ blocks.grass.physics_type = "powder"
 blocks.grass.shadow = 0.7
 blocks.grass.transparency = 0.999
 blocks.grass.strength = 0.5
+blocks.grass.item = "grass_block"
 
 blocks.stone = {}
 blocks.stone.texture = "media/textures/blocks/stone1.png"
@@ -242,6 +247,7 @@ blocks.impure_steel.physics_type = "solid"
 blocks.impure_steel.shadow = 0.6
 blocks.impure_steel.transparency = 0.99
 blocks.impure_steel.strength = 6
+blocks.impure_steel.item = "impure_steel_block"
 
 blocks.aluminum = {}
 blocks.aluminum.texture = "media/textures/blocks/aluminum1.png"
@@ -250,5 +256,7 @@ blocks.aluminum.physics_type = "solid"
 blocks.aluminum.shadow = 0.6
 blocks.aluminum.transparency = 0.99
 blocks.aluminum.strength = 5
+blocks.aluminum.item = "aluminum_block"
+
 
 return blocks

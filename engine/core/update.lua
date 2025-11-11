@@ -15,11 +15,13 @@ local items_funcs = require("engine/modules/items/items_funcs")
 local collision = require("engine/modules/player/collision")
 local multiplayer = require("engine/modules/multiplayer/multiplayer")
 local players = require("engine/modules/multiplayer/players")
+local physics_types = require("engine/modules/worlds/physics_types")
 
 local update_planet_timer = love.timer.getTime()
 local update_player_moving_timer = love.timer.getTime()
 local autosave_timer = love.timer.getTime()
 local tps_timer = love.timer.getTime()
+local update_items_timer = love.timer.getTime()
 
 
 local update = {}
@@ -238,8 +240,8 @@ function update.player()
         end
     end
     if data.scene == 'game' and player.inventory[player.inventory_select] ~= nil then
-        if items[player.inventory[player.inventory_select].name].func ~= nil then
-            player.inventory[player.inventory_select] = items_funcs[items[player.inventory[player.inventory_select].name].func](player.inventory[player.inventory_select])
+        if items[player.inventory[player.inventory_select].item].func ~= nil then
+            player.inventory[player.inventory_select] = items_funcs[items[player.inventory[player.inventory_select].item].func](player.inventory[player.inventory_select])
         end
     end
 end
@@ -263,6 +265,30 @@ function update.autosave()
     end
 end
 
+function update.items()
+    if update_items_timer + 0.2 < love.timer.getTime() then
+        for i, item in ipairs(planets[data.planet].items) do
+            if math.ceil(item.y + 0.1) < planets[data.planet].h then
+                if physics_types[blocks[planets[data.planet].map[item.x][math.ceil(item.y + 0.1)].block].physics_type].solid == false then
+                    planets[data.planet].items[i].y = item.y + 0.1
+                end
+                if physics_types[blocks[planets[data.planet].map[item.x][math.ceil(item.y)].block].physics_type].solid == true then
+                    if item.y - 0.1 > 1 then
+                        planets[data.planet].items[i].y = item.y - 0.1
+                    end
+                end
+            end
+
+            if math.sqrt((player.x - item.x) ^ 2 + (player.y - item.y) ^ 2) < 2 then
+                planets[data.planet].items[i].count = funcs.add_to_inventory(item.id, item.count)
+                if planets[data.planet].items[i].count == 0 then
+                    table.remove(planets[data.planet].items, i)
+                end
+            end
+        end
+    end
+end
+
 function update.all()
     if data.multiplayer.enet_type ~= nil then
         multiplayer.update()
@@ -273,6 +299,7 @@ function update.all()
         update.player()
         keyboard.update()
         gui.update()
+        update.items()
     end
     update.planet()
     update.autosave()

@@ -285,7 +285,7 @@ function gui_funcs.inventory_update(window, mouse)
         window.objects[1].sprite = "inventory1"
     end
     if player.inventory[window.id] ~= nil then
-        window.objects[2].sprite = player.inventory[window.id].name
+        window.objects[2].sprite = player.inventory[window.id].item
         window.objects[3].text = player.inventory[window.id].count
         window.objects[2].not_display = nil
         window.objects[3].not_display = nil
@@ -298,7 +298,7 @@ end
 
 function gui_funcs.item_name_inventory_update(window, mouse)
     if player.inventory[player.inventory_select] ~= nil then
-        local name = player.inventory[player.inventory_select].name
+        local name = player.inventory[player.inventory_select].item
         local font_w = #name * 1
         window.w = font_w + 2
         window.objects[2] = {type="text", x="center", y="center", size=8, text=name, r=255, g=255, b=255, a=255}

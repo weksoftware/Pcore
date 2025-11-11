@@ -19,12 +19,12 @@ function items_funcs.simple_build(item)
         
         if data.mouse.button == 1 then
             if planets[data.planet].map[x][y].block == "air" or blocks[planets[data.planet].map[x][y].block].physics_type == "powder" then
-                planets[data.planet].map[x][y].block = items[item.name].block
+                planets[data.planet].map[x][y].block = items[item.item].block
                 item_used = true
             end
         else
             if planets[data.planet].map[x][y].background == "air" then
-                planets[data.planet].map[x][y].background = items[item.name].block
+                planets[data.planet].map[x][y].background = items[item.item].block
                 item_used = true
             end
         end
@@ -71,9 +71,16 @@ function items_funcs.pickaxe(item)
         local physics_type = blocks[planets[data.planet].map[x][y].block].physics_type
         if physics_type == "powder" or physics_type == "solid" then
             local destruction_factor =  blocks[planets[data.planet].map[x][y].block].strength
-            planets[data.planet].map[x][y].destruction = planets[data.planet].map[x][y].destruction + items[item.name].pickaxe_speed / destruction_factor
+            planets[data.planet].map[x][y].destruction = planets[data.planet].map[x][y].destruction + items[item.item].pickaxe_speed / destruction_factor
+
             if planets[data.planet].map[x][y].destruction >= 100 then
                 planets[data.planet].map[x][y].destruction = 0
+
+                local item = blocks[planets[data.planet].map[x][y].block].item
+                if item ~= nil then
+                    table.insert(planets[data.planet].items, {id=item, count=1, x=x, y=y})
+                end
+
                 planets[data.planet].map[x][y].block = "air"
             end
             multiplayer.block_send(x, y)

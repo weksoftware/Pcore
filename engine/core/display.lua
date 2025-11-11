@@ -7,6 +7,8 @@ local planets = require("engine/modules/worlds/planets")
 local gui = require("engine/modules/graphics/gui/gui")
 local chat = require("engine/modules/graphics/chat/chat")
 local players = require("engine/modules/multiplayer/players")
+local items = require("engine/modules/items/items")
+local sprites = require("engine/modules/graphics/sprites")
 
 local display = {}
 
@@ -113,7 +115,7 @@ function display.shaders(is_visible)
         if data.settings_values.shaders[data.settings.shaders] ~= false then
             love.graphics.setShader(shaders[data.settings_values.shaders[data.settings.shaders]])
             if data.settings_values.shaders[data.settings.shaders] == "light" then
-            shaders[data.settings_values.shaders[data.settings.shaders]]:send("down_light",1)
+                shaders[data.settings_values.shaders[data.settings.shaders]]:send("down_light",1)
             end
             shaders[data.settings_values.shaders[data.settings.shaders]]:send("light",1)
             shaders[data.settings_values.shaders[data.settings.shaders]]:send("is_blocks",0)
@@ -122,6 +124,17 @@ function display.shaders(is_visible)
         if data.settings_values.shaders[data.settings.shaders] ~= false then
             love.graphics.setShader()
         end
+    end
+end
+
+function display.items()
+    local width, height = love.graphics.getDimensions()
+
+    for i, item in ipairs(planets[data.planet].items) do
+        local x = ((item.x - 1) * 24 - player.camera.x) * player.camera.zoom
+        local y = ((item.y - 1) * 24 - player.camera.y) * player.camera.zoom
+
+        love.graphics.draw(sprites[item.id].img, x, y, nil, 1.5 * player.camera.zoom)
     end
 end
 
@@ -134,6 +147,8 @@ function display.all()
         display.blocks()
 
         display.shaders(false)
+        display.items()
+
         display.player()
 
         chat.display()

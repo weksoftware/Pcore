@@ -206,8 +206,15 @@ function keyboard.update()
     --     planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].background = data.blocks_for_building[data.block]
     -- end
     if love.keyboard.isDown('r') then
-        if blocks[planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].block].flammability ~= nil then
-            planets[data.planet].map[math.floor((mouse_x / (24 * player.camera.zoom)) + (player.x / 24)) % planets[data.planet].w + 1][math.floor((mouse_y / (24 * player.camera.zoom)) + (player.y / 24)) % planets[data.planet].h + 1].fire = true
+        local mouse_x = data.mouse.x
+        local mouse_y = data.mouse.y
+        if mouse_x ~= nil then
+            mouse_x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
+            mouse_y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
+            if player.inventory[player.inventory_select] ~= nil then
+                table.insert(planets[data.planet].items, {id=player.inventory[player.inventory_select].item, count=player.inventory[player.inventory_select].count, x=mouse_x, y=mouse_y})
+                player.inventory[player.inventory_select] = nil
+            end
         end
     end
 

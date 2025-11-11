@@ -22,11 +22,12 @@ player.chat_status = 'close'
 player.chat_scroll = 0
 
 player.inventory = {}
-player.inventory[3] = {name="steel_block", count=1000}
-player.inventory[1] = {name="impure_steel_block", count=1000}
-player.inventory[2] = {name="match", count=500}
-player.inventory[4] = {name="impure_steel_pickaxe", count=1}
-player.inventory[5] = {name="aluminum_block", count=1000}
+player.inventory[3] = {item="steel_block", count=1000}
+player.inventory[1] = {item="impure_steel_block", count=1000}
+player.inventory[2] = nil
+player.inventory[4] = {item="impure_steel_pickaxe", count=1}
+player.inventory[5] = {item="aluminum_block", count=1000}
 player.inventory_select = 3
+player.inventory_size = 5
 
 return player

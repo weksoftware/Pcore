@@ -3,34 +3,6 @@ local blocks = require("engine/modules/worlds/blocks")
 local map = {}
 
 function map.gen_cypress(x, y, h, planet)
-    -- local err = false
-    -- if y + 1 < planet.h and x > 1 and x < planet.w then
-    --     if planet.map[x-1][y+1].block == 'air' or planet.map[x+1][y+1].block == 'air' then
-    --         err = true
-    --     end
-    -- end
-    -- for i = y, y - h - 1, -1 do
-    --     if i < planet.h - 5 and x > 5 and x < planet.w then
-    --         if planet.map[x-1][i].background == 'air' and planet.map[x+1][i].background == 'air' and err == false then
-    --             planet.map[x][i].background = 'cypress_wood'
-                
-    --             if i < y - 5 then
-    --                 planet.map[x][i].block = 'cypress_leaves'
-    --                 planet.map[x-1][i].block = 'cypress_leaves'
-    --                 planet.map[x+1][i].block = 'cypress_leaves'
-    --                 if i < y - 4 and i > y - 10 then
-    --                     planet.map[x-2][i].block = 'cypress_leaves'
-    --                     planet.map[x+2][i].block = 'cypress_leaves'
-    --                 end
-    --             end
-    --             if i == y - 11 then
-    --                 planet.map[x][i].block = 'cypress_leaves'
-    --             end
-    --         else
-    --             err = true
-    --         end
-    --     end
-    -- end
 
     if x > 3 and x < planet.w - 3 and y > h then
         if planet.map[x-1][y-3].background == "air" and planet.map[x+1][y-3].background == "air" then
@@ -80,11 +52,12 @@ function map.generation(type)
 
     planet.map = {}
 
-    planet.w = 2048
+    planet.w = 1000
     planet.h = 130
     planet.ticks = 0
     planet.subtick = 0
     planet.game_mode = "normal"
+    planet.items = {}
 
     if type == "pcore" then
         local water_h = 64
