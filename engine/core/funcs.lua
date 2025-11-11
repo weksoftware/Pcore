@@ -314,9 +314,9 @@ end
 
 function funcs.player_coords_loop(x, y, planet_w, planet_h)
     if x < 1 then
-        x = planet_w - math.abs(x) % planet_w
-    elseif x > planet_w then
-        x = x % planet_w + 1
+        x = planet_w + math.abs(x % planet_w)
+    elseif x >= planet_w + 1 then
+        x = x % planet_w
     end
 
     if y < 1 then

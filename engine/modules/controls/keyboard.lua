@@ -31,7 +31,6 @@ function love.keypressed(key)
             player.orientation = "left"
         elseif key == 'w' then
             player.moving.up = true
-            player.orientation = "down"
         elseif key == 's' then
             player.moving.down = true
             player.orientation = "down"

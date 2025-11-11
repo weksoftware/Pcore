@@ -4,32 +4,41 @@ local collision = {}
 
 function collision.player(player_x, player_y, planet)
 
-    local x = math.ceil(player_x)
-    local y = math.ceil(player_y)
+    local startX = math.floor(player_x - 0.375)
+    local endX = math.floor(player_x + 0.375)
 
-    if planet.map[x][funcs.coordy(y + 1, planet.h, planet.w)].block ~= "air" then
-        return true
-    elseif player_x % 1 > 0.5 and planet.map[funcs.coordx(x + 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].block ~= "air" then
-        return true
-    elseif player_x % 1 < 0.5 and planet.map[funcs.coordx(x - 1, planet.h, planet.w)][funcs.coordy(y + 1, planet.h, planet.w)].block ~= "air" then
-        return true
-    else
-        return false
+    local startY = math.floor(player_y - 1)
+    local endY = math.floor(player_y + 1)
+
+    for ix = startX, endX do
+        for iy = startY, endY do
+            if planet.map[ix][iy].block ~= "air" then
+                return true
+            end
+        end
     end
 
+    return false
 end
 
 function collision.player2(player_x, player_y, planet)
 
-    local x = math.ceil(player_x)
-    local y = math.ceil(player_y)
+    local startX = math.floor(player_x - 0.375)
+    local endX = math.floor(player_x + 0.375)
 
-    for xi = -1, 1 do
-        for yi = -2, 2 do
-            return false
+    local startY = math.floor(player_y - 1)
+    local endY = math.floor(player_y + 1 - 0.001)
+
+    for ix = startX, endX do
+        for iy = startY, endY do
+            local block_x, block_y = funcs.player_coords_loop(ix, iy, planet.w, planet.h)
+            if planet.map[block_x][block_y].block ~= "air" then
+                return true
+            end
         end
     end
 
+    return false
 end
 
 return collision

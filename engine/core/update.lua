@@ -158,53 +158,60 @@ end
 
 function update.player()
     local width, height = love.graphics.getDimensions()
-    player.camera.x = player.x * 24 - (width / 2 / player.camera.zoom)
-    player.camera.y = player.y * 24 - (height / 2 / player.camera.zoom)
+    player.camera.x = (player.x - 1) * 24 - (width / 2 / player.camera.zoom)
+    player.camera.y = (player.y - 1) * 24 - (height / 2 / player.camera.zoom)
 
     if planets[data.planet].game_mode == "debug" then
         if player.moving ~= nil and update_player_moving_timer + 0.01 < love.timer.getTime() then
             if player.moving.right == true then
-                player.x = player.x + 10
+                player.x = player.x + 1
             end
             if player.moving.left == true then
-                player.x = player.x - 10
+                player.x = player.x - 1
             end
             if player.moving.up == true then
-                player.y = player.y - 10
+                player.y = player.y - 1
             end
             if player.moving.down == true then
-                player.y = player.y + 10
+                player.y = player.y + 1
             end
             update_player_moving_timer = love.timer.getTime()
         end
     else
         if update_player_moving_timer + 0.01 < love.timer.getTime() then
-            if player.moving.right == true then
-                player.x = player.x + 0.4
+            if player.moving.right == true and collision.player2(player.x + 0.1, player.y, planets[data.planet]) == false then
+                player.x = player.x + 0.1
             end
-            if player.moving.left == true then
-                player.x = player.x - 0.4
+            if player.moving.left == true and collision.player2(player.x - 0.1, player.y, planets[data.planet]) == false then
+                player.x = player.x - 0.1
             end
-            if player.moving.up == true then
-                player.y = player.y - 0.4
-            end
-            if player.moving.down == true then
-                player.y = player.y + 0.4
+            if player.moving.up == true and collision.player2(player.x, player.y + 0.1, planets[data.planet]) == true then
+                player.jump = 0.4
             end
 
             player.x, player.y = funcs.player_coords_loop(player.x, player.y, planets[data.planet].w, planets[data.planet].h)
             
-            -- if collision.player(player.x, player.y + 0.4, planets[data.planet]) == false then
-            --     player.y = player.y + 0.4
-            -- elseif collision.player(player.x, player.y + 0.2, planets[data.planet]) == false then
-            --     player.y = player.y + 0.2
-            -- elseif collision.player(player.x, player.y + 0.05, planets[data.planet]) == false then
-            --     player.y = player.y + 0.05
-            -- elseif collision.player(player.x, player.y + 0.01, planets[data.planet]) == false then
-            --     player.y = math.floor(player.y)
-            -- end
-
-            --planets.pcore.map[math.ceil(player.x)][math.ceil(player.y)].block = "glass"
+            if player.jump == nil then
+                if collision.player2(player.x, player.y + player.fall, planets[data.planet]) == false then
+                    player.y = player.y + player.fall
+                    if player.fall < 0.9 then
+                        player.fall = player.fall + 0.01
+                    end
+                else
+                    player.y = math.ceil(player.y)
+                    player.fall = 0
+                end
+            else
+                if collision.player2(player.x, player.y - player.jump, planets[data.planet]) == false then
+                    player.y = player.y - player.jump
+                    player.jump = player.jump - 0.03
+                    if player.jump <= 0 then
+                        player.jump = nil
+                    end
+                else
+                    player.jump = nil
+                end
+            end
 
             if data.multiplayer.enet_type == "client" then
                 for nickname, player_net in pairs(players.pseudo) do

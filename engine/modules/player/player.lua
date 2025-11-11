@@ -1,13 +1,15 @@
 local player = {}
 
 player.x = 50
-player.y = 50
+player.y = 25
 player.moving = {}
 player.moving.right = false
 player.moving.left = false
 player.moving.up = false
 player.moving.down = false
 player.orientation = "down"
+player.jump = nil
+player.fall = 0
 
 player.camera = {}
 player.camera.x = 0
