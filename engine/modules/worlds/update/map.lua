@@ -3,34 +3,54 @@ local blocks = require("engine/modules/worlds/blocks")
 local map = {}
 
 function map.gen_cypress(x, y, h, planet)
-    local err = false
-    if y + 1 < planet.h and x > 1 and x < planet.w then
-        if planet.map[x-1][y+1].block == 'air' or planet.map[x+1][y+1].block == 'air' then
-            err = true
-        end
-    end
-    for i = y, y - h - 1, -1 do
-        if i < planet.h - 5 and x > 5 and x < planet.w then
-            if planet.map[x-1][i].background == 'air' and planet.map[x+1][i].background == 'air' and err == false then
-                planet.map[x][i].background = 'cypress_wood'
+    -- local err = false
+    -- if y + 1 < planet.h and x > 1 and x < planet.w then
+    --     if planet.map[x-1][y+1].block == 'air' or planet.map[x+1][y+1].block == 'air' then
+    --         err = true
+    --     end
+    -- end
+    -- for i = y, y - h - 1, -1 do
+    --     if i < planet.h - 5 and x > 5 and x < planet.w then
+    --         if planet.map[x-1][i].background == 'air' and planet.map[x+1][i].background == 'air' and err == false then
+    --             planet.map[x][i].background = 'cypress_wood'
                 
-                if i < y - 3 then
-                    planet.map[x][i].block = 'cypress_leaves'
-                    planet.map[x-1][i].block = 'cypress_leaves'
-                    planet.map[x+1][i].block = 'cypress_leaves'
-                    if i < y - 4 and i > y - 10 then
-                        planet.map[x-2][i].block = 'cypress_leaves'
-                        planet.map[x+2][i].block = 'cypress_leaves'
+    --             if i < y - 5 then
+    --                 planet.map[x][i].block = 'cypress_leaves'
+    --                 planet.map[x-1][i].block = 'cypress_leaves'
+    --                 planet.map[x+1][i].block = 'cypress_leaves'
+    --                 if i < y - 4 and i > y - 10 then
+    --                     planet.map[x-2][i].block = 'cypress_leaves'
+    --                     planet.map[x+2][i].block = 'cypress_leaves'
+    --                 end
+    --             end
+    --             if i == y - 11 then
+    --                 planet.map[x][i].block = 'cypress_leaves'
+    --             end
+    --         else
+    --             err = true
+    --         end
+    --     end
+    -- end
+
+    if x > 3 and x < planet.w - 3 and y > h then
+        if planet.map[x-1][y-3].background == "air" and planet.map[x+1][y-3].background == "air" then
+            for i = y + 5, y - h - 1, -1 do
+                if i >= 1 and i < planet.h then
+                    planet.map[x][i].background = 'cypress_wood'
+                    if i < y - 5 then
+                        planet.map[x][i].block = 'cypress_leaves'
+                        planet.map[x-1][i].block = 'cypress_leaves'
+                        planet.map[x+1][i].block = 'cypress_leaves'
+                        if i < y - 7 and i > y - h - 1 then
+                            planet.map[x-2][i].block = 'cypress_leaves'
+                            planet.map[x+2][i].block = 'cypress_leaves'
+                        end
                     end
                 end
-                if i == y - 11 then
-                    planet.map[x][i].block = 'cypress_leaves'
-                end
-            else
-                err = true
             end
         end
     end
+
     return planet
 end
 
@@ -128,7 +148,7 @@ function map.generation(type)
         for x = 1, planet.w do
             if noise[x] < water_h - 5 then
                 if love.math.random() > 0.8 then
-                    planet = map.gen_cypress(x, math.floor(noise[x]), 10, planet)
+                    planet = map.gen_cypress(x, math.floor(noise[x]), 13, planet)
                 end
             end
         end

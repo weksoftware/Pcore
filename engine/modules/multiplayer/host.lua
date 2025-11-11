@@ -69,7 +69,8 @@ while true do
                     hello_message=server_config.hello_message, 
                     spawn_x=server_config.spawn_x,
                     spawn_y=server_config.spawn_y,
-                    map_size=map.w
+                    map_w=map.w,
+                    map_h=map.h
                 })
                 event.peer:send(new_net_event)
 

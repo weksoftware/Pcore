@@ -155,7 +155,9 @@ function multiplayer.update()
                     player.x = net_event.spawn_x
                     player.y = net_event.spawn_y
                     player = funcs.create_message(player, "server", net_event.hello_message, os.clock(), 255, 255, 255)
-                    map_size = net_event.map_size
+                    map_size = net_event.map_w
+                    planets.pcore.w = net_event.map_w
+                    planets.pcore.h = net_event.map_h
                     server_config.spawn_x = net_event.spawn_x
                     server_config.spawn_y = net_event.spawn_y
 

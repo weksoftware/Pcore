@@ -23,8 +23,10 @@ function items_funcs.simple_build(item)
                 item_used = true
             end
         else
-            planets[data.planet].map[x][y].background = items[item.name].block
-            item_used = true
+            if planets[data.planet].map[x][y].background == "air" then
+                planets[data.planet].map[x][y].background = items[item.name].block
+                item_used = true
+            end
         end
 
         if item_used == true then
