@@ -1,4 +1,6 @@
 local funcs = require("engine/core/funcs")
+local physics_types = require("engine/modules/worlds/physics_types")
+local blocks = require("engine/modules/worlds/blocks")
 
 local collision = {}
 
@@ -32,7 +34,7 @@ function collision.player2(player_x, player_y, planet)
     for ix = startX, endX do
         for iy = startY, endY do
             local block_x, block_y = funcs.player_coords_loop(ix, iy, planet.w, planet.h)
-            if planet.map[block_x][block_y].block ~= "air" then
+            if physics_types[blocks[planet.map[block_x][block_y].block].physics_type].solid == true then
                 return true
             end
         end

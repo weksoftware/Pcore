@@ -15,14 +15,26 @@ function items_funcs.simple_build(item)
         local mouse_y = data.mouse.y
         local x = math.floor((mouse_x / (24 * player.camera.zoom)) + (player.camera.x / 24)) % planets[data.planet].w + 1
         local y = math.floor((mouse_y / (24 * player.camera.zoom)) + (player.camera.y / 24)) % planets[data.planet].h + 1
-        if planets[data.planet].map[x][y].block == "air" then
-            planets[data.planet].map[x][y].block = items[item.name].block
+        local item_used = false
+        
+        if data.mouse.button == 1 then
+            if planets[data.planet].map[x][y].block == "air" or blocks[planets[data.planet].map[x][y].block].physics_type == "powder" then
+                planets[data.planet].map[x][y].block = items[item.name].block
+                item_used = true
+            end
+        else
+            planets[data.planet].map[x][y].background = items[item.name].block
+            item_used = true
+        end
+
+        if item_used == true then
             multiplayer.block_send(x, y)
             item.count = item.count - 1
             if item.count < 1 then
                 return nil
             end
         end
+        
     end
     return item
 end

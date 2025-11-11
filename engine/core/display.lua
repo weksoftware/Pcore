@@ -108,9 +108,8 @@ function display.player()
     end
 end
 
-function display.all()
-    if data.multiplayer.enet_type ~= "host" then
-        local width, height = love.graphics.getDimensions()
+function display.shaders(is_visible)
+    if is_visible == true then
         if data.settings_values.shaders[data.settings.shaders] ~= false then
             love.graphics.setShader(shaders[data.settings_values.shaders[data.settings.shaders]])
             if data.settings_values.shaders[data.settings.shaders] == "light" then
@@ -119,15 +118,24 @@ function display.all()
             shaders[data.settings_values.shaders[data.settings.shaders]]:send("light",1)
             shaders[data.settings_values.shaders[data.settings.shaders]]:send("is_blocks",0)
         end
-        
-        love.graphics.draw(skies[data.planet], 0, 0, nil, width / 640, height / 360)
-        display.blocks()
-
+    else
         if data.settings_values.shaders[data.settings.shaders] ~= false then
             love.graphics.setShader()
         end
+    end
+end
 
+function display.all()
+    if data.multiplayer.enet_type ~= "host" then
+        local width, height = love.graphics.getDimensions()
+        
+        display.shaders(true)
+        love.graphics.draw(skies[data.planet], 0, 0, nil, width / 640, height / 360)
+        display.blocks()
+
+        display.shaders(false)
         display.player()
+
         chat.display()
         gui.display()
     end
