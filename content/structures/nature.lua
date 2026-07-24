@@ -1,11 +1,6 @@
-local funcs = require("engine/core/funcs")
-local map_generators = funcs.require_files("content/map_generators")
+local structures = {}
 
-local blocks = require("engine/modules/worlds/blocks")
-
-local map = {}
-
-function map.gen_cypress(x, y, h, planet)
+function structures.cypress(x, y, h, planet)
 
     if x > 3 and x < planet.w - 3 and y > h then
         if planet.map[x-1][y-3].background == "air" and planet.map[x+1][y-3].background == "air" then
@@ -29,7 +24,7 @@ function map.gen_cypress(x, y, h, planet)
     return planet
 end
 
-function map.gen_crater(x, y, noise, planet)
+function structures.crater(x, y, noise, planet)
 
     for xf = -20, 20 do
         if x + xf > 1 and x + xf < planet.w then
@@ -50,8 +45,4 @@ function map.gen_crater(x, y, noise, planet)
     return planet
 end
 
-function map.generation(type)
-    return map_generators[type]()
-end
-
-return map
+return structures
