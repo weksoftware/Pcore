@@ -358,4 +358,18 @@ function funcs.add_to_inventory(item, count)
 
 end
 
+function funcs.require_files(path)
+    local files = {}
+    local names = love.filesystem.getDirectoryItems(path)
+    
+    for _, file in ipairs(names) do
+        if file:match("%.lua$") then
+            local name = file:sub(1,-5)
+            files[name] = require(path .. "/" .. name)
+        end
+    end
+
+    return files
+end
+
 return funcs

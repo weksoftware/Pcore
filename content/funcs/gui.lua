@@ -14,25 +14,25 @@ function gui_funcs.saves_update(scene)
     if saves_timer + 1 < love.timer.getTime() then
         scene = {}
         scene.display_game = true
-        scene.func = gui_funcs.saves_update
+        scene.func = "saves_update"
         scene.windows = {}
         local files = love.filesystem.getDirectoryItems("saves")
 
         local load_world = {x=0,y=80,w=25,h=10,
             objects={{type="rect", x=0, y=0, w=100, h=100, r=10, g=10, b=10, a=255},{type="text", x="center", y="center", size=8, text="Загрузить", r=255, g=255, b=255, a=255}},
-            button=gui_funcs.world_load
+            button="world_load"
         }
         local delete_world = {x=25,y=80,w=25,h=10,
             objects={{type="rect", x=0, y=0, w=100, h=100, r=40, g=0, b=0, a=255},{type="text", x="center", y="center", size=8, text="Удалить", r=255, g=255, b=255, a=255}},
-            button=gui_funcs.world_delete
+            button="world_delete"
         }
         local create_world = {x=50,y=80,w=50,h=10,
             objects={{type="rect", x=0, y=0, w=100, h=100, r=10, g=10, b=10, a=255},{type="text", x="center", y="center", size=8, text="Создать новый", r=255, g=255, b=255, a=255}},
-            button=gui_funcs.new_world
+            button="new_world"
         }
         local back = {x=0,y=90,w=100,h=10,
             objects={{type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=255},{type="text", x="center", y="center", size=12, text="Назад", r=255, g=255, b=255, a=255}},
-            button=gui_funcs.menu
+            button="menu"
         }
         local saves = {x=0,y=0,w=100,h=10,
             objects={{type="rect", x=0, y=0, w=100, h=100, r=0, g=0, b=0, a=255},{type="text", x="center", y="center", size=12, text="Сохранения", r=255, g=255, b=255, a=255}}
@@ -55,7 +55,7 @@ function gui_funcs.saves_update(scene)
                 },
                 scroll=true,
                 id=file,
-                button=gui_funcs.world_select
+                button="world_select"
             }
             windows[file_info.modtime] = window
         end

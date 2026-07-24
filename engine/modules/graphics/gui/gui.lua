@@ -1,10 +1,13 @@
 local player = require("engine/modules/player/player")
 local data = require("engine/core/data")
 local planets = require("engine/modules/worlds/planets")
-local scenes = require("engine/modules/graphics/gui/scenes")
+--local scenes = require("engine/modules/graphics/gui/scenes")
 local funcs = require("engine/core/funcs")
 local fonts = require("engine/modules/graphics/fonts")
 local sprites = require("engine/modules/graphics/sprites")
+
+local scenes = funcs.require_files("content/scenes")
+local gui_funcs = require("content/funcs/gui")
 
 local gui = {}
 
@@ -116,7 +119,7 @@ function gui.update()
     local scene = data.scene
     
     if scenes[data.scene].func ~= nil then
-        scenes[data.scene] = scenes[data.scene].func(scenes[data.scene])
+        scenes[data.scene] = gui_funcs[scenes[data.scene].func](scenes[data.scene])
     end
 
     local keys = {}
@@ -147,7 +150,10 @@ function gui.update()
                 data.mouse.button = nil
             end
             if window.button ~= nil then
-                window = window.button(window, mouse)
+                -- print("Scene:" .. data.scene)
+                -- print("Window:" .. key)
+                -- print("Button:" .. tostring(window.button))
+                window = gui_funcs[window.button](window, mouse)
             end
         end
     end
